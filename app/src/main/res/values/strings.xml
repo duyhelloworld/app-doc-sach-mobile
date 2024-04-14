@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">appdocsach</string>
+    <string name="main_app_title" translatable="true">App đọc sách</string>
+    <string name="login_username_title">Tài khoản</string>
+    <string name="login_password_title">Mật khẩu</string>
+    <string name="unexpected_error_message">Lỗi không xác định</string>
+</resources>
