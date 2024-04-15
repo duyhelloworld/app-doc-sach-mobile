@@ -3,6 +3,7 @@ package huce.edu.vn.appdocsach.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -45,9 +46,10 @@ public class MainActivity extends AppCompatActivity {
                     DialogUtils.error(MainActivity.this, gson.toJson(response));
                     return;
                 }
+                DialogUtils.notification(MainActivity.this, gson.toJson(response.body().getValues()));
+                rvListBook.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 bookAdapter = new BookAdapter(response.body().getValues());
                 rvListBook.setAdapter(bookAdapter);
-                rvListBook.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
             }
 
             @Override

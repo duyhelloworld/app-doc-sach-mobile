@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvItemNameK"
+        android:layout_width="68dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:text="Tên sách "
+        app:layout_constraintEnd_toStartOf="@+id/tvItemNameV"
+        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivItemCoverImage"
+        android:layout_width="161dp"
+        android:layout_height="147dp"
+        android:layout_marginBottom="584dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvItemNameV"
+        android:layout_width="144dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="6dp"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/tvItemReleaseDateV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvItemReleaseDateK"
+        android:layout_width="54dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="26dp"
+        android:text="Ngày xuất bản "
+        app:layout_constraintEnd_toStartOf="@+id/tvItemReleaseDateV"
+        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemNameK" />
+
+    <TextView
+        android:id="@+id/tvItemReleaseDateV"
+        android:layout_width="143dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="9dp"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/tvItemAuthorV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemNameV" />
+
+    <TextView
+        android:id="@+id/tvItemAuthorK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="23dp"
+        android:text="Tác giả"
+        app:layout_constraintEnd_toStartOf="@+id/tvItemAuthorV"
+        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemReleaseDateK" />
+
+    <TextView
+        android:id="@+id/tvItemAuthorV"
+        android:layout_width="139dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="13dp"
+        android:text=""
+        app:layout_constraintBottom_toTopOf="@+id/tvItemRatingV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemReleaseDateV" />
+
+    <TextView
+        android:id="@+id/tvItemRatingK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="22dp"
+        android:text="Bình chọn "
+        app:layout_constraintEnd_toStartOf="@+id/tvItemRatingV"
+        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemAuthorK" />
+
+    <TextView
+        android:id="@+id/tvItemRatingV"
+        android:layout_width="140dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="580dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvItemAuthorV" />
+</androidx.constraintlayout.widget.ConstraintLayout>
