@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                     DialogUtils.error(MainActivity.this, gson.toJson(response));
                     return;
                 }
-                DialogUtils.notification(MainActivity.this, gson.toJson(response.body().getValues()));
                 rvListBook.setLayoutManager(new LinearLayoutManager(MainActivity.this));
                 bookAdapter = new BookAdapter(response.body().getValues());
                 rvListBook.setAdapter(bookAdapter);

@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">appdocsach</string>
+    <string name="test_lorem_length">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</string>
+    <string name="test_lorem_short">AAAAAAAAAAAAAAAAA</string>
     <string name="main_app_title" translatable="true">App đọc sách</string>
     <string name="login_username_title">Tài khoản</string>
     <string name="login_password_title">Mật khẩu</string>
     <string name="unexpected_error_message">Lỗi không xác định</string>
+    <string name="main_item_book_cover_description">Ảnh truyện</string>
+    <string name="main_item_book_release_date_key">Cập nhật lúc :</string>
+    <string name="main_item_book_author_key">Tác giả :</string>
 </resources>

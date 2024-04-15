@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.models.book.BookResponseModel;
-import huce.edu.vn.appdocsach.utils.LoggerUtil;
+import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private final List<BookResponseModel> books;
@@ -33,13 +33,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return new BookViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_item, parent, false));
     }
 
-    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         BookResponseModel book = books.get(position);
         holder.tvItemNameV.setText(book.getTitle());
         holder.tvItemReleaseDateV.setText(book.getReleaseDate().toString());
-        holder.tvItemRatingV.setText(String.format("%.2f", book.getAverageRate()));
+        holder.tvItemAuthorV.setText(book.getAuthor());
+        holder.tvItemCategories.setText(book.getCategories().stream().map(SimpleCategoryModel::getName).collect(Collectors.joining(", ")));
 
         Picasso.get()
                 .load(Uri.parse(book.getCoverImage()))
@@ -54,15 +54,15 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     }
 
     static class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItemNameV, tvItemReleaseDateV, tvItemAuthorV, tvItemRatingV;
+        TextView tvItemNameV, tvItemReleaseDateV, tvItemAuthorV, tvItemCategories;
         ImageView ivItemCoverImage;
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             tvItemNameV = itemView.findViewById(R.id.tvItemNameV);
             tvItemAuthorV = itemView.findViewById(R.id.tvItemAuthorV);
             tvItemReleaseDateV = itemView.findViewById(R.id.tvItemReleaseDateV);
-            tvItemRatingV = itemView.findViewById(R.id.tvItemRatingV);
             ivItemCoverImage = itemView.findViewById(R.id.ivItemCoverImage);
+            tvItemCategories = itemView.findViewById(R.id.tvItemCategories);
         }
     }
 }
