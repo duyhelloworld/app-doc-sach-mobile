@@ -2,15 +2,12 @@ package huce.edu.vn.appdocsach.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
 import com.google.gson.Gson;
-
-import java.util.Objects;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.BookAdapter;
@@ -40,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         bookService.getAllBook().enqueue(new Callback<Pagination<BookResponseModel>>() {
+
             @Override
             public void onResponse(@NonNull Call<Pagination<BookResponseModel>> call, @NonNull Response<Pagination<BookResponseModel>> response) {
+                DialogUtils.error(MainActivity.this, gson.toJson(response.toString()));
                 if (!response.isSuccessful() || response.body() == null) {
-                    DialogUtils.error(MainActivity.this, gson.toJson(response));
                     return;
                 }
                 rvListBook.setLayoutManager(new LinearLayoutManager(MainActivity.this));

@@ -3,11 +3,13 @@ package huce.edu.vn.appdocsach.models.book;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
 import huce.edu.vn.appdocsach.utils.serializers.LocalDateAdapter;
+import huce.edu.vn.appdocsach.utils.serializers.LocalDateTimeAdapter;
 
 public class BookResponseModel {
 
@@ -15,8 +17,11 @@ public class BookResponseModel {
 
     private String title;
 
-    @JsonAdapter(value = LocalDateAdapter.class)
-    private LocalDate releaseDate;
+    @JsonAdapter(value = LocalDateTimeAdapter.class)
+    private LocalDateTime createdAt;
+
+    @JsonAdapter(value = LocalDateTimeAdapter.class)
+    private LocalDateTime updatedAt;
 
     private String coverImage;
 
@@ -27,17 +32,6 @@ public class BookResponseModel {
     private Double averageRate;
 
     private List<SimpleCategoryModel> categories;
-
-    public BookResponseModel(Integer id, String title, LocalDate releaseDate, String coverImage, String author, String description, Double averageRate, List<SimpleCategoryModel> categories) {
-        this.id = id;
-        this.title = title;
-        this.releaseDate = releaseDate;
-        this.coverImage = coverImage;
-        this.author = author;
-        this.description = description;
-        this.averageRate = averageRate;
-        this.categories = categories;
-    }
 
     public Integer getId() {
         return id;
@@ -55,10 +49,20 @@ public class BookResponseModel {
         this.title = title;
     }
 
-    public LocalDate getReleaseDate() { return releaseDate; }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-    public void setReleaseDate(LocalDate releaseDate) {
-        this.releaseDate = releaseDate;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getCoverImage() {
@@ -93,7 +97,23 @@ public class BookResponseModel {
         this.averageRate = averageRate;
     }
 
-    public List<SimpleCategoryModel> getCategories() { return categories;}
+    public List<SimpleCategoryModel> getCategories() {
+        return categories;
+    }
 
-    public void setCategories(List<SimpleCategoryModel> categories) { this.categories = categories;}
+    public void setCategories(List<SimpleCategoryModel> categories) {
+        this.categories = categories;
+    }
+
+    public BookResponseModel(Integer id, String title, LocalDateTime createdAt, LocalDateTime updatedAt, String coverImage, String author, String description, Double averageRate, List<SimpleCategoryModel> categories) {
+        this.id = id;
+        this.title = title;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.coverImage = coverImage;
+        this.author = author;
+        this.description = description;
+        this.averageRate = averageRate;
+        this.categories = categories;
+    }
 }

@@ -37,19 +37,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvItemReleaseDateK"
+        android:id="@+id/tvItemUpdatedAtK"
         android:layout_width="88dp"
         android:layout_height="21dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="0dp"
         android:text="@string/main_item_book_release_date_key"
-        app:layout_constraintEnd_toStartOf="@+id/tvItemReleaseDateV"
+        app:layout_constraintEnd_toStartOf="@+id/tvItemUpdatedAtV"
         app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
         app:layout_constraintTop_toBottomOf="@id/tvItemNameV" />
 
     <TextView
-        android:id="@+id/tvItemReleaseDateV"
+        android:id="@+id/tvItemUpdatedAtV"
         android:layout_width="116dp"
         android:layout_height="21dp"
         android:layout_marginTop="15dp"
@@ -57,7 +57,7 @@
         android:text=""
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvItemReleaseDateK"
+        app:layout_constraintStart_toEndOf="@+id/tvItemUpdatedAtK"
         app:layout_constraintTop_toBottomOf="@+id/tvItemNameV" />
 
     <TextView
@@ -69,7 +69,7 @@
         android:text="@string/main_item_book_author_key"
         app:layout_constraintEnd_toStartOf="@+id/tvItemAuthorV"
         app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemReleaseDateK" />
+        app:layout_constraintTop_toBottomOf="@+id/tvItemUpdatedAtK" />
 
     <TextView
         android:id="@+id/tvItemAuthorV"
@@ -81,7 +81,7 @@
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvItemAuthorK"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemReleaseDateV" />
+        app:layout_constraintTop_toBottomOf="@+id/tvItemUpdatedAtV" />
 
     <TextView
         android:id="@+id/tvItemCategories"

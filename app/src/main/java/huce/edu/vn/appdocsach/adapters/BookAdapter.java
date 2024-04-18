@@ -1,6 +1,5 @@
 package huce.edu.vn.appdocsach.adapters;
 
-import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import huce.edu.vn.appdocsach.R;
+import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.book.BookResponseModel;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
+import huce.edu.vn.appdocsach.utils.DatetimeUtils;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private final List<BookResponseModel> books;
@@ -37,14 +40,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         BookResponseModel book = books.get(position);
         holder.tvItemNameV.setText(book.getTitle());
-        holder.tvItemReleaseDateV.setText(book.getReleaseDate().toString());
+        holder.tvItemUpdatedAtV.setText(book.getUpdatedAt().toString());
         holder.tvItemAuthorV.setText(book.getAuthor());
         holder.tvItemCategories.setText(book.getCategories().stream().map(SimpleCategoryModel::getName).collect(Collectors.joining(", ")));
 
-        Picasso.get()
-                .load(Uri.parse(book.getCoverImage()))
-                .placeholder(R.drawable.ic_launcher_background)
-                .into(holder.ivItemCoverImage);
+        ImageLoader.render(book.getCoverImage(), holder.ivItemCoverImage);
     }
 
     @Override
@@ -54,13 +54,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     }
 
     static class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItemNameV, tvItemReleaseDateV, tvItemAuthorV, tvItemCategories;
+        TextView tvItemNameV, tvItemUpdatedAtV, tvItemAuthorV, tvItemCategories;
         ImageView ivItemCoverImage;
+
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             tvItemNameV = itemView.findViewById(R.id.tvItemNameV);
             tvItemAuthorV = itemView.findViewById(R.id.tvItemAuthorV);
-            tvItemReleaseDateV = itemView.findViewById(R.id.tvItemReleaseDateV);
+            tvItemUpdatedAtV = itemView.findViewById(R.id.tvItemUpdatedAtV);
             ivItemCoverImage = itemView.findViewById(R.id.ivItemCoverImage);
             tvItemCategories = itemView.findViewById(R.id.tvItemCategories);
         }
