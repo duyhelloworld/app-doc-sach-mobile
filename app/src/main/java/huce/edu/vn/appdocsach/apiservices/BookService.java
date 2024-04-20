@@ -5,11 +5,9 @@ import java.util.Map;
 import huce.edu.vn.appdocsach.configurations.RetrofitConfig;
 import huce.edu.vn.appdocsach.models.book.BookResponseModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
-import huce.edu.vn.appdocsach.models.book.FindBookModel;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface BookService {

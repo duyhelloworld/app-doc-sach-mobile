@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
-import java.util.Objects;
-
 import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
 
 public class AppLogger {

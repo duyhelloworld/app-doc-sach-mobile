@@ -16,7 +16,6 @@ import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.book.BookResponseModel;
 import huce.edu.vn.appdocsach.utils.DatetimeUtils;
-import huce.edu.vn.appdocsach.utils.DialogUtils;
 import huce.edu.vn.appdocsach.utils.ModelConverter;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {

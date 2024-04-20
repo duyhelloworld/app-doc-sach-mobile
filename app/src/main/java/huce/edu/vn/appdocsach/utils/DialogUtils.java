@@ -14,7 +14,7 @@ public class DialogUtils {
                     .setTitle("Thông báo")
                     .setMessage(message)
                     .setIcon(R.drawable.info)
-                    .create();;
+                    .create();
         }
         notification.show();
     }

@@ -2,13 +2,10 @@ package huce.edu.vn.appdocsach.models.book;
 
 import com.google.gson.annotations.JsonAdapter;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
-import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
-import huce.edu.vn.appdocsach.utils.serializers.LocalDateAdapter;
 import huce.edu.vn.appdocsach.utils.serializers.LocalDateTimeAdapter;
 
 public class BookResponseModel {
