@@ -1,19 +1,17 @@
-package huce.edu.vn.appdocsach.utils;
+package huce.edu.vn.appdocsach.models.paging;
 
 import androidx.annotation.NonNull;
-
-import com.google.gson.Gson;
 
 import java.util.List;
 
 import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
 
-public class Pagination<T> {
-    private int totalPage = 0;
+public class PagingResponse<T> {
+    private int totalPage;
 
     private List<T> values;
 
-    public Pagination(int totalPage, List<T> values) {
+    public PagingResponse(int totalPage, List<T> values) {
         this.totalPage = totalPage;
         this.values = values;
     }
@@ -37,7 +35,7 @@ public class Pagination<T> {
     @NonNull
     @Override
     public String toString() {
-        return "Pagination{" +
+        return "PagingResponse {" +
                 "totalPage=" + totalPage +
                 ", values=" + GsonCustom.getInstance().toJson(values) +
                 '}';

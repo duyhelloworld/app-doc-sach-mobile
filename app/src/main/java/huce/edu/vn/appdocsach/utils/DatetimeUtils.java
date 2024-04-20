@@ -1,21 +1,36 @@
 package huce.edu.vn.appdocsach.utils;
 
+import android.annotation.SuppressLint;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public final class DatetimeUtils {
 
-    public static String betterFormatFromNow(LocalDateTime before) {
+    @SuppressLint("DefaultLocale")
+    public static String countTimeCostedUpToNow(LocalDateTime before) {
+        if (before == null) {
+            return "";
+        }
         Duration duration = Duration.between(before, LocalDateTime.now());
-        long hours = duration.toHours();
-        long minutes = duration.toMinutes();
-        StringBuilder result = new StringBuilder();
-        if (hours > 0) {
-            result.append(hours).append(" giờ ");
+
+        int minutes = (int) duration.toMinutes();
+        int hours = (int) duration.toHours();
+
+        String unit;
+        int value;
+
+        if (minutes < 60) {
+            value =  minutes;
+            unit = "phút";
+        } else if (hours < 24) {
+            value = hours;
+            unit = "giờ";
+        } else {
+            value = (hours / 24);
+            unit = "ngày";
         }
-        if (minutes > 0) {
-            result.append(minutes).append(" phút ");
-        }
-        return result.toString();
+
+        return String.format("%d %s trước", value, unit);
     }
 }

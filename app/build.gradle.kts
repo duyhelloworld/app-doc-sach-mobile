@@ -35,6 +35,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     annotationProcessor("org.projectlombok:lombok:1.18.32")
     implementation("com.squareup.picasso:picasso:2.71828")
     testImplementation("junit:junit:4.13.2")

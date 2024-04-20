@@ -18,10 +18,7 @@ public class BookResponseModel {
     private String title;
 
     @JsonAdapter(value = LocalDateTimeAdapter.class)
-    private LocalDateTime createdAt;
-
-    @JsonAdapter(value = LocalDateTimeAdapter.class)
-    private LocalDateTime updatedAt;
+    private LocalDateTime lastUpdatedAt;
 
     private String coverImage;
 
@@ -49,20 +46,12 @@ public class BookResponseModel {
         this.title = title;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getLastUpdatedAt() {
+        return lastUpdatedAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
     }
 
     public String getCoverImage() {
@@ -105,11 +94,10 @@ public class BookResponseModel {
         this.categories = categories;
     }
 
-    public BookResponseModel(Integer id, String title, LocalDateTime createdAt, LocalDateTime updatedAt, String coverImage, String author, String description, Double averageRate, List<SimpleCategoryModel> categories) {
+    public BookResponseModel(Integer id, String title, LocalDateTime lastUpdatedAt, String coverImage, String author, String description, Double averageRate, List<SimpleCategoryModel> categories) {
         this.id = id;
         this.title = title;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.lastUpdatedAt = lastUpdatedAt;
         this.coverImage = coverImage;
         this.author = author;
         this.description = description;
