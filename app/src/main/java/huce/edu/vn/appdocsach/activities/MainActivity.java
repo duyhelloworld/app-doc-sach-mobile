@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.List;
+import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.BookAdapter;
+import huce.edu.vn.appdocsach.adapters.CategoryAdapter;
 import huce.edu.vn.appdocsach.adapters.CategoryAdapter;
 import huce.edu.vn.appdocsach.apiservices.BookService;
 import huce.edu.vn.appdocsach.apiservices.CategoryService;
@@ -22,17 +24,23 @@ import huce.edu.vn.appdocsach.utils.AlertType;
 import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import huce.edu.vn.appdocsach.models.book.FindBookModel;
+import huce.edu.vn.appdocsach.models.book.FindBookModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView rvListBook, rvListCategory;
+    RecyclerView rvListBook, rvListCategory;
     BookAdapter bookAdapter;
     CategoryAdapter categoryAdapter;
     FindBookModel findBookModel = new FindBookModel(0, "");
     CategoryService categoryService = CategoryService.categoryService;
+    CategoryAdapter categoryAdapter;
+    FindBookModel findBookModel = new FindBookModel(0, "");
+    CategoryService categoryService = CategoryService.categoryService;
     BookService bookService = BookService.bookService;
+    AppLogger log = AppLogger.getInstance();
     AppLogger log = AppLogger.getInstance();
 
     @Override
@@ -41,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         rvListBook = findViewById(R.id.rvListBook);
+        rvListCategory = findViewById(R.id.rvListCategory);
         rvListCategory = findViewById(R.id.rvListCategory);
 
         categoryService.getAllCategories().enqueue(new Callback<List<CategoryResponse>>() {
@@ -60,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         bookService.getAllBook(findBookModel.getRequestForRetrofit()).enqueue(new Callback<PagingResponse<BookResponseModel>>() {
             @Override
+            public void onResponse(@NonNull Call<PagingResponse<BookResponseModel>> call, @NonNull Response<PagingResponse<BookResponseModel>> response) {
             public void onResponse(@NonNull Call<PagingResponse<BookResponseModel>> call, @NonNull Response<PagingResponse<BookResponseModel>> response) {
                 if (!response.isSuccessful() || response.body() == null) {
                     return;

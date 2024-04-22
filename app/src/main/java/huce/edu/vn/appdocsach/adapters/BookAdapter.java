@@ -19,6 +19,7 @@ import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.book.BookResponseModel;
 import huce.edu.vn.appdocsach.utils.DatetimeUtils;
 import huce.edu.vn.appdocsach.utils.ModelConverter;
+import huce.edu.vn.appdocsach.utils.ModelConverter;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private final List<BookResponseModel> books;
@@ -45,7 +46,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         BookResponseModel book = books.get(position);
         holder.tvItemNameV.setText(book.getTitle());
         holder.tvItemUpdatedAtV.setText(DatetimeUtils.countTimeCostedUpToNow(book.getLastUpdatedAt()));
+        holder.tvItemUpdatedAtV.setText(DatetimeUtils.countTimeCostedUpToNow(book.getLastUpdatedAt()));
         holder.tvItemAuthorV.setText(book.getAuthor());
+        CategoryAdapter categoryAdapter = new CategoryAdapter(
+                book.getCategories().stream().map(ModelConverter::convert)
+                        .collect(Collectors.toList()));
+        holder.rvMainCategories.setAdapter(categoryAdapter);
+        ImageLoader.renderWithCache(book.getCoverImage(), holder.ivItemCoverImage);
         CategoryAdapter categoryAdapter = new CategoryAdapter(
                 book.getCategories().stream().map(ModelConverter::convert)
                         .collect(Collectors.toList()));
@@ -62,6 +69,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     {
         TextView tvItemNameV, tvItemUpdatedAtV, tvItemAuthorV;
         ImageView ivItemCoverImage;
+        RecyclerView rvMainCategories;
         RecyclerView rvMainCategories;
 
         public BookViewHolder(@NonNull View itemView) {
