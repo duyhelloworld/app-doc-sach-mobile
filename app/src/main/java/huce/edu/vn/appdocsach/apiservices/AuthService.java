@@ -11,7 +11,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Part;
 
 public interface AuthService {
-    AuthService authService = RetrofitConfig.getService(AuthService.class, "api/auth/");
+    AuthService authService = RetrofitConfig.getService(AuthService.class, "api/auth");
 
     @POST("signin")
     Call<AuthResponseModel> signIn(@Body SignInRequestModel signInRequestModel);

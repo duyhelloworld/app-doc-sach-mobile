@@ -7,28 +7,24 @@ import huce.edu.vn.appdocsach.R;
 
 public class DialogUtils {
 
-    private static AlertDialog notification, error;
-
-    public static void notification(Context context, String message) {
-        if (notification == null) {
-            notification = new AlertDialog.Builder(context)
-//                    .setIcon(R.drawable.)
-                    .setTitle("Thông báo")
-                    .setMessage(message)
-                    .create();
+    public static void show(AlertType alertType, Context context, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context).setMessage(message);
+        switch (alertType) {
+            case DEBUG:
+                builder.setTitle("Kiểm thử")
+                        .setIcon(R.drawable.debug)
+                        .create().show();
+                break;
+            case NOTIFICATION:
+                builder.setTitle("Thông báo")
+                    .setIcon(R.drawable.info)
+                    .create().show();
+                break;
+            case ERROR:
+                builder.setTitle("Lỗi")
+                        .setIcon(R.drawable.error)
+                        .create().show();
+                break;
         }
-        notification.show();
     }
-
-    public static void error(Context context, String message) {
-        if (error == null) {
-            error = new AlertDialog.Builder(context)
-                    .setTitle("Lỗi")
-                    .setMessage(message)
-                    .create();
-        }
-        error.show();
-    }
-
-
 }

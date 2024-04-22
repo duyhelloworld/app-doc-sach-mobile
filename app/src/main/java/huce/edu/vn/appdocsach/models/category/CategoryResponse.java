@@ -1,15 +1,16 @@
 package huce.edu.vn.appdocsach.models.category;
 
-import androidx.annotation.NonNull;
-
-public class SimpleCategoryModel {
+public class CategoryResponse {
     private Integer id;
 
     private String name;
 
-    public SimpleCategoryModel(Integer id, String name) {
+    private String description;
+
+    public CategoryResponse(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -28,12 +29,20 @@ public class SimpleCategoryModel {
         this.name = name;
     }
 
-    @NonNull
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "SimpleCategoryModel{" +
+        return "CategoryResponse{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

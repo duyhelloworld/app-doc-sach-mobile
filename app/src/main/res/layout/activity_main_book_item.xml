@@ -28,7 +28,7 @@
         android:ellipsize="end"
         android:fontFamily="monospace"
         android:maxLines="2"
-        android:text="@string/test_lorem_length"
+        android:text="@string/test_lorem_long"
         android:textAlignment="textStart"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +66,7 @@
         android:layout_height="21dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:text="@string/main_item_book_author_key"
+        android:text="@string/author_key"
         app:layout_constraintEnd_toStartOf="@+id/tvItemAuthorV"
         app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
         app:layout_constraintTop_toBottomOf="@+id/tvItemUpdatedAtK" />
@@ -83,17 +83,17 @@
         app:layout_constraintStart_toEndOf="@+id/tvItemAuthorK"
         app:layout_constraintTop_toBottomOf="@+id/tvItemUpdatedAtV" />
 
-    <TextView
-        android:id="@+id/tvItemCategories"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMainCategories"
         android:layout_width="215dp"
         android:layout_height="47dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="17dp"
-        android:maxLines="2"
-        android:text=""
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemAuthorK" />
+        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,19 +8,17 @@
 
     <TextView
         android:id="@+id/tvAppTitle"
-        android:layout_width="125dp"
-        android:layout_height="74dp"
+        android:layout_width="115dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="9dp"
+        android:text="@string/main_app_title"
         android:textAlignment="center"
+        android:textColor="@color/dark_gray"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:textColor="@color/dark_gray"
-        android:layout_marginStart="146dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginEnd="141dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/main_app_title"
-        app:layout_constraintBottom_toTopOf="@+id/rvListBook"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rvListCategory"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +30,21 @@
         android:layout_marginEnd="26dp"
         android:layout_marginBottom="19dp"
         android:visibility="visible"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/rvListBook"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAppTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
