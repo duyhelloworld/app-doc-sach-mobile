@@ -6,65 +6,25 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
+import huce.edu.vn.appdocsach.models.chapter.SimpleChapterResponseModel;
 import huce.edu.vn.appdocsach.utils.serializers.LocalDateTimeAdapter;
 
-public class BookResponseModel {
-
-    private Integer id;
-
-    private String title;
-
-    @JsonAdapter(value = LocalDateTimeAdapter.class)
-    private LocalDateTime lastUpdatedAt;
-
-    private String coverImage;
-
-    private String author;
+public class BookResponseModel extends SimpleBookResponseModel {
 
     private String description;
 
-    private Double averageRate;
+    private Float averageRate;
+
+    private List<SimpleChapterResponseModel> chapters;
 
     private List<SimpleCategoryModel> categories;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public LocalDateTime getLastUpdatedAt() {
-        return lastUpdatedAt;
-    }
-
-    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {
-        this.lastUpdatedAt = lastUpdatedAt;
-    }
-
-    public String getCoverImage() {
-        return coverImage;
-    }
-
-    public void setCoverImage(String coverImage) {
-        this.coverImage = coverImage;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+    public BookResponseModel(Integer id, String title, LocalDateTime lastUpdatedAt, String coverImage, String author, String description, Float averageRate, List<SimpleChapterResponseModel> chapters, List<SimpleCategoryModel> categories) {
+        super(id, title, lastUpdatedAt, coverImage, author);
+        this.description = description;
+        this.averageRate = averageRate;
+        this.chapters = chapters;
+        this.categories = categories;
     }
 
     public String getDescription() {
@@ -75,11 +35,11 @@ public class BookResponseModel {
         this.description = description;
     }
 
-    public Double getAverageRate() {
+    public Float getAverageRate() {
         return averageRate;
     }
 
-    public void setAverageRate(Double averageRate) {
+    public void setAverageRate(Float averageRate) {
         this.averageRate = averageRate;
     }
 
@@ -91,14 +51,13 @@ public class BookResponseModel {
         this.categories = categories;
     }
 
-    public BookResponseModel(Integer id, String title, LocalDateTime lastUpdatedAt, String coverImage, String author, String description, Double averageRate, List<SimpleCategoryModel> categories) {
-        this.id = id;
-        this.title = title;
-        this.lastUpdatedAt = lastUpdatedAt;
-        this.coverImage = coverImage;
-        this.author = author;
-        this.description = description;
-        this.averageRate = averageRate;
-        this.categories = categories;
+    public List<SimpleChapterResponseModel> getChapters() {
+        return chapters;
     }
+
+    public void setChapters(List<SimpleChapterResponseModel> chapters) {
+        this.chapters = chapters;
+    }
+
+
 }

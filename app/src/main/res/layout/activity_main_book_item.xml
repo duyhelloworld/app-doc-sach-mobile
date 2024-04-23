@@ -7,11 +7,11 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/ivItemCoverImage"
+        android:id="@+id/ivMainBookItemCoverImage"
         android:layout_width="154dp"
         android:layout_height="205dp"
         android:layout_marginStart="4dp"
-        android:contentDescription="@string/main_item_book_cover_description"
+        android:contentDescription="@string/book_cover_description"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tvItemNameV"
+        android:id="@+id/tvMainBookItemNameV"
         android:layout_width="218dp"
         android:layout_height="39dp"
         android:layout_marginStart="15dp"
@@ -33,23 +33,23 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
+        app:layout_constraintStart_toEndOf="@+id/ivMainBookItemCoverImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvItemUpdatedAtK"
+        android:id="@+id/tvMainBookItemUpdatedAtK"
         android:layout_width="88dp"
         android:layout_height="21dp"
         android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="0dp"
-        android:text="@string/main_item_book_release_date_key"
-        app:layout_constraintEnd_toStartOf="@+id/tvItemUpdatedAtV"
-        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
-        app:layout_constraintTop_toBottomOf="@id/tvItemNameV" />
+        android:text="@string/update_at_key"
+        app:layout_constraintEnd_toStartOf="@+id/tvMainBookItemUpdatedAtV"
+        app:layout_constraintStart_toEndOf="@+id/ivMainBookItemCoverImage"
+        app:layout_constraintTop_toBottomOf="@id/tvMainBookItemNameV" />
 
     <TextView
-        android:id="@+id/tvItemUpdatedAtV"
+        android:id="@+id/tvMainBookItemUpdatedAtV"
         android:layout_width="116dp"
         android:layout_height="21dp"
         android:layout_marginTop="15dp"
@@ -57,43 +57,30 @@
         android:text=""
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvItemUpdatedAtK"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemNameV" />
+        app:layout_constraintStart_toEndOf="@+id/tvMainBookItemUpdatedAtK"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainBookItemNameV" />
 
     <TextView
-        android:id="@+id/tvItemAuthorK"
+        android:id="@+id/tvMainBookItemAuthorK"
         android:layout_width="53dp"
         android:layout_height="21dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:text="@string/author_key"
-        app:layout_constraintEnd_toStartOf="@+id/tvItemAuthorV"
-        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemUpdatedAtK" />
+        app:layout_constraintEnd_toStartOf="@+id/tvMainBookItemAuthorV"
+        app:layout_constraintStart_toEndOf="@+id/ivMainBookItemCoverImage"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainBookItemUpdatedAtK" />
 
     <TextView
-        android:id="@+id/tvItemAuthorV"
+        android:id="@+id/tvMainBookItemAuthorV"
         android:layout_width="125dp"
         android:layout_height="21dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="13dp"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvItemAuthorK"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemUpdatedAtV" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMainCategories"
-        android:layout_width="215dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivItemCoverImage" />
+        app:layout_constraintStart_toEndOf="@+id/tvMainBookItemAuthorK"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainBookItemUpdatedAtV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

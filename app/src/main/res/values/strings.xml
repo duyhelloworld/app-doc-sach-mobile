@@ -6,8 +6,8 @@
     <string name="login_username_title">Tài khoản</string>
     <string name="login_password_title">Mật khẩu</string>
     <string name="unexpected_error_message">Lỗi không xác định</string>
-    <string name="main_item_book_cover_description">Ảnh truyện</string>
-    <string name="main_item_book_release_date_key">Cập nhật lúc :</string>
+    <string name="book_cover_description">Ảnh truyện</string>
+    <string name="update_at_prefix">Cập nhật lúc :</string>
     <string name="author_key">Tác giả :</string>
 
     <string name="book_detail_book_description_key">Mô tả</string>

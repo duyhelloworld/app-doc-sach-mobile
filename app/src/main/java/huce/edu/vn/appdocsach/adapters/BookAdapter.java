@@ -1,6 +1,5 @@
 package huce.edu.vn.appdocsach.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import huce.edu.vn.appdocsach.R;
-import huce.edu.vn.appdocsach.callbacks.OnRecycleViewItemClickListener;
+import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
-import huce.edu.vn.appdocsach.models.book.BookResponseModel;
+import huce.edu.vn.appdocsach.models.book.SimpleBookResponseModel;
 import huce.edu.vn.appdocsach.utils.DatetimeUtils;
-import huce.edu.vn.appdocsach.utils.ModelConverter;
-import huce.edu.vn.appdocsach.utils.ModelConverter;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
-    private final List<BookResponseModel> books;
-    private final OnRecycleViewItemClickListener onRecycleViewItemClickListener;
+    private final List<SimpleBookResponseModel> books;
+    private final OnTouchItem onTouchItem;
 
-    public BookAdapter(List<BookResponseModel> books, OnRecycleViewItemClickListener onRecycleViewItemClickListener) {
+    public BookAdapter(List<SimpleBookResponseModel> books, OnTouchItem onTouchItem) {
         this.books = books;
-        this.onRecycleViewItemClickListener = onRecycleViewItemClickListener;
+        this.onTouchItem = onTouchItem;
     }
 
-    @NonNull
-    public BookResponseModel getBookByPosition(int pos) {
-        return books.get(pos);
+    public SimpleBookResponseModel getBookByPosition(int pos) {
+
+        return (books == null || books.isEmpty()) ? null : books.get(pos);
     }
 
     @NonNull
@@ -43,21 +39,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
-        BookResponseModel book = books.get(position);
-        holder.tvItemNameV.setText(book.getTitle());
-        holder.tvItemUpdatedAtV.setText(DatetimeUtils.countTimeCostedUpToNow(book.getLastUpdatedAt()));
-        holder.tvItemUpdatedAtV.setText(DatetimeUtils.countTimeCostedUpToNow(book.getLastUpdatedAt()));
-        holder.tvItemAuthorV.setText(book.getAuthor());
-        CategoryAdapter categoryAdapter = new CategoryAdapter(
-                book.getCategories().stream().map(ModelConverter::convert)
-                        .collect(Collectors.toList()));
-        holder.rvMainCategories.setAdapter(categoryAdapter);
-        ImageLoader.renderWithCache(book.getCoverImage(), holder.ivItemCoverImage);
-        CategoryAdapter categoryAdapter = new CategoryAdapter(
-                book.getCategories().stream().map(ModelConverter::convert)
-                        .collect(Collectors.toList()));
-        holder.rvMainCategories.setAdapter(categoryAdapter);
-        ImageLoader.renderWithCache(book.getCoverImage(), holder.ivItemCoverImage);
+        SimpleBookResponseModel book = books.get(position);
+        holder.tvMainBookItemNameV.setText(book.getTitle());
+        holder.tvMainBookItemUpdatedAtV.setText(DatetimeUtils.countTimeCostedUpToNow(book.getLastUpdatedAt()));
+        holder.tvMainBookItemAuthorV.setText(book.getAuthor());
+        ImageLoader.renderWithCache(book.getCoverImage(), holder.ivMainBookItemCoverImage);
     }
 
     @Override
@@ -67,19 +53,16 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     class BookViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvItemNameV, tvItemUpdatedAtV, tvItemAuthorV;
-        ImageView ivItemCoverImage;
-        RecyclerView rvMainCategories;
-        RecyclerView rvMainCategories;
+        TextView tvMainBookItemNameV, tvMainBookItemUpdatedAtV, tvMainBookItemAuthorV;
+        ImageView ivMainBookItemCoverImage;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvItemNameV = itemView.findViewById(R.id.tvItemNameV);
-            tvItemAuthorV = itemView.findViewById(R.id.tvItemAuthorV);
-            tvItemUpdatedAtV = itemView.findViewById(R.id.tvItemUpdatedAtV);
-            ivItemCoverImage = itemView.findViewById(R.id.ivItemCoverImage);
-            rvMainCategories = itemView.findViewById(R.id.rvMainCategories);
-            itemView.setOnClickListener(v -> onRecycleViewItemClickListener.onClick(getAdapterPosition()));
+            tvMainBookItemNameV = itemView.findViewById(R.id.tvMainBookItemNameV);
+            tvMainBookItemAuthorV = itemView.findViewById(R.id.tvMainBookItemAuthorV);
+            tvMainBookItemUpdatedAtV = itemView.findViewById(R.id.tvMainBookItemUpdatedAtV);
+            ivMainBookItemCoverImage = itemView.findViewById(R.id.ivMainBookItemCoverImage);
+            itemView.setOnClickListener(v -> onTouchItem.onClick(getAdapterPosition()));
         }
     }
 }

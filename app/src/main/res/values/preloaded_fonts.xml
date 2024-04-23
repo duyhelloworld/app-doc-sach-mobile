@@ -2,5 +2,6 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/be_vietnam_light</item>
+        <item>@font/be_vietnam_medium</item>
     </array>
 </resources>

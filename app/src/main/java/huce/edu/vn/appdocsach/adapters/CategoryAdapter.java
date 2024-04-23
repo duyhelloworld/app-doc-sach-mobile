@@ -11,13 +11,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
-import huce.edu.vn.appdocsach.models.category.CategoryResponse;
+import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
+import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
-    private final List<CategoryResponse> categoryModels;
+    private final List<SimpleCategoryModel> data;
+    private final OnTouchItem onTouchItem;
 
-    public CategoryAdapter(List<CategoryResponse> categoryModels) {
-        this.categoryModels = categoryModels;
+    public CategoryAdapter(List<SimpleCategoryModel> data, OnTouchItem onTouchItem)
+    {
+        this.data = data;
+        this.onTouchItem = onTouchItem;
+    }
+
+    public SimpleCategoryModel getData(int pos) {
+        return (data == null || data.isEmpty()) ? null : data.get(pos);
     }
 
     @NonNull
@@ -28,21 +36,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        CategoryResponse category = categoryModels.get(position);
+        SimpleCategoryModel category = data.get(position);
         holder.btnCategoryItem.setText(category.getName());
     }
 
     @Override
     public int getItemCount() {
-        return categoryModels.size();
+        return data.size();
     }
 
-    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    class CategoryViewHolder extends RecyclerView.ViewHolder {
         Button btnCategoryItem;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             btnCategoryItem = itemView.findViewById(R.id.btnCategoryItem);
+            btnCategoryItem.setOnClickListener(l -> onTouchItem.onClick(getAdapterPosition()));
         }
     }
 }

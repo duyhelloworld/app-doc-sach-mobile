@@ -1,5 +1,5 @@
 package huce.edu.vn.appdocsach.callbacks;
 
-public interface OnRecycleViewItemClickListener {
+public interface OnTouchItem {
     void onClick(int position);
 }
