@@ -2,30 +2,28 @@ package huce.edu.vn.appdocsach.models.chapter;
 
 import com.google.gson.annotations.JsonAdapter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import huce.edu.vn.appdocsach.models.BaseModel;
 import huce.edu.vn.appdocsach.utils.serializers.LocalDateTimeAdapter;
 
-public class SimpleChapterResponseModel {
-    private Integer id;
-
+public class SimpleChapterModel extends BaseModel implements Serializable {
     private String title;
 
     @JsonAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime lastUpdatedAt;
 
-    public SimpleChapterResponseModel(Integer id, String title, LocalDateTime lastUpdatedAt) {
-        this.id = id;
+    public SimpleChapterModel(Integer id, String title, LocalDateTime lastUpdatedAt) {
+        this.setId(id);
         this.title = title;
         this.lastUpdatedAt = lastUpdatedAt;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    @Override
+    public boolean compareTo(Object o) {
+        SimpleChapterModel s = (SimpleChapterModel) o;
+        return getId() == s.getId() && title.equals(s.title) && lastUpdatedAt.equals(s.lastUpdatedAt);
     }
 
     public String getTitle() {

@@ -14,10 +14,9 @@ import huce.edu.vn.appdocsach.adapters.BookAdapter;
 import huce.edu.vn.appdocsach.adapters.CategoryAdapter;
 import huce.edu.vn.appdocsach.apiservices.BookService;
 import huce.edu.vn.appdocsach.apiservices.CategoryService;
-import huce.edu.vn.appdocsach.models.book.SimpleBookResponseModel;
+import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
-import huce.edu.vn.appdocsach.utils.AlertType;
 import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import huce.edu.vn.appdocsach.models.book.FindBookModel;
@@ -28,7 +27,9 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     RecyclerView rvListBook, rvListCategory;
     BookAdapter bookAdapter;
-    CategoryAdapter<SimpleCategoryModel> categoryAdapter;
+    CategoryAdapter categoryAdapter;
+    List<SimpleCategoryModel> categoryModels;
+    List<SimpleBookModel> bookModels;
     FindBookModel findBookModel = new FindBookModel(0, "");
     CategoryService categoryService = CategoryService.categoryService;
     BookService bookService = BookService.bookService;
@@ -46,25 +47,29 @@ public class MainActivity extends AppCompatActivity {
         categoryService.getAllCategories().enqueue(new Callback<List<SimpleCategoryModel>>() {
             @Override
             public void onResponse(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Response<List<SimpleCategoryModel>> response) {
-                categoryAdapter = new CategoryAdapter<>(response.body(), onTouchItem);
+                categoryModels = response.body();
+                categoryAdapter = new CategoryAdapter(categoryModels, position -> {
+                    int categoryId = categoryAdapter.getData(position).getId();
+                    loadByCategoryId(categoryId);
+                });
                 rvListCategory.setAdapter(categoryAdapter);
             }
 
             @Override
             public void onFailure(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.show(AlertType.ERROR, MainActivity.this, throwable.getMessage());
+                DialogUtils.error(MainActivity.this, throwable);
                 log.error(throwable);
             }
         });
 
 
-        bookService.getAllBook(findBookModel.getRequestForRetrofit()).enqueue(new Callback<PagingResponse<SimpleBookResponseModel>>() {
+        bookService.getAllBook(findBookModel.getRequestForRetrofit()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
             @Override
-            public void onResponse(@NonNull Call<PagingResponse<SimpleBookResponseModel>> call, @NonNull Response<PagingResponse<SimpleBookResponseModel>> response) {
+            public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
                 if (!response.isSuccessful() || response.body() == null) {
                     return;
                 }
-                bookAdapter = new BookAdapter(response.body().getValues(),
+                bookAdapter = new BookAdapter(MainActivity.this, response.body().getValues(),
                         position -> {
                             Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
                             intent.putExtra("id", bookAdapter.getBookByPosition(position).getId());
@@ -74,8 +79,27 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(@NonNull Call<PagingResponse<SimpleBookResponseModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.show(AlertType.ERROR, MainActivity.this, throwable.getMessage());
+            public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
+                DialogUtils.error(MainActivity.this, throwable);
+                log.error(throwable);
+            }
+        });
+    }
+
+    private void loadByCategoryId(int categoryId) {
+        findBookModel = new FindBookModel(categoryId, "");
+        bookService.getAllBook(findBookModel.getRequestForRetrofit()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
+            @Override
+            public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
+                PagingResponse<SimpleBookModel> data = response.body();
+                if (bookAdapter != null && data != null) {
+                    bookAdapter.setData(data.getValues());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
+                DialogUtils.error(MainActivity.this, throwable);
                 log.error(throwable);
             }
         });

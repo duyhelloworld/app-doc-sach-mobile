@@ -6,11 +6,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
+import huce.edu.vn.appdocsach.callbacks.GenericDiffUtilCallback;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 
@@ -26,6 +28,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     public SimpleCategoryModel getData(int pos) {
         return (data == null || data.isEmpty()) ? null : data.get(pos);
+    }
+
+    public void setData(List<SimpleCategoryModel> newData) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new GenericDiffUtilCallback<>(data, newData));
+        diffResult.dispatchUpdatesTo(this);
+        data.clear();
+        data.addAll(newData);
     }
 
     @NonNull

@@ -1,24 +1,18 @@
 package huce.edu.vn.appdocsach.models.category;
 
-public class CategoryResponse {
-    private Integer id;
+import androidx.annotation.NonNull;
 
+import huce.edu.vn.appdocsach.models.BaseModel;
+
+public class CategoryModel extends BaseModel {
     private String name;
 
     private String description;
 
-    public CategoryResponse(Integer id, String name, String description) {
-        this.id = id;
+    public CategoryModel(Integer id, String name, String description) {
+        this.setId(id);
         this.name = name;
         this.description = description;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -38,9 +32,16 @@ public class CategoryResponse {
     }
 
     @Override
+    public boolean compareTo(Object o) {
+        CategoryModel c = (CategoryModel) o;
+        return getId() == c.getId() && name.equals(c.name);
+    }
+
+    @NonNull
+    @Override
     public String toString() {
-        return "CategoryResponse{" +
-                "id=" + id +
+        return "CategoryModel{" +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

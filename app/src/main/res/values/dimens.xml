@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="chapter_reader_width">300dp</dimen>
+    <dimen name="chapter_reader_height">300dp</dimen>
+</resources>

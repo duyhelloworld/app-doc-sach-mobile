@@ -4,11 +4,10 @@ import com.google.gson.annotations.JsonAdapter;
 
 import java.time.LocalDateTime;
 
+import huce.edu.vn.appdocsach.models.BaseModel;
 import huce.edu.vn.appdocsach.utils.serializers.LocalDateTimeAdapter;
 
-public class SimpleBookResponseModel {
-
-    private Integer id;
+public class SimpleBookModel extends BaseModel {
 
     private String title;
 
@@ -18,14 +17,6 @@ public class SimpleBookResponseModel {
     private String coverImage;
 
     private String author;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
@@ -59,11 +50,17 @@ public class SimpleBookResponseModel {
         this.author = author;
     }
 
-    public SimpleBookResponseModel(Integer id, String title, LocalDateTime lastUpdatedAt, String coverImage, String author) {
-        this.id = id;
+    public SimpleBookModel(Integer id, String title, LocalDateTime lastUpdatedAt, String coverImage, String author) {
+        this.setId(id);
         this.title = title;
         this.lastUpdatedAt = lastUpdatedAt;
         this.coverImage = coverImage;
         this.author = author;
+    }
+
+    @Override
+    public boolean compareTo(Object o) {
+        SimpleBookModel s = (SimpleBookModel) o;
+        return s.getId() == getId() && s.title.equals(title) && s.author.equals(author);
     }
 }

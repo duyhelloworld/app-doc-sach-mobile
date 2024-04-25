@@ -2,22 +2,14 @@ package huce.edu.vn.appdocsach.models.category;
 
 import androidx.annotation.NonNull;
 
-public class SimpleCategoryModel {
-    private Integer id;
+import huce.edu.vn.appdocsach.models.BaseModel;
 
+public class SimpleCategoryModel extends BaseModel {
     private String name;
 
     public SimpleCategoryModel(Integer id, String name) {
-        this.id = id;
+        this.setId(id);
         this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -28,11 +20,17 @@ public class SimpleCategoryModel {
         this.name = name;
     }
 
+    @Override
+    public boolean compareTo(Object o) {
+        SimpleCategoryModel s = (SimpleCategoryModel) o;
+        return getId() == s.getId() && name.equals(s.name);
+    }
+
     @NonNull
     @Override
     public String toString() {
         return "SimpleCategoryModel{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 '}';
     }

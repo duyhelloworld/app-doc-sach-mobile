@@ -4,18 +4,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 
 import huce.edu.vn.appdocsach.R;
+import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
 
 public class DialogUtils {
 
-    public static void show(AlertType alertType, Context context, String message) {
+    private static void show(AlertType alertType, Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setMessage(message);
         switch (alertType) {
             case DEBUG:
-                builder.setTitle("Kiểm thử")
+                builder.setTitle("Debug")
                         .setIcon(R.drawable.debug)
+                        .setPositiveButton("Ok", (dialog, which) -> dialog.cancel())
                         .create().show();
                 break;
-            case NOTIFICATION:
+            case INFO:
                 builder.setTitle("Thông báo")
                     .setIcon(R.drawable.info)
                     .create().show();
@@ -26,5 +28,17 @@ public class DialogUtils {
                         .create().show();
                 break;
         }
+    }
+
+    public static void error(Context context, Throwable throwable) {
+        show(AlertType.ERROR, context, throwable.getMessage());
+    }
+
+    public static void info(Context context, String message) {
+        show(AlertType.INFO, context, message);
+    }
+
+    public static void debug(Context context, Object obj) {
+        show(AlertType.DEBUG, context, obj.getClass().getName() + " : " + GsonCustom.getInstance().toJson(obj));
     }
 }
