@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvCommentItemFullname"
+        android:layout_width="92dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="1dp"
+        android:fontFamily="@font/open_sans"
+        android:maxLines="1"
+        android:text="@string/test_lorem_short"
+        android:textAlignment="viewStart"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvCommentItemContent"
+        app:layout_constraintStart_toEndOf="@+id/ivCommentItemAvatar"
+        app:layout_constraintTop_toBottomOf="@+id/tvCommentItemLastUpdatedAtK"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/ivCommentItemAvatar"
+        android:layout_width="79dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvCommentItemContent"
+        android:layout_width="234dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="11dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:padding="3dp"
+        android:nestedScrollingEnabled="true"
+        android:text="@string/test_lorem_long"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvCommentItemAvatar" />
+
+    <TextView
+        android:id="@+id/tvCommentItemIsEdited"
+        android:layout_width="117dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="25dp"
+        android:text="@string/is_edited"
+        android:textColor="@color/blue"
+
+        app:layout_constraintBottom_toTopOf="@+id/tvCommentItemContent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvCommentItemFullname" />
+
+    <TextView
+        android:id="@+id/tvCommentItemLastUpdatedAtK"
+        android:layout_width="80dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:maxLines="1"
+        android:textSize="12sp"
+        android:text="@string/update_at_prefix"
+        app:layout_constraintEnd_toStartOf="@+id/tvCommentItemLastUpdatedAtV"
+        app:layout_constraintStart_toEndOf="@+id/ivCommentItemAvatar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvCommentItemLastUpdatedAtV"
+        android:layout_width="120dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/test_lorem_short"
+        android:textSize="12sp"
+        android:maxLines="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvCommentItemLastUpdatedAtK"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        bookService.getAllBook(findBookModel.getRequestForRetrofit()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
+        bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
             @Override
             public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
                 if (!response.isSuccessful() || response.body() == null) {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadByCategoryId(int categoryId) {
         findBookModel = new FindBookModel(categoryId, "");
-        bookService.getAllBook(findBookModel.getRequestForRetrofit()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
+        bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
             @Override
             public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
                 PagingResponse<SimpleBookModel> data = response.body();

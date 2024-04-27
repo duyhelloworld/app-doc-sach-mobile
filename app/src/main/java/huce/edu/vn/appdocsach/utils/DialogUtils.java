@@ -34,6 +34,10 @@ public class DialogUtils {
         show(AlertType.ERROR, context, throwable.getMessage());
     }
 
+    public static void error(Context context, String prefix, Throwable throwable) {
+        show(AlertType.ERROR, context, prefix + throwable.getMessage());
+    }
+
     public static void info(Context context, String message) {
         show(AlertType.INFO, context, message);
     }

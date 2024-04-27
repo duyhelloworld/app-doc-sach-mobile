@@ -38,7 +38,8 @@ public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdap
 
             @Override
             public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                return urls.get(oldItemPosition).substring(48, 58).equals(newUrls.get(newItemPosition).substring(48, 58));
+                return urls.get(oldItemPosition).substring(48)
+                        .equals(newUrls.get(newItemPosition).substring(48));
             }
 
             @Override

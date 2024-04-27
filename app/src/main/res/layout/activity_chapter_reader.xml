@@ -7,19 +7,33 @@
     tools:context=".activities.ChapterReaderActivity">
 
     <include
+        android:id="@+id/include"
+        layout="@layout/activity_chapter_reader_header"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        layout="@layout/activity_chapter_reader_header" />
+        android:layout_height="50dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChapterReaderImage"
-        android:layout_width="match_parent"
-        android:layout_height="670dp"
+        android:layout_width="403dp"
+        android:layout_height="552dp"
+        android:layout_marginTop="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <FrameLayout
+        android:id="@+id/flChapterReaderComment"
+        android:layout_width="409dp"
+        android:layout_height="122dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

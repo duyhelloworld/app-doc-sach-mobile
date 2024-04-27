@@ -18,7 +18,9 @@ import java.util.List;
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.ChapterReaderAdapter;
 import huce.edu.vn.appdocsach.apiservices.ChapterService;
+import huce.edu.vn.appdocsach.constants.BundleKey;
 import huce.edu.vn.appdocsach.constants.IntentKey;
+import huce.edu.vn.appdocsach.fragments.CommentFragment;
 import huce.edu.vn.appdocsach.models.chapter.OnlyNameChapterModel;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import retrofit2.Call;
@@ -34,6 +36,7 @@ public class ChapterReaderActivity extends AppCompatActivity {
     ChapterReaderAdapter chapterReaderAdapter;
     List<OnlyNameChapterModel> chapterModels;
     SpinnerAdapter spinnerAdapter;
+    boolean isLoadedFragment = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,31 +66,43 @@ public class ChapterReaderActivity extends AppCompatActivity {
             }
         });
         renderChapter(position, size);
+
+        rvChapterReaderImage.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && !isLoadedFragment) {
+                    CommentFragment commentFragment = new CommentFragment();
+                    Bundle b = new Bundle();
+                    b.putInt(BundleKey.CHAPTER_ID, chapterModels.get(position).getId());
+                    commentFragment.setArguments(b);
+
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.flChapterReaderComment, commentFragment)
+//                            .add(commentFragment, "CommentFragment")
+                            .commit();
+                    isLoadedFragment = true;
+                }
+            }
+        });
+
     }
+
 
     private void renderChapter(int position, int size) {
         spChapterReaderTitle.setSelection(position);
 
-        int nextChapterPos = position + 1;
-        int prevChapterPos = position - 1;
-
         if (position == size-1) {
             disableButton(btnChapterReaderNextChapter);
+            enableButton(btnChapterReaderPrevChapter, position - 1, size);
         } else if (position == 0) {
             disableButton(btnChapterReaderPrevChapter);
+            enableButton(btnChapterReaderNextChapter, position + 1, size);
         } else {
-            enableButton(btnChapterReaderPrevChapter);
-            enableButton(btnChapterReaderNextChapter);
-
-            btnChapterReaderNextChapter.setOnClickListener(v -> {
-                renderChapter(nextChapterPos, size);
-            });
-
-            btnChapterReaderPrevChapter.setOnClickListener(v -> {
-                renderChapter(prevChapterPos, size);
-            });
+            enableButton(btnChapterReaderPrevChapter, position - 1, size);
+            enableButton(btnChapterReaderNextChapter, position + 1, size);
         }
-
 
         spChapterReaderTitle.setSelection(position);
 
@@ -104,18 +119,22 @@ public class ChapterReaderActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<String>> call, @NonNull Throwable throwable) {
-                DialogUtils.error(ChapterReaderActivity.this, throwable);
+                DialogUtils.error(ChapterReaderActivity.this, "Lỗi load ảnh : ", throwable);
             }
         });
     }
 
     private void disableButton(ImageButton btn) {
+        btn.setOnClickListener(v -> {});
         btn.setBackgroundColor(getColor(R.color.gray));
         btn.setEnabled(false);
     }
 
-    private void enableButton(ImageButton btn) {
+    private void enableButton(ImageButton btn, int pos, int size) {
         btn.setEnabled(true);
         btn.setBackgroundColor(getColor(R.color.green));
+        btn.setOnClickListener(v -> {
+            renderChapter(pos, size);
+        });
     }
 }

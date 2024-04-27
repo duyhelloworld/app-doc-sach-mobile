@@ -23,6 +23,7 @@ public class GsonCustom {
                     .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                     .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                     .setPrettyPrinting()
+                    .setLenient()
                     .disableHtmlEscaping()
                     .setVersion(1)
                     .create();

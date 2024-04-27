@@ -1,9 +1,12 @@
 package huce.edu.vn.appdocsach.models.paging;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import huce.edu.vn.appdocsach.constants.PaginationConstant;
 
-public class PagingRequest {
+public abstract class PagingRequest implements PagingModel {
 
     private Integer pageSize;
 
@@ -17,10 +20,13 @@ public class PagingRequest {
         this.sortBy = PaginationConstant.defaultSortBy;
     }
 
-    public PagingRequest(Integer pageSize, Integer pageNumber, String sortBy) {
-        this.pageSize = pageSize;
-        this.pageNumber = pageNumber;
-        this.sortBy = sortBy;
+    @Override
+    public Map<String, Object> getRetrofitQuery() {
+        Map<String, Object> queryMap = new HashMap<>();
+        queryMap.put("pageSize", getPageSize());
+        queryMap.put("pageNumber", getPageNumber());
+        queryMap.put("sortBy", getSortBy());
+        return queryMap;
     }
 
     public Integer getPageSize() {

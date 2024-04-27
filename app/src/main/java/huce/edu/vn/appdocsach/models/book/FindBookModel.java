@@ -4,9 +4,10 @@ package huce.edu.vn.appdocsach.models.book;
 import java.util.HashMap;
 import java.util.Map;
 
+import huce.edu.vn.appdocsach.models.paging.PagingModel;
 import huce.edu.vn.appdocsach.models.paging.PagingRequest;
 
-public class FindBookModel extends PagingRequest {
+public class FindBookModel extends PagingRequest implements PagingModel {
     private Integer categoryId;
 
     private String keyword;
@@ -17,17 +18,7 @@ public class FindBookModel extends PagingRequest {
         this.keyword = keyword;
     }
 
-    public FindBookModel(Integer pageSize, Integer pageNumber, String sortBy, Integer categoryId) {
-        super(pageSize, pageNumber, sortBy);
-        this.categoryId = categoryId;
-    }
-
-    public FindBookModel(Integer pageSize, Integer pageNumber, String sortBy, String keyword) {
-        super(pageSize, pageNumber, sortBy);
-        this.keyword = keyword;
-    }
-
-    public Map<String, Object> getRequestForRetrofit() {
+    public Map<String, Object> getRetrofitQuery() {
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("categoryId", categoryId);
         queryMap.put("keyword", keyword);
