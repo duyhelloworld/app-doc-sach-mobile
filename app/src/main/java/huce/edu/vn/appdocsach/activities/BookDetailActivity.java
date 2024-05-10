@@ -57,17 +57,16 @@ public class BookDetailActivity extends AppCompatActivity {
         btnBookDetailReadFirst = findViewById(R.id.btnBookDetailReadFirst);
         btnBookDetailReadLast = findViewById(R.id.btnBookDetailReadLast);
 
-        imageLoader  = new ImageLoader(BookDetailActivity.this);
+        imageLoader = new ImageLoader(BookDetailActivity.this);
 
         Intent intent = getIntent();
-        int bookId = intent.getIntExtra("id", 0);
+        int bookId = intent.getIntExtra(IntentKey.BOOK_ID, 0);
 
         bookService.getBookById(bookId).enqueue(new Callback<BookModel>() {
             @Override
             public void onResponse(@NonNull Call<BookModel> call, @NonNull Response<BookModel> response) {
                 BookModel model = response.body();
                 if (response.isSuccessful() && model != null) {
-//                    DialogUtils.debug(BookDetailActivity.this, model);
                     imageLoader.renderWithCache(model.getCoverImage(), ivBookDetailCover);
                     tvBookDetailTitle.setText(model.getTitle());
                     tvBookDetailAuthorV.setText(model.getAuthor());
@@ -98,15 +97,15 @@ public class BookDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<BookModel> call, @NonNull Throwable throwable) {
-                DialogUtils.error(BookDetailActivity.this, throwable);
+                DialogUtils.developmentError(BookDetailActivity.this, throwable);
             }
         });
     }
 
-        private void readChapter(int targetPos, List<OnlyNameChapterModel> chapterModels) {
-            Intent intent = new Intent(BookDetailActivity.this, ChapterReaderActivity.class);
-            intent.putExtra(IntentKey.CHAPTER_ID_POSITION, targetPos);
-            intent.putParcelableArrayListExtra(IntentKey.OTHER_CHAPTER, new ArrayList<>(chapterModels));
-            startActivity(intent);
-        }
+    private void readChapter(int targetPos, List<OnlyNameChapterModel> chapterModels) {
+        Intent intent = new Intent(BookDetailActivity.this, ChapterReaderActivity.class);
+        intent.putExtra(IntentKey.CHAPTER_ID_POSITION, targetPos);
+        intent.putParcelableArrayListExtra(IntentKey.OTHER_CHAPTER, new ArrayList<>(chapterModels));
+        startActivity(intent);
+    }
 }

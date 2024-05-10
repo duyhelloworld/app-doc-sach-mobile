@@ -14,6 +14,7 @@ import huce.edu.vn.appdocsach.adapters.BookAdapter;
 import huce.edu.vn.appdocsach.adapters.CategoryAdapter;
 import huce.edu.vn.appdocsach.apiservices.BookService;
 import huce.edu.vn.appdocsach.apiservices.CategoryService;
+import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
@@ -29,11 +30,9 @@ public class MainActivity extends AppCompatActivity {
     BookAdapter bookAdapter;
     CategoryAdapter categoryAdapter;
     List<SimpleCategoryModel> categoryModels;
-    List<SimpleBookModel> bookModels;
-    FindBookModel findBookModel = new FindBookModel(0, "");
+    FindBookModel findBookModel = new FindBookModel(10);
     CategoryService categoryService = CategoryService.categoryService;
     BookService bookService = BookService.bookService;
-    AppLogger log = AppLogger.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.error(MainActivity.this, throwable);
-                log.error(throwable);
+                DialogUtils.developmentError(MainActivity.this, throwable);
             }
         });
 
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 bookAdapter = new BookAdapter(MainActivity.this, response.body().getValues(),
                         position -> {
                             Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
-                            intent.putExtra("id", bookAdapter.getBookByPosition(position).getId());
+                            intent.putExtra(IntentKey.BOOK_ID, bookAdapter.getBookByPosition(position).getId());
                             startActivity(intent);
                         });
                 rvListBook.setAdapter(bookAdapter);
@@ -80,14 +78,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.error(MainActivity.this, throwable);
-                log.error(throwable);
+                DialogUtils.developmentError(MainActivity.this, throwable);
             }
         });
     }
 
     private void loadByCategoryId(int categoryId) {
-        findBookModel = new FindBookModel(categoryId, "");
+        findBookModel.setCategoryId(categoryId);
         bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
             @Override
             public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
@@ -99,8 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.error(MainActivity.this, throwable);
-                log.error(throwable);
+                DialogUtils.developmentError(MainActivity.this, throwable);
             }
         });
     }

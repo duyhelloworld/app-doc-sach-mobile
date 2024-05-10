@@ -2,16 +2,21 @@ package huce.edu.vn.appdocsach.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.ToggleButton;
 
 import java.util.List;
 
@@ -31,12 +36,13 @@ public class ChapterReaderActivity extends AppCompatActivity {
 
     RecyclerView rvChapterReaderImage;
     ImageButton btnChapterReaderPrevChapter, btnChapterReaderNextChapter;
+    ToggleButton btnChapterReaderToggleComment;
     Spinner spChapterReaderTitle;
     ChapterService chapterService = ChapterService.chapterService;
     ChapterReaderAdapter chapterReaderAdapter;
     List<OnlyNameChapterModel> chapterModels;
     SpinnerAdapter spinnerAdapter;
-    boolean isLoadedFragment = false;
+    FrameLayout flChapterReaderComment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,8 @@ public class ChapterReaderActivity extends AppCompatActivity {
         btnChapterReaderPrevChapter = findViewById(R.id.btnChapterReaderPrevChapter);
         btnChapterReaderNextChapter = findViewById(R.id.btnChapterReaderNextChapter);
         spChapterReaderTitle = findViewById(R.id.spChapterReaderTitle);
+        flChapterReaderComment = findViewById(R.id.flChapterReaderComment);
+        btnChapterReaderToggleComment = findViewById(R.id.btnChapterReaderToggleComment);
 
         Intent intent = getIntent();
         int position = intent.getIntExtra(IntentKey.CHAPTER_ID_POSITION, 0);
@@ -56,6 +64,7 @@ public class ChapterReaderActivity extends AppCompatActivity {
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 chapterModels);
         spChapterReaderTitle.setAdapter(spinnerAdapter);
+
         spChapterReaderTitle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -65,28 +74,19 @@ public class ChapterReaderActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        renderChapter(position, size);
 
-        rvChapterReaderImage.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && !isLoadedFragment) {
-                    CommentFragment commentFragment = new CommentFragment();
-                    Bundle b = new Bundle();
-                    b.putInt(BundleKey.CHAPTER_ID, chapterModels.get(position).getId());
-                    commentFragment.setArguments(b);
-
-                    getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.flChapterReaderComment, commentFragment)
-//                            .add(commentFragment, "CommentFragment")
-                            .commit();
-                    isLoadedFragment = true;
-                }
+        Bundle bundle = new Bundle();
+        bundle.putInt(BundleKey.CHAPTER_ID, chapterModels.get(position).getId());
+        CommentFragment commentFragment = new CommentFragment();
+        commentFragment.setArguments(bundle);
+        btnChapterReaderToggleComment.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                addCommentView(commentFragment);
+            } else {
+                removeCommentView(commentFragment);
             }
         });
-
+        renderChapter(position, size);
     }
 
 
@@ -119,7 +119,7 @@ public class ChapterReaderActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<String>> call, @NonNull Throwable throwable) {
-                DialogUtils.error(ChapterReaderActivity.this, "Lỗi load ảnh : ", throwable);
+                DialogUtils.unknownError(ChapterReaderActivity.this, "Lỗi load chương truyện : ", throwable);
             }
         });
     }
@@ -136,5 +136,20 @@ public class ChapterReaderActivity extends AppCompatActivity {
         btn.setOnClickListener(v -> {
             renderChapter(pos, size);
         });
+    }
+
+    private void addCommentView(CommentFragment commentFragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null)
+                .add(R.id.flChapterReaderComment, commentFragment)
+                .commit();
+    }
+
+    private void removeCommentView(CommentFragment commentFragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(commentFragment)
+                .commit();
     }
 }

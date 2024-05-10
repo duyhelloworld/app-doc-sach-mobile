@@ -7,9 +7,10 @@
 
     <TextView
         android:id="@+id/tvCommentItemFullname"
-        android:layout_width="92dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="13dp"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:fontFamily="@font/open_sans"
         android:maxLines="1"
@@ -18,14 +19,12 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvCommentItemContent"
         app:layout_constraintStart_toEndOf="@+id/ivCommentItemAvatar"
-        app:layout_constraintTop_toBottomOf="@+id/tvCommentItemLastUpdatedAtK"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCommentItemLastUpdatedAtK" />
 
     <ImageView
         android:id="@+id/ivCommentItemAvatar"
         android:layout_width="79dp"
         android:layout_height="90dp"
-        android:layout_marginBottom="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,29 +32,29 @@
 
     <TextView
         android:id="@+id/tvCommentItemContent"
-        android:layout_width="234dp"
-        android:layout_height="76dp"
-        android:layout_marginStart="11dp"
+        android:layout_width="214dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="7dp"
         android:ellipsize="end"
-        android:maxLines="3"
-        android:padding="3dp"
+        android:maxLines="2"
         android:nestedScrollingEnabled="true"
+        android:padding="3dp"
         android:text="@string/test_lorem_long"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCommentItemAvatar" />
+        app:layout_constraintStart_toEndOf="@+id/ivCommentItemAvatar" />
 
     <TextView
         android:id="@+id/tvCommentItemIsEdited"
-        android:layout_width="117dp"
+        android:layout_width="100dp"
         android:layout_height="19dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="4dp"
         android:text="@string/is_edited"
         android:textColor="@color/blue"
-
         app:layout_constraintBottom_toTopOf="@+id/tvCommentItemContent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvCommentItemFullname" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCommentItemLastUpdatedAtV" />
 
     <TextView
         android:id="@+id/tvCommentItemLastUpdatedAtK"

@@ -16,6 +16,9 @@ public class PagingResponse<T> {
         this.values = values;
     }
 
+    public PagingResponse() {
+    }
+
     public int getTotalPage() {
         return totalPage;
     }

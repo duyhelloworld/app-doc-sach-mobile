@@ -3,6 +3,9 @@ package huce.edu.vn.appdocsach.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.StringRes;
+
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
 
@@ -30,19 +33,28 @@ public class DialogUtils {
         }
     }
 
-    public static void error(Context context, Throwable throwable) {
-        show(AlertType.ERROR, context, throwable.getMessage());
+    public static void userFriendlyError(Context context, @StringRes int messageId) {
+        show(AlertType.ERROR, context, context.getResources().getString(messageId));
     }
 
-    public static void error(Context context, String prefix, Throwable throwable) {
-        show(AlertType.ERROR, context, prefix + throwable.getMessage());
-    }
 
-    public static void info(Context context, String message) {
+    public static void notifyInfo(Context context, String message) {
         show(AlertType.INFO, context, message);
     }
 
-    public static void debug(Context context, Object obj) {
+    public static void unknownError(Context context, String prefix, Throwable throwable) {
+        show(AlertType.ERROR, context, prefix + throwable.getMessage());
+    }
+
+    public static void unknownError(Context context, String message) {
+        show(AlertType.ERROR, context, message);
+    }
+
+    public static void developmentError(Context context, Object obj) {
         show(AlertType.DEBUG, context, obj.getClass().getName() + " : " + GsonCustom.getInstance().toJson(obj));
+    }
+
+    public static void notifyInto(Context context, String prefix, Object obj) {
+        show(AlertType.DEBUG, context, prefix + obj.getClass().getName() + " : " + GsonCustom.getInstance().toJson(obj));
     }
 }

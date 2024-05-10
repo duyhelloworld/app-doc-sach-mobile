@@ -1,15 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".fragments.CommentFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBookDetailListComment"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
+    <View
+        android:id="@+id/cvChapterReaderEmptyCommentView"
+        android:layout_width="410dp"
+        android:layout_height="0dp"
+        android:alpha="1"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/cvChapterReaderCommentView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/commentFragmentLoadingLayout"
         android:layout_width="match_parent"
-        android:layout_height="450dp" />
-</FrameLayout>
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvChapterReaderEmptyCommentView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cvChapterReaderCommentView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/material_dynamic_neutral20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cvChapterReaderEmptyCommentView">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBookDetailListComment"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:layout_marginBottom="5dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <EditText
+            android:id="@+id/edtCommentReaderContent"
+            android:layout_width="318dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="18dp"
+            android:autofillHints=""
+            android:hint="@string/comment_in"
+            android:inputType="textMultiLine"
+            app:layout_constraintBottom_toTopOf="@+id/rvBookDetailListComment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivCommentReaderAvatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivCommentReaderAvatar"
+            android:layout_width="49dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/comment_user_avatar"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toTopOf="@+id/rvBookDetailListComment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

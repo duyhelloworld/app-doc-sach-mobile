@@ -1,30 +1,24 @@
 package huce.edu.vn.appdocsach.models.book;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
-import huce.edu.vn.appdocsach.models.paging.PagingModel;
-import huce.edu.vn.appdocsach.models.paging.PagingRequest;
+import huce.edu.vn.appdocsach.models.paging.RetrofitModel;
+import huce.edu.vn.appdocsach.models.paging.RetrofitRequest;
 
-public class FindBookModel extends PagingRequest implements PagingModel {
-    private Integer categoryId;
+public class FindBookModel extends RetrofitRequest implements RetrofitModel {
+    private Integer categoryId = 0;
 
-    private String keyword;
+    private String keyword = "";
 
-    public FindBookModel(Integer categoryId, String keyword) {
-        super();
-        this.categoryId = categoryId;
-        this.keyword = keyword;
+    public FindBookModel(Integer pageSize) {
+        super(pageSize);
     }
 
     public Map<String, Object> getRetrofitQuery() {
-        Map<String, Object> queryMap = new HashMap<>();
+        Map<String, Object> queryMap = super.getRetrofitQuery();
         queryMap.put("categoryId", categoryId);
         queryMap.put("keyword", keyword);
-        queryMap.put("pageSize", getPageSize());
-        queryMap.put("pageNumber", getPageNumber());
-        queryMap.put("sortBy", getSortBy());
         return queryMap;
     }
 

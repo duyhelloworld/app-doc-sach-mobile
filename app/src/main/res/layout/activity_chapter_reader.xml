@@ -14,26 +14,35 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChapterReaderImage"
-        android:layout_width="403dp"
-        android:layout_height="552dp"
+        android:layout_width="395dp"
+        android:layout_height="678dp"
         android:layout_marginTop="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include">
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
-    </androidx.recyclerview.widget.RecyclerView>
+    <ToggleButton
+        android:id="@+id/btnChapterReaderToggleComment"
+        android:layout_width="82dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="58dp"
+        android:textOn=""
+        android:textOff=""
+        android:textSize="0sp"
+        android:contentDescription="@string/comment_in"
+        android:background="@drawable/comment_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/include" />
 
     <FrameLayout
         android:id="@+id/flChapterReaderComment"
-        android:layout_width="409dp"
-        android:layout_height="122dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="9dp"
+        tools:layout_editor_absoluteY="229dp">
     </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

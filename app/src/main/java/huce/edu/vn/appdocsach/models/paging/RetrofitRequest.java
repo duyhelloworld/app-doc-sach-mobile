@@ -6,18 +6,16 @@ import java.util.Map;
 
 import huce.edu.vn.appdocsach.constants.PaginationConstant;
 
-public abstract class PagingRequest implements PagingModel {
+public abstract class RetrofitRequest implements RetrofitModel {
 
     private Integer pageSize;
 
-    private Integer pageNumber;
+    private Integer pageNumber = PaginationConstant.defaultPageNumber;
 
-    private String sortBy;
+    private String sortBy = PaginationConstant.defaultSortBy;
 
-    public PagingRequest() {
-        this.pageSize = PaginationConstant.defaultPageSize;
-        this.pageNumber = PaginationConstant.defaultPageNumber;
-        this.sortBy = PaginationConstant.defaultSortBy;
+    public RetrofitRequest(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     @Override
@@ -27,6 +25,10 @@ public abstract class PagingRequest implements PagingModel {
         queryMap.put("pageNumber", getPageNumber());
         queryMap.put("sortBy", getSortBy());
         return queryMap;
+    }
+
+    public void incrementPageNumber() {
+        this.pageNumber++;
     }
 
     public Integer getPageSize() {

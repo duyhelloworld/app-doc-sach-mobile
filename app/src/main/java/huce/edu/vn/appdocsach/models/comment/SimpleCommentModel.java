@@ -17,15 +17,15 @@ public class SimpleCommentModel extends BaseModel {
     @JsonAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime commentAt;
 
-    private Boolean isEdited;
+    private Boolean edited;
 
-    public SimpleCommentModel(int id, String username, String content, String userAvatar, LocalDateTime commentAt, Boolean isEdited) {
+    public SimpleCommentModel(int id, String username, String content, String userAvatar, LocalDateTime commentAt, Boolean edited) {
         setId(id);
         this.username = username;
         this.content = content;
         this.userAvatar = userAvatar;
         this.commentAt = commentAt;
-        this.isEdited = isEdited;
+        this.edited = edited;
     }
 
     public String getUsername() {
@@ -61,11 +61,11 @@ public class SimpleCommentModel extends BaseModel {
     }
 
     public Boolean getEdited() {
-        return isEdited;
+        return edited;
     }
 
     public void setEdited(Boolean edited) {
-        isEdited = edited;
+        this.edited = edited;
     }
 
     @Override
