@@ -6,11 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
+    <ImageView
+        android:id="@+id/ivMainAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/circle"
+        android:contentDescription="@string/btn_signin"
+        android:src="@mipmap/ic_login_avatar"
+        app:layout_constraintBottom_toTopOf="@+id/rvListCategory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvAppTitle"
         android:layout_width="115dp"
         android:layout_height="26dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="3dp"
         android:layout_marginBottom="9dp"
         android:text="@string/main_app_title"
@@ -29,16 +43,16 @@
         android:layout_marginStart="27dp"
         android:layout_marginEnd="26dp"
         android:layout_marginBottom="19dp"
-        android:visibility="visible"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:spanCount="2" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_width="370dp"
+        android:layout_height="63dp"
         android:layout_marginStart="27dp"
         android:layout_marginTop="9dp"
         android:layout_marginBottom="20dp"
@@ -47,4 +61,14 @@
         app:layout_constraintBottom_toTopOf="@+id/rvListBook"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAppTitle" />
+
+    <ProgressBar
+        android:id="@+id/pbMain"
+        android:layout_width="355dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/rvListBook"
+        app:layout_constraintStart_toStartOf="@+id/rvListBook" />
 </androidx.constraintlayout.widget.ConstraintLayout>

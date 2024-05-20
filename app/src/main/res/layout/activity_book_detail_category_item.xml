@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <Button
         android:id="@+id/btnCategoryItem"
-        android:layout_width="181dp"
-        android:layout_height="71dp"
-        android:background="@drawable/button_radius_shadow"
-        android:ellipsize="end"
+        android:layout_width="180dp"
+        android:layout_height="90dp"
+        android:background="@drawable/button_category_item"
         android:fontFamily="monospace"
-        android:gravity="center"
         android:maxLines="1"
-        android:padding="15dp"
         android:text="@string/test_lorem_long"
-        android:textColor="@color/text_color"
-        android:textColorLink="@color/blue"
-        android:textSize="15sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

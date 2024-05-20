@@ -15,7 +15,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvChapterReaderImage"
         android:layout_width="395dp"
-        android:layout_height="678dp"
+        android:layout_height="850dp"
         android:layout_marginTop="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="229dp">
-    </FrameLayout>
+        tools:layout_editor_absoluteY="0dp"></FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
