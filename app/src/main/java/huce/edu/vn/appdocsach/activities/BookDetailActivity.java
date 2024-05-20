@@ -12,7 +12,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.CategoryAdapter;
@@ -21,7 +23,9 @@ import huce.edu.vn.appdocsach.apiservices.BookService;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.models.book.BookModel;
+import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.models.chapter.OnlyNameChapterModel;
+import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,13 +33,12 @@ import retrofit2.Response;
 
 public class BookDetailActivity extends AppCompatActivity {
 
-    TextView tvBookDetailTitle, tvBookDetailAuthorV,tvBookDetailDescriptionV;
-    RecyclerView rvBookDetailChapterList, rvBookDetailCategories;
+    TextView tvBookDetailTitle, tvBookDetailAuthorV, tvBookDetailDescriptionV, tvBookDetailCategories;
+    RecyclerView rvBookDetailChapterList;
     RatingBar rbBookDetailRating;
     ImageView ivBookDetailCover;
     Button btnBookDetailReadFirst, btnBookDetailReadLast;
     ChapterAdapter chapterAdapter;
-    CategoryAdapter categoryAdapter;
     BookService bookService = BookService.bookService;
     ImageLoader imageLoader;
 
@@ -49,7 +52,7 @@ public class BookDetailActivity extends AppCompatActivity {
         tvBookDetailDescriptionV = findViewById(R.id.tvBookDetailDescriptionV);
 
         rvBookDetailChapterList = findViewById(R.id.rvBookDetailChapterList);
-        rvBookDetailCategories = findViewById(R.id.rvBookDetailCategories);
+        tvBookDetailCategories = findViewById(R.id.tvBookDetailCategories);
 
         rbBookDetailRating = findViewById(R.id.rbBookDetailRating);
         ivBookDetailCover = findViewById(R.id.ivBookDetailCover);
@@ -72,13 +75,9 @@ public class BookDetailActivity extends AppCompatActivity {
                     tvBookDetailAuthorV.setText(model.getAuthor());
                     tvBookDetailDescriptionV.setText(model.getDescription());
                     rbBookDetailRating.setRating(model.getAverageRate());
-
-                    categoryAdapter = new CategoryAdapter(model.getCategories(), position -> {
-                        Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
-                        intent.putExtra(IntentKey.CATEGORY_ID, categoryAdapter.getData(position).getId());
-                        startActivity(intent);
-                    });
-                    rvBookDetailCategories.setAdapter(categoryAdapter);
+                    tvBookDetailCategories.setText(model.getCategories().stream()
+                            .map(SimpleCategoryModel::getName)
+                            .collect(Collectors.joining(", ")));
 
                     chapterAdapter = new ChapterAdapter(model.getChapters(), position -> {
                         readChapter(position, chapterAdapter.getOnlyNamModel());
@@ -97,7 +96,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<BookModel> call, @NonNull Throwable throwable) {
-                DialogUtils.developmentError(BookDetailActivity.this, throwable);
+                AppLogger.getInstance().error(throwable);
             }
         });
     }

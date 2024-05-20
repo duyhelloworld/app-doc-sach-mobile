@@ -3,14 +3,12 @@ package huce.edu.vn.appdocsach.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 
-import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 
 import huce.edu.vn.appdocsach.R;
-import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
+import huce.edu.vn.appdocsach.utils.serializers.JsonSerializer;
 
 public class DialogUtils {
-
     private static void show(AlertType alertType, Context context, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context).setMessage(message);
         switch (alertType) {
@@ -51,10 +49,10 @@ public class DialogUtils {
     }
 
     public static void developmentError(Context context, Object obj) {
-        show(AlertType.DEBUG, context, obj.getClass().getName() + " : " + GsonCustom.getInstance().toJson(obj));
+        show(AlertType.DEBUG, context, obj.getClass().getName() + " : " + JsonSerializer.getInstance().toJson(obj));
     }
 
-    public static void notifyInto(Context context, String prefix, Object obj) {
-        show(AlertType.DEBUG, context, prefix + obj.getClass().getName() + " : " + GsonCustom.getInstance().toJson(obj));
+    public static void notifyInfo(Context context, String prefix, Object obj) {
+        show(AlertType.DEBUG, context, prefix + obj.getClass().getName() + " : " + JsonSerializer.getInstance().toJson(obj));
     }
 }

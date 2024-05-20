@@ -1,15 +1,24 @@
 <resources>
     <string name="app_name">Truyện hay</string>
     <string name="pref_app_name">appdocsach</string>
+
     <string name="test_lorem_long">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</string>
     <string name="test_lorem_short">AAAAAAAAAAAAAAAAA</string>
     <string name="main_app_title" translatable="true">App đọc sách</string>
     <string name="login_username_title">Tài khoản</string>
     <string name="login_password_title">Mật khẩu</string>
-    <string name="unexpected_error_message">Lỗi không xác định</string>
     <string name="book_cover_description">Ảnh truyện</string>
     <string name="update_at_prefix">Cập nhật lúc :</string>
     <string name="author_key">Tác giả :</string>
+
+    <string name="btn_signin">Đăng nhập</string>
+    <string name="aggreement_license">Bằng việc đăng nhập, bạn đã đồng ý với các điều khoản dịch vụ của chúng tôi!</string>
+    <string name="txt_login_introduce_oauth2">hoặc đăng nhập bằng …</string>
+    <string name="missing_username_message_error">Hãy nhập tên tài khoản</string>
+    <string name="missing_password_message_error">Hãy nhập mật khẩu</string>
+    <string name="welcome_login">Xin chào %1$s trở lại!</string>
+    <string name="loaded_final_book">Đã load tới truyện  cuối cùng</string>
+
 
     <string name="book_detail_book_description_key">Mô tả</string>
     <string name="book_detail_chapter_list_key">Danh sách chương truyện</string>
@@ -23,4 +32,5 @@
     <string name="comment_in">Nhập bình luận</string>
     <string name="comment_scroll_view">Bình luận</string>
     <string name="comment_user_avatar">Ảnh đại diện</string>
+    <string name="comment_at_prefix">Bình luận lúc :</string>
 </resources>

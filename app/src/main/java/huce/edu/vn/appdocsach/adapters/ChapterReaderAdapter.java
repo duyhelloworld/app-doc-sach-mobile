@@ -13,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
+import huce.edu.vn.appdocsach.callbacks.OnHoldEvent;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 
 public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdapter.ChapterReaderViewHolder> {
     private final List<String> urls;
     private final ImageLoader imageLoader;
+    private final OnHoldEvent onHoldEvent;
 
-    public ChapterReaderAdapter(Context context, List<String> urls) {
+    public ChapterReaderAdapter(Context context, List<String> urls, OnHoldEvent onHoldEvent) {
         this.urls = urls;
         this.imageLoader = new ImageLoader(context);
+        this.onHoldEvent = onHoldEvent;
     }
 
     public void setData(List<String> newUrls) {
@@ -55,25 +58,29 @@ public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdap
     @NonNull
     @Override
     public ChapterReaderAdapter.ChapterReaderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ChapterReaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.recycleview_chapter_image, parent, false));
+        return new ChapterReaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_chapter_reader_image_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ChapterReaderAdapter.ChapterReaderViewHolder holder, int position) {
         imageLoader.renderChapter(urls.get(position), holder.ivChapterReaderImage);
-    }   
+    }
 
     @Override
     public int getItemCount() {
         return urls.size();
     }
 
-    static class ChapterReaderViewHolder extends RecyclerView.ViewHolder {
+    class ChapterReaderViewHolder extends RecyclerView.ViewHolder {
         ImageView ivChapterReaderImage;
 
         public ChapterReaderViewHolder(@NonNull View itemView) {
             super(itemView);
             ivChapterReaderImage = itemView.findViewById(R.id.ivChapterReaderImage);
+            itemView.setOnLongClickListener(l -> {
+                onHoldEvent.onHold();
+                return true;
+            });
         }
     }
 }

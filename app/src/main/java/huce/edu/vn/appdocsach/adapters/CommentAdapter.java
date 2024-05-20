@@ -30,8 +30,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
     public CommentAdapter(Context context, List<SimpleCommentModel> commentModels, RecyclerView recyclerView, OnLoadMore onLoadMore, OnTouchItem onTouchItem) {
         this.onTouchItem = onTouchItem;
-        this.commentModels = commentModels;
         this.imageLoader = new ImageLoader(context);
+        this.commentModels = commentModels;
+        append(commentModels);
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         assert layoutManager != null;
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -52,13 +53,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     public void setLoaded() {
 
         isLoading = false;
-    }
-
-    public void setData(List<SimpleCommentModel> commentModels) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new GenericDiffUtilCallback<>(this.commentModels, commentModels));
-        this.commentModels.clear();
-        this.commentModels.addAll(commentModels);
-        diffResult.dispatchUpdatesTo(this);
     }
 
     public void append(List<SimpleCommentModel> commentModels) {

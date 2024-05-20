@@ -9,12 +9,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.callbacks.GenericDiffUtilCallback;
+import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
@@ -24,15 +27,35 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     private final List<SimpleBookModel> books;
     private final OnTouchItem onTouchItem;
     private final ImageLoader imageLoader;
+    private boolean isLoading = false;
 
-    public BookAdapter(Context context, List<SimpleBookModel> books, OnTouchItem onTouchItem) {
+    public BookAdapter(Context context, List<SimpleBookModel> books, RecyclerView recyclerView, OnTouchItem onTouchItem, OnLoadMore onLoadMore) {
         this.imageLoader = new ImageLoader(context);
         this.books = books;
         this.onTouchItem = onTouchItem;
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        assert layoutManager != null;
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
+                    int totalItemCount = layoutManager.getItemCount();
+                    if (!isLoading && lastVisibleItemPosition == totalItemCount - 1) {
+                        onLoadMore.loadMore();
+                    }
+                }
+            }
+        });
+    }
+
+    public void setLoaded() {
+        this.isLoading = false;
     }
 
     public SimpleBookModel getBookByPosition(int pos) {
-        return (books == null || books.isEmpty()) ? null : books.get(pos);
+        return (books.isEmpty()) ? null : books.get(pos);
     }
 
     public void setData(List<SimpleBookModel> newData) {
@@ -52,8 +75,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         SimpleBookModel book = books.get(position);
         holder.tvMainBookItemNameV.setText(book.getTitle());
-        holder.tvMainBookItemUpdatedAtV.setText(DatetimeUtils.countTimeCostedUpToNow(book.getLastUpdatedAt()));
-        holder.tvMainBookItemAuthorV.setText(book.getAuthor());
         imageLoader.renderWithCache(book.getCoverImage(), holder.ivMainBookItemCoverImage);
     }
 
@@ -64,14 +85,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     class BookViewHolder extends RecyclerView.ViewHolder
     {
-        TextView tvMainBookItemNameV, tvMainBookItemUpdatedAtV, tvMainBookItemAuthorV;
+        TextView tvMainBookItemNameV;
         ImageView ivMainBookItemCoverImage;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMainBookItemNameV = itemView.findViewById(R.id.tvMainBookItemNameV);
-            tvMainBookItemAuthorV = itemView.findViewById(R.id.tvMainBookItemAuthorV);
-            tvMainBookItemUpdatedAtV = itemView.findViewById(R.id.tvMainBookItemUpdatedAtV);
             ivMainBookItemCoverImage = itemView.findViewById(R.id.ivMainBookItemCoverImage);
             itemView.setOnClickListener(v -> onTouchItem.onClick(getAdapterPosition()));
         }

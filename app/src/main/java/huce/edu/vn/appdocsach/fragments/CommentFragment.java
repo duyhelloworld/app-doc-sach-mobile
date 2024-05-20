@@ -1,11 +1,9 @@
 package huce.edu.vn.appdocsach.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
@@ -17,14 +15,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.CommentAdapter;
 import huce.edu.vn.appdocsach.apiservices.CommentService;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
+import huce.edu.vn.appdocsach.AppContext;
 import huce.edu.vn.appdocsach.constants.BundleKey;
-import huce.edu.vn.appdocsach.constants.PaginationConstant;
 import huce.edu.vn.appdocsach.models.comment.FindCommentModel;
 import huce.edu.vn.appdocsach.models.comment.SimpleCommentModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
@@ -39,9 +38,9 @@ public class CommentFragment extends Fragment implements OnLoadMore {
     ImageView ivCommentReaderAvatar;
     RecyclerView rvBookDetailListComment;
     CommentAdapter commentAdapter;
-    List<SimpleCommentModel> commentModels;
+    List<SimpleCommentModel> commentModels = new ArrayList<>();
     FindCommentModel findCommentModel;
-    ProgressBar progressBar;
+    ProgressBar pbComment;
     long totalPage = 0;
 
     @Override
@@ -55,38 +54,31 @@ public class CommentFragment extends Fragment implements OnLoadMore {
         View view = inflater.inflate(R.layout.fragment_comment, container, false);
 
         Bundle bundle = getArguments();
-        int chapterId = 0;
-        if (bundle != null) {
-            chapterId = bundle.getInt(BundleKey.CHAPTER_ID);
+        if (bundle == null) {
+            throw new RuntimeException("Invalid bundle pass to here");
         }
-        findCommentModel = new FindCommentModel(chapterId, 4);
+        findCommentModel = new FindCommentModel(bundle.getInt(BundleKey.CHAPTER_ID), 4);
 
-        progressBar = view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
+        pbComment = view.findViewById(R.id.pbComment);
+        pbComment.setVisibility(View.VISIBLE);
 
         rvBookDetailListComment = view.findViewById(R.id.rvBookDetailListComment);
         edtCommentReaderContent = view.findViewById(R.id.edtCommentReaderContent);
         ivCommentReaderAvatar = view.findViewById(R.id.ivCommentReaderAvatar);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        rvBookDetailListComment.setLayoutManager(layoutManager);
-
-        // Load first page
         new Handler().postDelayed(() -> {
-            progressBar.setVisibility(View.VISIBLE);
-            if (commentModels == null || rvBookDetailListComment.getAdapter() == null) {
-                callApiAndSaveCommentModel();
-                commentAdapter = new CommentAdapter(getContext(), commentModels, rvBookDetailListComment, this, position -> {
-                    DialogUtils.notifyInfo(getContext(), "Click comment at " + position);
-                });
-                rvBookDetailListComment.setAdapter(commentAdapter);
-            } else {
-                commentAdapter.setData(commentModels);
-            }
-            progressBar.setVisibility(View.GONE);
-        }, 2000);
+            // Load first page
+            callApiAndSaveCommentModel();
+            assert commentModels != null;
+            commentAdapter = new CommentAdapter(getContext(), commentModels, rvBookDetailListComment, this, position -> {
+                DialogUtils.notifyInfo(AppContext.getContext(), "Click comment at " + position);
+            });
+            rvBookDetailListComment.setAdapter(commentAdapter);
+            pbComment.setVisibility(View.GONE);
+        }, 1000);
         return view;
     }
+
 
     private void callApiAndSaveCommentModel() {
         commentService.getComments(findCommentModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleCommentModel>>() {
@@ -109,13 +101,13 @@ public class CommentFragment extends Fragment implements OnLoadMore {
     public void loadMore() {
         // Chưa load hết dữ liệu
         if (findCommentModel.getPageNumber() <= totalPage) {
-            progressBar.setVisibility(View.VISIBLE);
+            pbComment.setVisibility(View.VISIBLE);
             new Handler().postDelayed(() -> {
                 findCommentModel.incrementPageNumber();
                 callApiAndSaveCommentModel();
                 commentAdapter.append(commentModels);
                 commentAdapter.setLoaded();
-                progressBar.setVisibility(View.GONE);
+                pbComment.setVisibility(View.GONE);
             }, 2000);
         } else {
             Toast.makeText(getContext(), "Đã load tới comment cuối cùng", Toast.LENGTH_SHORT).show();

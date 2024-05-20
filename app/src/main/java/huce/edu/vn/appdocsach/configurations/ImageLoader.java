@@ -37,7 +37,7 @@ public class ImageLoader {
         picasso.load(url)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .resizeDimen(R.dimen.chapter_reader_width, R.dimen.chapter_reader_height)
+                .fit()
                 .into(imageView);
     }
 }

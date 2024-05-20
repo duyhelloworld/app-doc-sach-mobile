@@ -6,33 +6,53 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.BookAdapter;
 import huce.edu.vn.appdocsach.adapters.CategoryAdapter;
+import huce.edu.vn.appdocsach.apiservices.AuthService;
 import huce.edu.vn.appdocsach.apiservices.BookService;
 import huce.edu.vn.appdocsach.apiservices.CategoryService;
+import huce.edu.vn.appdocsach.callbacks.OnApiResult;
+import huce.edu.vn.appdocsach.callbacks.OnAuthentication;
+import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
+import huce.edu.vn.appdocsach.configurations.FirstTimeSignInManager;
+import huce.edu.vn.appdocsach.configurations.ImageLoader;
+import huce.edu.vn.appdocsach.configurations.TokenStorageManager;
+import huce.edu.vn.appdocsach.constants.AuthConstant;
 import huce.edu.vn.appdocsach.constants.IntentKey;
+import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
 import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import huce.edu.vn.appdocsach.models.book.FindBookModel;
+import huce.edu.vn.appdocsach.utils.serializers.HttpErrorSerializer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnLoadMore {
     RecyclerView rvListBook, rvListCategory;
+    ImageView ivMainAvatar;
     BookAdapter bookAdapter;
     CategoryAdapter categoryAdapter;
-    List<SimpleCategoryModel> categoryModels;
-    FindBookModel findBookModel = new FindBookModel(10);
+    FindBookModel findBookModel = new FindBookModel(8);
     CategoryService categoryService = CategoryService.categoryService;
     BookService bookService = BookService.bookService;
+    AuthService authService = AuthService.authService;
+    ImageLoader imageLoader;
+    ProgressBar pbMain;
+    int totalPage = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,63 +61,104 @@ public class MainActivity extends AppCompatActivity {
 
         rvListBook = findViewById(R.id.rvListBook);
         rvListCategory = findViewById(R.id.rvListCategory);
-        rvListCategory = findViewById(R.id.rvListCategory);
+        pbMain = findViewById(R.id.pbMain);
+        ivMainAvatar = findViewById(R.id.ivMainAvatar);
 
-        categoryService.getAllCategories().enqueue(new Callback<List<SimpleCategoryModel>>() {
+        ivMainAvatar.setOnClickListener(l -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        });
+
+        imageLoader = new ImageLoader(MainActivity.this);
+        authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
             @Override
-            public void onResponse(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Response<List<SimpleCategoryModel>> response) {
-                categoryModels = response.body();
-                categoryAdapter = new CategoryAdapter(categoryModels, position -> {
-                    int categoryId = categoryAdapter.getData(position).getId();
-                    loadByCategoryId(categoryId);
+            public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
+                if (!response.isSuccessful()) {
+                    return;
+                }
+                AuthInfoModel model = response.body();
+                assert model != null;
+
+                if (FirstTimeSignInManager.getFirstTimeSignedIn()) {
+                    Toast.makeText(MainActivity.this, getString(R.string.welcome_login, model.getFullname()),
+                            Toast.LENGTH_SHORT).show();
+                    FirstTimeSignInManager.setSignedIn();
+                }
+
+                imageLoader.renderWithCache(model.getAvatar(), ivMainAvatar);
+                ivMainAvatar.setOnClickListener(l -> {
+                    Intent intent = new Intent(MainActivity.this, UserSettingActivity.class);
+                    startActivity(intent);
                 });
-                rvListCategory.setAdapter(categoryAdapter);
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.developmentError(MainActivity.this, throwable);
+            public void onFailure(@NonNull Call<AuthInfoModel> call, @NonNull Throwable throwable) {
+                DialogUtils.unknownError(MainActivity.this, "Auth error : ", throwable);
             }
         });
 
-
-        bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
-            @Override
-            public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
-                if (!response.isSuccessful() || response.body() == null) {
-                    return;
-                }
-                bookAdapter = new BookAdapter(MainActivity.this, response.body().getValues(),
+        new Handler().postDelayed(() -> {
+            pbMain.setVisibility(View.VISIBLE);
+            // load first page
+            loadBook(simpleBookModels -> {
+                bookAdapter = new BookAdapter(MainActivity.this, simpleBookModels, rvListBook,
                         position -> {
                             Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
                             intent.putExtra(IntentKey.BOOK_ID, bookAdapter.getBookByPosition(position).getId());
                             startActivity(intent);
-                        });
+                        }, this);
                 rvListBook.setAdapter(bookAdapter);
-            }
+            });
 
-            @Override
-            public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.developmentError(MainActivity.this, throwable);
-            }
-        });
+            categoryService.getAllCategories().enqueue(new Callback<List<SimpleCategoryModel>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Response<List<SimpleCategoryModel>> response) {
+                    categoryAdapter = new CategoryAdapter(response.body(), position -> {
+                        findBookModel.setCategoryId(categoryAdapter.getData(position).getId());
+                        loadBook(simpleBookModels -> bookAdapter.setData(simpleBookModels));
+                    });
+                    rvListCategory.setAdapter(categoryAdapter);
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Throwable throwable) {
+                    DialogUtils.developmentError(MainActivity.this, throwable);
+                }
+            });
+            pbMain.setVisibility(View.GONE);
+        }, 500);
     }
 
-    private void loadByCategoryId(int categoryId) {
-        findBookModel.setCategoryId(categoryId);
+    private void loadBook(OnApiResult<List<SimpleBookModel>> onApiResult) {
         bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
             @Override
             public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
                 PagingResponse<SimpleBookModel> data = response.body();
-                if (bookAdapter != null && data != null) {
-                    bookAdapter.setData(data.getValues());
-                }
+                assert data != null;
+                totalPage = data.getTotalPage();
+                onApiResult.onSuccessCode(data.getValues());
             }
 
             @Override
             public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.developmentError(MainActivity.this, throwable);
+                DialogUtils.unknownError(MainActivity.this, "Lỗi kết nối khi tải truyện :", throwable);
             }
         });
+    }
+
+    @Override
+    public void loadMore() {
+        if (findBookModel.getPageNumber() < totalPage) {
+            pbMain.setVisibility(View.VISIBLE);
+            new Handler().postDelayed(() -> {
+                findBookModel.incrementPageNumber();
+                loadBook(simpleBookModels -> bookAdapter.setData(simpleBookModels));
+                bookAdapter.setLoaded();
+                pbMain.setVisibility(View.GONE);
+            }, 2000);
+        } else {
+            Toast.makeText(MainActivity.this, getString(R.string.loaded_final_book), Toast.LENGTH_SHORT).show();
+        }
     }
 }

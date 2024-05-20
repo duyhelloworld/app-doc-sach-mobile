@@ -1,4 +1,4 @@
-package huce.edu.vn.appdocsach.configurations;
+package huce.edu.vn.appdocsach;
 
 import android.annotation.SuppressLint;
 import android.app.Application;

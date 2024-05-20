@@ -6,11 +6,11 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
-import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
+import huce.edu.vn.appdocsach.utils.serializers.JsonSerializer;
 
 public class AppLogger {
     private static AppLogger util;
-    private final Gson gson = GsonCustom.getInstance();
+    private final Gson gson = JsonSerializer.getInstance();
 
     private AppLogger() {}
     public static AppLogger getInstance() {

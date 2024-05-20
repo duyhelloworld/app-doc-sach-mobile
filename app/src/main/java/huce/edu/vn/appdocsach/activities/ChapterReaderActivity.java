@@ -2,20 +2,18 @@ package huce.edu.vn.appdocsach.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.List;
@@ -106,11 +104,14 @@ public class ChapterReaderActivity extends AppCompatActivity {
 
         spChapterReaderTitle.setSelection(position);
 
-        chapterService.read(chapterModels.get(position).getId()).enqueue(new Callback<List<String>>() {
+        OnlyNameChapterModel chapterModel = chapterModels.get(position);
+        chapterService.read(chapterModel.getId()).enqueue(new Callback<List<String>>() {
             @Override
             public void onResponse(@NonNull Call<List<String>> call, @NonNull Response<List<String>> response) {
                 if (chapterReaderAdapter == null) {
-                    chapterReaderAdapter = new ChapterReaderAdapter(ChapterReaderActivity.this, response.body());
+                    chapterReaderAdapter = new ChapterReaderAdapter(ChapterReaderActivity.this, response.body(), () -> {
+                        Toast.makeText(ChapterReaderActivity.this, chapterModel.getTitle(), Toast.LENGTH_SHORT).show();
+                    });
                 } else {
                     chapterReaderAdapter.setData(response.body());
                 }

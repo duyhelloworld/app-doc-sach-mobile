@@ -2,10 +2,14 @@ package huce.edu.vn.appdocsach.utils.serializers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class GsonCustom {
+import huce.edu.vn.appdocsach.models.ErrorModel;
+import okhttp3.ResponseBody;
+
+public class JsonSerializer {
     private static Gson gson;
 
     public static Gson getInstance() {

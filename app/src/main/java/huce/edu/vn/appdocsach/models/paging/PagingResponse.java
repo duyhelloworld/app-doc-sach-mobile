@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 
-import huce.edu.vn.appdocsach.utils.serializers.GsonCustom;
+import huce.edu.vn.appdocsach.utils.serializers.JsonSerializer;
 
 public class PagingResponse<T> {
     private int totalPage;
@@ -40,7 +40,7 @@ public class PagingResponse<T> {
     public String toString() {
         return "PagingResponse {" +
                 "totalPage=" + totalPage +
-                ", values=" + GsonCustom.getInstance().toJson(values) +
+                ", values=" + JsonSerializer.getInstance().toJson(values) +
                 '}';
     }
 }
