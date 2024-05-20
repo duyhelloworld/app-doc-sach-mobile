@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
@@ -21,7 +20,6 @@ import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
-import huce.edu.vn.appdocsach.utils.DatetimeUtils;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private final List<SimpleBookModel> books;

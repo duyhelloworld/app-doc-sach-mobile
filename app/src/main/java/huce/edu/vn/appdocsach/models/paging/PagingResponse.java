@@ -11,14 +11,6 @@ public class PagingResponse<T> {
 
     private List<T> values;
 
-    public PagingResponse(int totalPage, List<T> values) {
-        this.totalPage = totalPage;
-        this.values = values;
-    }
-
-    public PagingResponse() {
-    }
-
     public int getTotalPage() {
         return totalPage;
     }

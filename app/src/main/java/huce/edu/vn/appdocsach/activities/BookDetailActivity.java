@@ -1,9 +1,5 @@
 package huce.edu.vn.appdocsach.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,13 +7,15 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import huce.edu.vn.appdocsach.R;
-import huce.edu.vn.appdocsach.adapters.CategoryAdapter;
 import huce.edu.vn.appdocsach.adapters.ChapterAdapter;
 import huce.edu.vn.appdocsach.apiservices.BookService;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
@@ -26,7 +24,6 @@ import huce.edu.vn.appdocsach.models.book.BookModel;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.models.chapter.OnlyNameChapterModel;
 import huce.edu.vn.appdocsach.utils.AppLogger;
-import huce.edu.vn.appdocsach.utils.DialogUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,18 +76,12 @@ public class BookDetailActivity extends AppCompatActivity {
                             .map(SimpleCategoryModel::getName)
                             .collect(Collectors.joining(", ")));
 
-                    chapterAdapter = new ChapterAdapter(model.getChapters(), position -> {
-                        readChapter(position, chapterAdapter.getOnlyNamModel());
-                    });
+                    chapterAdapter = new ChapterAdapter(model.getChapters(), position -> readChapter(position, chapterAdapter.getOnlyNamModel()));
                     rvBookDetailChapterList.setAdapter(chapterAdapter);
 
-                    btnBookDetailReadFirst.setOnClickListener(v -> {
-                        readChapter(chapterAdapter.getFirstItemIndex(), chapterAdapter.getOnlyNamModel());
-                    });
+                    btnBookDetailReadFirst.setOnClickListener(v -> readChapter(chapterAdapter.getFirstItemIndex(), chapterAdapter.getOnlyNamModel()));
 
-                    btnBookDetailReadLast.setOnClickListener(v -> {
-                        readChapter(chapterAdapter.getLastItemIndex(), chapterAdapter.getOnlyNamModel());
-                    });
+                    btnBookDetailReadLast.setOnClickListener(v -> readChapter(chapterAdapter.getLastItemIndex(), chapterAdapter.getOnlyNamModel()));
                 }
             }
 

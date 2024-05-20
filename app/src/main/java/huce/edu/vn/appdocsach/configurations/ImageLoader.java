@@ -7,8 +7,6 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import huce.edu.vn.appdocsach.R;
-
 public class ImageLoader {
     private final Picasso picasso;
     public ImageLoader(Context context) {

@@ -2,8 +2,6 @@ package huce.edu.vn.appdocsach.utils.serializers;
 
 import com.google.gson.Gson;
 
-import java.util.stream.Collectors;
-
 import huce.edu.vn.appdocsach.models.ErrorModel;
 import okhttp3.ResponseBody;
 

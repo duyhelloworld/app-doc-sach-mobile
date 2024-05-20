@@ -9,14 +9,12 @@ import android.os.Handler;
 import android.text.Editable;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import app.rive.runtime.kotlin.RiveAnimationView;
 import app.rive.runtime.kotlin.core.ExperimentalAssetLoader;
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.apiservices.AuthService;
 import huce.edu.vn.appdocsach.configurations.TokenStorageManager;
-import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.constants.RiveConstants;
 import huce.edu.vn.appdocsach.models.auth.AuthResponseModel;
 import huce.edu.vn.appdocsach.models.auth.SignInRequestModel;
@@ -46,13 +44,9 @@ public class LoginActivity extends AppCompatActivity {
         edtLoginPassword = findViewById(R.id.edtLoginPassword);
         btnLoginSignIn = findViewById(R.id.btnLoginSignIn);
 
-        edtLoginUsername.setOnFocusChangeListener((v, hasFocus) -> {
-            riveLoginIcon.setBooleanState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.IS_FOCUS_STATE, hasFocus);
-        });
+        edtLoginUsername.setOnFocusChangeListener((v, hasFocus) -> riveLoginIcon.setBooleanState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.IS_FOCUS_STATE, hasFocus));
 
-        edtLoginPassword.setOnFocusChangeListener((v, hasFocus) -> {
-            riveLoginIcon.setBooleanState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.IS_PASSWORD_STATE, hasFocus);
-        });
+        edtLoginPassword.setOnFocusChangeListener((v, hasFocus) -> riveLoginIcon.setBooleanState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.IS_PASSWORD_STATE, hasFocus));
 
         btnLoginSignIn.setOnClickListener(l -> {
             Editable user = edtLoginUsername.getText(), pass = edtLoginPassword.getText();

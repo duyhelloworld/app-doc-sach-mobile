@@ -109,9 +109,8 @@ public class ChapterReaderActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<String>> call, @NonNull Response<List<String>> response) {
                 if (chapterReaderAdapter == null) {
-                    chapterReaderAdapter = new ChapterReaderAdapter(ChapterReaderActivity.this, response.body(), () -> {
-                        Toast.makeText(ChapterReaderActivity.this, chapterModel.getTitle(), Toast.LENGTH_SHORT).show();
-                    });
+                    chapterReaderAdapter = new ChapterReaderAdapter(ChapterReaderActivity.this, response.body(), () ->
+                            Toast.makeText(ChapterReaderActivity.this, chapterModel.getTitle(), Toast.LENGTH_SHORT).show());
                 } else {
                     chapterReaderAdapter.setData(response.body());
                 }
@@ -134,9 +133,8 @@ public class ChapterReaderActivity extends AppCompatActivity {
     private void enableButton(ImageButton btn, int pos, int size) {
         btn.setEnabled(true);
         btn.setBackgroundColor(getColor(R.color.green));
-        btn.setOnClickListener(v -> {
-            renderChapter(pos, size);
-        });
+        btn.setOnClickListener(v ->
+                renderChapter(pos, size));
     }
 
     private void addCommentView(CommentFragment commentFragment) {

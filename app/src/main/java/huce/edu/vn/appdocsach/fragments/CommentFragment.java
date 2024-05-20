@@ -70,9 +70,7 @@ public class CommentFragment extends Fragment implements OnLoadMore {
             // Load first page
             callApiAndSaveCommentModel();
             assert commentModels != null;
-            commentAdapter = new CommentAdapter(getContext(), commentModels, rvBookDetailListComment, this, position -> {
-                DialogUtils.notifyInfo(AppContext.getContext(), "Click comment at " + position);
-            });
+            commentAdapter = new CommentAdapter(getContext(), commentModels, rvBookDetailListComment, this, position -> DialogUtils.notifyInfo(AppContext.getContext(), "Click comment at " + position));
             rvBookDetailListComment.setAdapter(commentAdapter);
             pbComment.setVisibility(View.GONE);
         }, 1000);
