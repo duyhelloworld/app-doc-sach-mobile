@@ -24,9 +24,12 @@ import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.CommentAdapter;
+import huce.edu.vn.appdocsach.apiservices.AuthService;
 import huce.edu.vn.appdocsach.apiservices.CommentService;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
+import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.constants.IntentKey;
+import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.models.comment.FindCommentModel;
 import huce.edu.vn.appdocsach.models.comment.SimpleCommentModel;
 import huce.edu.vn.appdocsach.models.comment.WriteCommentModel;
@@ -41,6 +44,7 @@ import retrofit2.Response;
 
 public class CommentFragment extends Fragment implements OnLoadMore {
     CommentService commentService = CommentService.commentService;
+    AuthService authService = AuthService.authService;
     List<SimpleCommentModel> commentModels = new ArrayList<>();
     AppLogger appLogger = AppLogger.getInstance();
     FindCommentModel findCommentModel;
@@ -68,12 +72,30 @@ public class CommentFragment extends Fragment implements OnLoadMore {
         assert bundle != null;
         findCommentModel = new FindCommentModel(bundle.getInt(IntentKey.CHAPTER_ID, 0), 4);
 
+        authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
+            @Override
+            public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
+                AuthInfoModel model = response.body();
+                if (!response.isSuccessful() || model == null) {
+                    ivCommentReaderAvatar.setImageResource(R.drawable.default_avatar);
+                    return;
+                }
+                ivCommentReaderAvatar.setContentDescription(model.getFullname());
+                ImageLoader.getInstance().renderWithCache(model.getAvatar(), ivCommentReaderAvatar);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AuthInfoModel> call, @NonNull Throwable throwable) {
+                DialogUtils.errorUserSee(context, R.string.error_load_user_info);
+                AppLogger.getInstance().error(throwable);
+            }
+        });
         callApiAndSaveCommentModel();
         new Handler().postDelayed(() -> {
             // Load first page comments
             pbComment.setVisibility(View.VISIBLE);
             assert commentModels != null;
-            commentAdapter = new CommentAdapter(context, commentModels, rvBookDetailListComment, this, position -> {
+            commentAdapter = new CommentAdapter(commentModels, rvBookDetailListComment, this, position -> {
             });
             rvBookDetailListComment.setAdapter(commentAdapter);
             pbComment.setVisibility(View.GONE);
@@ -140,7 +162,7 @@ public class CommentFragment extends Fragment implements OnLoadMore {
             new Handler().postDelayed(() -> {
                 findCommentModel.incrementPageNumber();
                 callApiAndSaveCommentModel();
-                commentAdapter.append(commentModels);
+                commentAdapter.add(commentModels);
                 commentAdapter.setLoaded();
                 pbComment.setVisibility(View.GONE);
             }, 2000);

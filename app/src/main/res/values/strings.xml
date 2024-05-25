@@ -10,6 +10,7 @@
     <string name="book_cover_description">Ảnh truyện</string>
     <string name="update_at_prefix">Cập nhật lúc :</string>
     <string name="author_key">Tác giả :</string>
+    <string name="default_fullname">Chưa đăng nhập</string>
 
     <string name="btn_signin">Đăng nhập</string>
     <string name="aggreement_license">Bằng việc đăng nhập, bạn đã đồng ý với các điều khoản dịch vụ của chúng tôi!</string>
@@ -18,7 +19,6 @@
     <string name="missing_password_message_error">Hãy nhập mật khẩu</string>
     <string name="welcome_login">Xin chào %1$s trở lại!</string>
     <string name="loaded_final_book">Đã load tới truyện  cuối cùng</string>
-
 
     <string name="book_detail_book_description_key">Mô tả</string>
     <string name="book_detail_chapter_list_key">Danh sách chương truyện</string>
@@ -36,6 +36,9 @@
     <string name="btn_update_profile_message">Cập nhật hồ sơ</string>
     <string name="btn_logout_message">Đăng xuất</string>
     <string name="btn_change_password_message">Đổi mật khẩu</string>
+    <string name="logout_success">Đăng xuất thành công</string>
+    <string name="feature_not_supported">Xin lỗi, chức năng này chưa hỗ trợ</string>
+    <string name="not_found_book">Không tìm thấy truyện nào thỏa mãn</string>
 
     <string name="comment_success_message">Bình luận thành công</string>
     <string name="error_write_comment">Lỗi khi thêm comment!</string>
@@ -49,4 +52,6 @@
     <string name="error_load_book">Lỗi kết nối khi tải truyện</string>
     <string name="error_load_chapter_image">Lỗi tải chương truyện</string>
     <string name="error_login">Lỗi khi đăng nhập</string>
+    <string name="error_logout">Lỗi khi đăng xuất</string>
+
 </resources>

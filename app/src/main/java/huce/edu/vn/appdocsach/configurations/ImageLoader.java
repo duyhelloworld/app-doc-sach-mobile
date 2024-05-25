@@ -7,10 +7,17 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import huce.edu.vn.appdocsach.AppContext;
+
 public class ImageLoader {
-    private final Picasso picasso;
-    public ImageLoader(Context context) {
-        this.picasso = new Picasso.Builder(context).build();
+    private static ImageLoader instance;
+    private final Picasso picasso = new Picasso.Builder(AppContext.getContext()).build();
+
+    public static ImageLoader getInstance() {
+        if (instance == null) {
+            instance = new ImageLoader();
+        }
+        return instance;
     }
 
     public void renderWithCache(String url, ImageView imageView) {

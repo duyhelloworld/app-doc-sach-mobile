@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
                     tokenStorage.clearAllTokens();
-                    tokenStorage.save(authResponse.getJwt());
+                    tokenStorage.save(authResponse.getJwt(), true);
                     riveLoginIcon.fireState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.LOGIN_SUCCESS_STATE);
 
                     new Handler().postDelayed(() -> {

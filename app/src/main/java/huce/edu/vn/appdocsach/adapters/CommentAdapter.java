@@ -25,12 +25,11 @@ import huce.edu.vn.appdocsach.utils.DatetimeUtils;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentHolder> {
     private final OnTouchItem onTouchItem;
     private final List<SimpleCommentModel> commentModels;
-    private final ImageLoader imageLoader;
+    private final ImageLoader imageLoader = ImageLoader.getInstance();
     private boolean isLoading = false;
 
-    public CommentAdapter(Context context, List<SimpleCommentModel> commentModels, RecyclerView recyclerView, OnLoadMore onLoadMore, OnTouchItem onTouchItem) {
+    public CommentAdapter(List<SimpleCommentModel> commentModels, RecyclerView recyclerView, OnLoadMore onLoadMore, OnTouchItem onTouchItem) {
         this.onTouchItem = onTouchItem;
-        this.imageLoader = new ImageLoader(context);
         this.commentModels = commentModels;
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         assert layoutManager != null;
@@ -53,8 +52,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         isLoading = false;
     }
 
-    public void append(List<SimpleCommentModel> commentModels) {
+    public void add(List<SimpleCommentModel> commentModels) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new GenericDiffUtilCallback<>(this.commentModels, commentModels));
+        this.commentModels.clear();
         this.commentModels.addAll(commentModels);
         diffResult.dispatchUpdatesTo(this);
     }

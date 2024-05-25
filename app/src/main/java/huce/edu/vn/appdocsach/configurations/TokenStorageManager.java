@@ -14,11 +14,22 @@ public class TokenStorageManager {
         return sharedPreferences.getString(AuthConstant.tokenKey, "");
     }
 
-    public void save(String token) {
-        sharedPreferences.edit().putString(AuthConstant.tokenKey, token).apply();
+    public boolean getIsFirstTime() {
+        return sharedPreferences.getBoolean(AuthConstant.isSignInFirstTimeKey, true);
+    }
+
+    public void save(String token, boolean isFirstLogin) {
+        sharedPreferences.edit()
+                .putString(AuthConstant.tokenKey, token)
+                .putBoolean(AuthConstant.isSignInFirstTimeKey, isFirstLogin)
+                .apply();
     }
 
     public void clearAllTokens() {
-        sharedPreferences.edit().remove(AuthConstant.tokenKey).apply();
+
+        sharedPreferences.edit()
+                .remove(AuthConstant.tokenKey)
+                .remove(AuthConstant.isSignInFirstTimeKey)
+                .apply();
     }
 }

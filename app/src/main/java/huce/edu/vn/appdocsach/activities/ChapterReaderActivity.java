@@ -87,11 +87,20 @@ public class ChapterReaderActivity extends AppCompatActivity {
                         .addToBackStack(null)
                         .add(R.id.flChapterReaderComment, commentFragment)
                         .commit();
+                btnChapterReaderPrevChapter.setEnabled(false);
+                btnChapterReaderNextChapter.setEnabled(false);
+                rvChapterReaderImage.setEnabled(false);
+                spChapterReaderTitle.setEnabled(false);
+                getWindow().setBackgroundDrawableResource(R.color.transparent);
             } else {
-                manager
-                        .beginTransaction()
+                manager.beginTransaction()
                         .remove(commentFragment)
                         .commit();
+                btnChapterReaderPrevChapter.setEnabled(true);
+                btnChapterReaderNextChapter.setEnabled(true);
+                rvChapterReaderImage.setEnabled(true);
+                spChapterReaderTitle.setEnabled(true);
+                getWindow().setBackgroundDrawable(null);
             }
         });
         renderChapter(position);
@@ -119,7 +128,7 @@ public class ChapterReaderActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<List<String>> call, @NonNull Response<List<String>> response) {
                 if (chapterReaderAdapter == null) {
-                    chapterReaderAdapter = new ChapterReaderAdapter(ChapterReaderActivity.this, response.body(), () ->
+                    chapterReaderAdapter = new ChapterReaderAdapter(response.body(), () ->
                             Toast.makeText(ChapterReaderActivity.this, chapterModel.getTitle(), Toast.LENGTH_SHORT).show());
                 } else {
                     chapterReaderAdapter.setData(response.body());

@@ -23,10 +23,11 @@
         android:id="@+id/tvUserSettingUsername"
         android:layout_width="260dp"
         android:layout_height="45dp"
-        android:layout_marginStart="107dp"
+        android:layout_marginStart="110dp"
+        android:layout_marginEnd="110dp"
         android:layout_marginTop="27dp"
-        android:layout_marginEnd="108dp"
-        android:layout_marginBottom="61dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
         android:maxLines="1"
         android:text="@string/test_lorem_short"
         android:textSize="25sp"
@@ -39,12 +40,11 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="260dp"
-        android:layout_height="172dp"
-        android:layout_marginStart="78dp"
-        android:layout_marginEnd="73dp"
-        android:layout_marginBottom="105dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="110dp"
         android:orientation="vertical"
-        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -52,20 +52,20 @@
 
         <Button
             android:id="@+id/btnUserSettingChangePassword"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="260dp"
+            android:layout_height="60dp"
             android:text="@string/btn_change_password_message" />
 
         <Button
             android:id="@+id/btnUserSettingUpdateProfile"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="260dp"
+            android:layout_height="60dp"
             android:text="@string/btn_update_profile_message" />
 
         <Button
             android:id="@+id/btnUserSettingSignOut"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="260dp"
+            android:layout_height="60dp"
             android:text="@string/btn_logout_message" />
     </LinearLayout>
 

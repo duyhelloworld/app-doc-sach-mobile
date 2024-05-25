@@ -2,6 +2,7 @@ package huce.edu.vn.appdocsach.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -22,8 +23,8 @@ import huce.edu.vn.appdocsach.apiservices.BookService;
 import huce.edu.vn.appdocsach.apiservices.CategoryService;
 import huce.edu.vn.appdocsach.callbacks.OnApiResult;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
-import huce.edu.vn.appdocsach.configurations.FirstTimeSignInManager;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
+import huce.edu.vn.appdocsach.configurations.TokenStorageManager;
 import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
@@ -45,8 +46,10 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     CategoryService categoryService = CategoryService.categoryService;
     BookService bookService = BookService.bookService;
     AuthService authService = AuthService.authService;
-    ImageLoader imageLoader;
+    ImageLoader imageLoader = ImageLoader.getInstance();
+    TokenStorageManager tokenStorageManager = new TokenStorageManager();
     ProgressBar pbMain;
+    SearchView svMainBookSearchBox;
     AppLogger appLogger = AppLogger.getInstance();
     int totalPage = 0;
 
@@ -59,9 +62,36 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         rvListCategory = findViewById(R.id.rvListCategory);
         pbMain = findViewById(R.id.pbMain);
         ivMainAvatar = findViewById(R.id.ivMainAvatar);
+        svMainBookSearchBox = findViewById(R.id.svMainBookSearchBox);
 
+        svMainBookSearchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                findBookModel.setKeyword(query);
+                loadBook(simpleBookModels -> {
+                    if (simpleBookModels == null || simpleBookModels.size() == 0) {
+                        DialogUtils.infoUserSee(MainActivity.this, R.string.not_found_book);
+                        return;
+                    }
+                    bookAdapter.setData(simpleBookModels);
+                });
+                return true;
+            }
 
-        imageLoader = new ImageLoader(MainActivity.this);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                findBookModel.setKeyword(newText);
+                loadBook(simpleBookModels -> {
+                    if (simpleBookModels == null || simpleBookModels.size() == 0) {
+                        DialogUtils.infoUserSee(MainActivity.this, R.string.not_found_book);
+                        return;
+                    }
+                    bookAdapter.setData(simpleBookModels);
+                });
+                return true;
+            }
+        });
+
         authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
             @Override
             public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
@@ -73,15 +103,16 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                     });
                     return;
                 }
-                if (FirstTimeSignInManager.getFirstTimeSignedIn()) {
+
+                if (tokenStorageManager.getIsFirstTime()) {
                     Toast.makeText(MainActivity.this, getString(R.string.welcome_login, model.getFullname()),
                             Toast.LENGTH_SHORT).show();
-                    FirstTimeSignInManager.setSignedIn();
                 }
-
                 imageLoader.renderWithCache(model.getAvatar(), ivMainAvatar);
                 ivMainAvatar.setOnClickListener(l -> {
                     Intent intent = new Intent(MainActivity.this, UserSettingActivity.class);
+                    intent.putExtra(IntentKey.USER_AVATAR, model.getAvatar());
+                    intent.putExtra(IntentKey.USER_FULLNAME, model.getFullname());
                     startActivity(intent);
                 });
             }
@@ -97,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             // load first page
             pbMain.setVisibility(View.VISIBLE);
             loadBook(simpleBookModels -> {
-                bookAdapter = new BookAdapter(MainActivity.this, simpleBookModels, rvListBook,
+                bookAdapter = new BookAdapter(simpleBookModels, rvListBook,
                         position -> {
                             Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);
                             intent.putExtra(IntentKey.BOOK_ID, bookAdapter.getBookByPosition(position).getId());

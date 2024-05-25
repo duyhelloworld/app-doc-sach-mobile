@@ -26,4 +26,7 @@ public interface AuthService {
 
     @GET("info")
     Call<AuthInfoModel> getInfo();
+
+    @POST("signout")
+    Call<Void> signOut();
 }

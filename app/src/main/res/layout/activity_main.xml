@@ -20,22 +20,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvAppTitle"
-        android:layout_width="115dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="9dp"
-        android:text="@string/main_app_title"
-        android:textAlignment="center"
-        android:textColor="@color/dark_gray"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/rvListCategory"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListBook"
         android:layout_width="358dp"
@@ -54,13 +38,11 @@
         android:layout_width="370dp"
         android:layout_height="63dp"
         android:layout_marginStart="27dp"
-        android:layout_marginTop="9dp"
         android:layout_marginBottom="20dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/rvListBook"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAppTitle" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/pbMain"
@@ -71,4 +53,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/rvListBook"
         app:layout_constraintStart_toStartOf="@+id/rvListBook" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/svMainBookSearchBox"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="28dp"
+        app:layout_constraintEnd_toStartOf="@+id/ivMainAvatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

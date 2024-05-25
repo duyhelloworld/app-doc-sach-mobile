@@ -38,7 +38,7 @@ public class BookDetailActivity extends AppCompatActivity {
     Button btnBookDetailReadFirst, btnBookDetailReadLast;
     ChapterAdapter chapterAdapter;
     BookService bookService = BookService.bookService;
-    ImageLoader imageLoader;
+    ImageLoader imageLoader = ImageLoader.getInstance();
     AppLogger appLogger = AppLogger.getInstance();
 
     @Override
@@ -55,8 +55,6 @@ public class BookDetailActivity extends AppCompatActivity {
         ivBookDetailCover = findViewById(R.id.ivBookDetailCover);
         btnBookDetailReadFirst = findViewById(R.id.btnBookDetailReadFirst);
         btnBookDetailReadLast = findViewById(R.id.btnBookDetailReadLast);
-
-        imageLoader = new ImageLoader(BookDetailActivity.this);
 
         Intent intent = getIntent();
         int bookId = intent.getIntExtra(IntentKey.BOOK_ID, 0);

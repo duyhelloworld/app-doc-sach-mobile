@@ -24,11 +24,10 @@ import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private final List<SimpleBookModel> books;
     private final OnTouchItem onTouchItem;
-    private final ImageLoader imageLoader;
+    private final ImageLoader imageLoader = ImageLoader.getInstance();
     private boolean isLoading = false;
 
-    public BookAdapter(Context context, List<SimpleBookModel> books, RecyclerView recyclerView, OnTouchItem onTouchItem, OnLoadMore onLoadMore) {
-        this.imageLoader = new ImageLoader(context);
+    public BookAdapter(List<SimpleBookModel> books, RecyclerView recyclerView, OnTouchItem onTouchItem, OnLoadMore onLoadMore) {
         this.books = books;
         this.onTouchItem = onTouchItem;
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();

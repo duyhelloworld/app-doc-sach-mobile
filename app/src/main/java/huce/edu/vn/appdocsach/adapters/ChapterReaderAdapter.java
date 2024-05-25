@@ -18,12 +18,11 @@ import huce.edu.vn.appdocsach.configurations.ImageLoader;
 
 public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdapter.ChapterReaderViewHolder> {
     private final List<String> urls;
-    private final ImageLoader imageLoader;
+    private final ImageLoader imageLoader = ImageLoader.getInstance();
     private final OnHoldEvent onHoldEvent;
 
-    public ChapterReaderAdapter(Context context, List<String> urls, OnHoldEvent onHoldEvent) {
+    public ChapterReaderAdapter(List<String> urls, OnHoldEvent onHoldEvent) {
         this.urls = urls;
-        this.imageLoader = new ImageLoader(context);
         this.onHoldEvent = onHoldEvent;
     }
 
