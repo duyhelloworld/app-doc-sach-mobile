@@ -13,10 +13,8 @@ public class SimpleCommentModel extends BaseModel {
     private String content;
 
     private String userAvatar;
-
     @JsonAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime commentAt;
-
     private Boolean edited;
 
     public SimpleCommentModel(int id, String username, String content, String userAvatar, LocalDateTime commentAt, Boolean edited) {

@@ -16,12 +16,15 @@ public final class DatetimeUtils {
 
         int minutes = (int) duration.toMinutes();
         int hours = (int) duration.toHours();
+        int seconds = (int) duration.getSeconds();
 
         String unit;
         int value;
-
-        if (minutes < 60) {
-            value =  minutes;
+        if (seconds < 60) {
+            value = (seconds);
+            unit = "giây";
+        } else if (minutes < 60) {
+            value = minutes;
             unit = "phút";
         } else if (hours < 24) {
             value = hours;

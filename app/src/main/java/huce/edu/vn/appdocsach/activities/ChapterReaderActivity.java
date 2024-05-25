@@ -2,6 +2,7 @@ package huce.edu.vn.appdocsach.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -21,10 +22,9 @@ import java.util.List;
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.ChapterReaderAdapter;
 import huce.edu.vn.appdocsach.apiservices.ChapterService;
-import huce.edu.vn.appdocsach.constants.BundleKey;
 import huce.edu.vn.appdocsach.constants.IntentKey;
-import huce.edu.vn.appdocsach.fragments.CommentFragment;
 import huce.edu.vn.appdocsach.models.chapter.OnlyNameChapterModel;
+import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,6 +41,9 @@ public class ChapterReaderActivity extends AppCompatActivity {
     List<OnlyNameChapterModel> chapterModels;
     SpinnerAdapter spinnerAdapter;
     FrameLayout flChapterReaderComment;
+    AppLogger appLogger = AppLogger.getInstance();
+    int chapterModelSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,7 @@ public class ChapterReaderActivity extends AppCompatActivity {
         int position = intent.getIntExtra(IntentKey.CHAPTER_ID_POSITION, 0);
         chapterModels = intent.getParcelableArrayListExtra(IntentKey.OTHER_CHAPTER);
         assert chapterModels != null;
-        int size = chapterModels.size();
+        chapterModelSize = chapterModels.size();
         spinnerAdapter = new ArrayAdapter<>(ChapterReaderActivity.this,
                 androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
                 chapterModels);
@@ -66,7 +69,7 @@ public class ChapterReaderActivity extends AppCompatActivity {
         spChapterReaderTitle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                renderChapter(position, size);
+                renderChapter(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -74,32 +77,39 @@ public class ChapterReaderActivity extends AppCompatActivity {
         });
 
         Bundle bundle = new Bundle();
-        bundle.putInt(BundleKey.CHAPTER_ID, chapterModels.get(position).getId());
+        bundle.putInt(IntentKey.CHAPTER_ID, chapterModels.get(position).getId());
         CommentFragment commentFragment = new CommentFragment();
         commentFragment.setArguments(bundle);
         btnChapterReaderToggleComment.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            FragmentManager manager = getSupportFragmentManager();
             if (isChecked) {
-                addCommentView(commentFragment);
+                manager.beginTransaction()
+                        .addToBackStack(null)
+                        .add(R.id.flChapterReaderComment, commentFragment)
+                        .commit();
             } else {
-                removeCommentView(commentFragment);
+                manager
+                        .beginTransaction()
+                        .remove(commentFragment)
+                        .commit();
             }
         });
-        renderChapter(position, size);
+        renderChapter(position);
     }
 
 
-    private void renderChapter(int position, int size) {
+    private void renderChapter(int position) {
         spChapterReaderTitle.setSelection(position);
 
-        if (position == size-1) {
+        if (position == chapterModelSize - 1) {
             disableButton(btnChapterReaderNextChapter);
-            enableButton(btnChapterReaderPrevChapter, position - 1, size);
+            enableButton(btnChapterReaderPrevChapter, position - 1);
         } else if (position == 0) {
             disableButton(btnChapterReaderPrevChapter);
-            enableButton(btnChapterReaderNextChapter, position + 1, size);
+            enableButton(btnChapterReaderNextChapter, position + 1);
         } else {
-            enableButton(btnChapterReaderPrevChapter, position - 1, size);
-            enableButton(btnChapterReaderNextChapter, position + 1, size);
+            enableButton(btnChapterReaderPrevChapter, position - 1);
+            enableButton(btnChapterReaderNextChapter, position + 1);
         }
 
         spChapterReaderTitle.setSelection(position);
@@ -119,7 +129,8 @@ public class ChapterReaderActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<String>> call, @NonNull Throwable throwable) {
-                DialogUtils.unknownError(ChapterReaderActivity.this, "Lỗi load chương truyện : ", throwable);
+                DialogUtils.errorUserSee(ChapterReaderActivity.this, R.string.error_load_category);
+                appLogger.error(throwable);
             }
         });
     }
@@ -130,25 +141,10 @@ public class ChapterReaderActivity extends AppCompatActivity {
         btn.setEnabled(false);
     }
 
-    private void enableButton(ImageButton btn, int pos, int size) {
+    private void enableButton(ImageButton btn, int pos) {
         btn.setEnabled(true);
         btn.setBackgroundColor(getColor(R.color.green));
         btn.setOnClickListener(v ->
-                renderChapter(pos, size));
-    }
-
-    private void addCommentView(CommentFragment commentFragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(null)
-                .add(R.id.flChapterReaderComment, commentFragment)
-                .commit();
-    }
-
-    private void removeCommentView(CommentFragment commentFragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .remove(commentFragment)
-                .commit();
+                renderChapter(pos));
     }
 }

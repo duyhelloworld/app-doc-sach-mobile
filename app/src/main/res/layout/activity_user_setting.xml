@@ -2,8 +2,72 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.UserSettingActivity">
+
+    <ImageView
+        android:id="@+id/ivUserSettingAvatar"
+        android:layout_width="200dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="107dp"
+        android:contentDescription="@string/user_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvUserSettingUsername"
+        android:layout_width="260dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginBottom="61dp"
+        android:maxLines="1"
+        android:text="@string/test_lorem_short"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivUserSettingAvatar" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="260dp"
+        android:layout_height="172dp"
+        android:layout_marginStart="78dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginBottom="105dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btnUserSettingChangePassword"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:text="@string/btn_change_password_message" />
+
+        <Button
+            android:id="@+id/btnUserSettingUpdateProfile"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:text="@string/btn_update_profile_message" />
+
+        <Button
+            android:id="@+id/btnUserSettingSignOut"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:text="@string/btn_logout_message" />
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

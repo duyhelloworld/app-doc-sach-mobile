@@ -31,6 +31,22 @@
     <string name="comment_content_see_more">… Xem thêm</string>
     <string name="comment_in">Nhập bình luận</string>
     <string name="comment_scroll_view">Bình luận</string>
-    <string name="comment_user_avatar">Ảnh đại diện</string>
+    <string name="user_avatar">Ảnh đại diện</string>
     <string name="comment_at_prefix">Bình luận lúc :</string>
+    <string name="btn_update_profile_message">Cập nhật hồ sơ</string>
+    <string name="btn_logout_message">Đăng xuất</string>
+    <string name="btn_change_password_message">Đổi mật khẩu</string>
+
+    <string name="comment_success_message">Bình luận thành công</string>
+    <string name="error_write_comment">Lỗi khi thêm comment!</string>
+    <string name="error_load_comment">Tải bình luận lỗi!</string>
+    <string name="missing_comment_content">Hãy điền nội dung bình luận trước đã!</string>
+    <string name="loaded_final_comment">Đã load tới comment cuối cùng</string>
+
+    <string name="error_load_book_detail">Lỗi khi tải thông tin truyện</string>
+    <string name="error_load_user_info">Lỗi khi tải thông tin người dùng</string>
+    <string name="error_load_category">Lỗi khi tải danh sách thể loại</string>
+    <string name="error_load_book">Lỗi kết nối khi tải truyện</string>
+    <string name="error_load_chapter_image">Lỗi tải chương truyện</string>
+    <string name="error_login">Lỗi khi đăng nhập</string>
 </resources>

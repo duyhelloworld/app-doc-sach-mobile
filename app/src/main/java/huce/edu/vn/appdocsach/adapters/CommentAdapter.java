@@ -32,7 +32,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         this.onTouchItem = onTouchItem;
         this.imageLoader = new ImageLoader(context);
         this.commentModels = commentModels;
-        append(commentModels);
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         assert layoutManager != null;
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -51,7 +50,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     }
 
     public void setLoaded() {
-
         isLoading = false;
     }
 
@@ -59,6 +57,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new GenericDiffUtilCallback<>(this.commentModels, commentModels));
         this.commentModels.addAll(commentModels);
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void append(SimpleCommentModel commentModel) {
+        this.commentModels.add(commentModel);
+        notifyItemInserted(this.commentModels.size() - 1);
     }
 
     @NonNull

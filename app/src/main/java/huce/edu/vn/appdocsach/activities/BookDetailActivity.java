@@ -24,6 +24,7 @@ import huce.edu.vn.appdocsach.models.book.BookModel;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.models.chapter.OnlyNameChapterModel;
 import huce.edu.vn.appdocsach.utils.AppLogger;
+import huce.edu.vn.appdocsach.utils.DialogUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +39,7 @@ public class BookDetailActivity extends AppCompatActivity {
     ChapterAdapter chapterAdapter;
     BookService bookService = BookService.bookService;
     ImageLoader imageLoader;
+    AppLogger appLogger = AppLogger.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +49,10 @@ public class BookDetailActivity extends AppCompatActivity {
         tvBookDetailAuthorV = findViewById(R.id.tvBookDetailAuthorV);
         tvBookDetailTitle = findViewById(R.id.tvBookDetailTitle);
         tvBookDetailDescriptionV = findViewById(R.id.tvBookDetailDescriptionV);
-
         rvBookDetailChapterList = findViewById(R.id.rvBookDetailChapterList);
         tvBookDetailCategories = findViewById(R.id.tvBookDetailCategories);
-
         rbBookDetailRating = findViewById(R.id.rbBookDetailRating);
         ivBookDetailCover = findViewById(R.id.ivBookDetailCover);
-
         btnBookDetailReadFirst = findViewById(R.id.btnBookDetailReadFirst);
         btnBookDetailReadLast = findViewById(R.id.btnBookDetailReadLast);
 
@@ -87,7 +86,8 @@ public class BookDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<BookModel> call, @NonNull Throwable throwable) {
-                AppLogger.getInstance().error(throwable);
+                DialogUtils.errorUserSee(BookDetailActivity.this, R.string.error_load_book_detail);
+                appLogger.error(throwable);
             }
         });
     }

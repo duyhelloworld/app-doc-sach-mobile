@@ -25,7 +25,7 @@
         android:id="@+id/ivCommentItemAvatar"
         android:layout_width="79dp"
         android:layout_height="90dp"
-        android:contentDescription="@string/comment_user_avatar"
+        android:contentDescription="@string/user_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

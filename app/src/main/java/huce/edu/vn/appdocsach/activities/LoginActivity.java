@@ -18,6 +18,7 @@ import huce.edu.vn.appdocsach.configurations.TokenStorageManager;
 import huce.edu.vn.appdocsach.constants.RiveConstants;
 import huce.edu.vn.appdocsach.models.auth.AuthResponseModel;
 import huce.edu.vn.appdocsach.models.auth.SignInRequestModel;
+import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import huce.edu.vn.appdocsach.utils.StringUtils;
 import huce.edu.vn.appdocsach.utils.serializers.HttpErrorSerializer;
@@ -31,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     RiveAnimationView riveLoginIcon;
     TokenStorageManager tokenStorage = new TokenStorageManager();
     AuthService authService = AuthService.authService;
+    AppLogger appLogger = AppLogger.getInstance();
 
     @ExperimentalAssetLoader
     @Override
@@ -51,12 +53,12 @@ public class LoginActivity extends AppCompatActivity {
         btnLoginSignIn.setOnClickListener(l -> {
             Editable user = edtLoginUsername.getText(), pass = edtLoginPassword.getText();
             if (StringUtils.isNullOrEmpty(user)) {
-                DialogUtils.unknownError(LoginActivity.this, getString(R.string.missing_username_message_error));
+                DialogUtils.errorUserSee(LoginActivity.this, R.string.missing_username_message_error);
                 return;
             }
 
             if (StringUtils.isNullOrEmpty(pass)) {
-                DialogUtils.unknownError(LoginActivity.this, getString(R.string.missing_password_message_error));
+                DialogUtils.errorUserSee(LoginActivity.this, R.string.missing_password_message_error);
                 return;
             }
 
@@ -66,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(@NonNull Call<AuthResponseModel> call, @NonNull Response<AuthResponseModel> response) {
                     AuthResponseModel authResponse = response.body();
                     if (!response.isSuccessful() || authResponse == null) {
-                        DialogUtils.unknownError(LoginActivity.this, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
+                        DialogUtils.errorUserSee(LoginActivity.this, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
                         riveLoginIcon.fireState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.LOGIN_FAIL_STATE);
                         return;
                     }
@@ -82,7 +84,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(@NonNull Call<AuthResponseModel> call, @NonNull Throwable throwable) {
-                    DialogUtils.unknownError(LoginActivity.this, "login error", throwable);
+                    DialogUtils.errorUserSee(LoginActivity.this, R.string.error_login);
+                    appLogger.error(throwable);
                 }
             });
         });

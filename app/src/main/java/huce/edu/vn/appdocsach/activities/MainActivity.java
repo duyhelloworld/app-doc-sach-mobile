@@ -24,11 +24,13 @@ import huce.edu.vn.appdocsach.callbacks.OnApiResult;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.configurations.FirstTimeSignInManager;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
+import huce.edu.vn.appdocsach.configurations.TokenStorageManager;
 import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
+import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
 import huce.edu.vn.appdocsach.models.book.FindBookModel;
 import retrofit2.Call;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     AuthService authService = AuthService.authService;
     ImageLoader imageLoader;
     ProgressBar pbMain;
+    AppLogger appLogger = AppLogger.getInstance();
     int totalPage = 0;
 
     @Override
@@ -58,21 +61,19 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         pbMain = findViewById(R.id.pbMain);
         ivMainAvatar = findViewById(R.id.ivMainAvatar);
 
-        ivMainAvatar.setOnClickListener(l -> {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
 
         imageLoader = new ImageLoader(MainActivity.this);
         authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
             @Override
             public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
-                if (!response.isSuccessful()) {
+                AuthInfoModel model = response.body();
+                if (!response.isSuccessful() || model == null) {
+                    ivMainAvatar.setOnClickListener(l -> {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    });
                     return;
                 }
-                AuthInfoModel model = response.body();
-                assert model != null;
-
                 if (FirstTimeSignInManager.getFirstTimeSignedIn()) {
                     Toast.makeText(MainActivity.this, getString(R.string.welcome_login, model.getFullname()),
                             Toast.LENGTH_SHORT).show();
@@ -88,13 +89,14 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
 
             @Override
             public void onFailure(@NonNull Call<AuthInfoModel> call, @NonNull Throwable throwable) {
-                DialogUtils.unknownError(MainActivity.this, "Auth error : ", throwable);
+                DialogUtils.errorUserSee(MainActivity.this, R.string.error_load_user_info);
+                appLogger.error(throwable);
             }
         });
 
         new Handler().postDelayed(() -> {
-            pbMain.setVisibility(View.VISIBLE);
             // load first page
+            pbMain.setVisibility(View.VISIBLE);
             loadBook(simpleBookModels -> {
                 bookAdapter = new BookAdapter(MainActivity.this, simpleBookModels, rvListBook,
                         position -> {
@@ -117,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
 
                 @Override
                 public void onFailure(@NonNull Call<List<SimpleCategoryModel>> call, @NonNull Throwable throwable) {
-                    DialogUtils.developmentError(MainActivity.this, throwable);
+                    DialogUtils.errorUserSee(MainActivity.this, R.string.error_load_category);
+                    appLogger.error(throwable);
                 }
             });
             pbMain.setVisibility(View.GONE);
@@ -136,7 +139,8 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
 
             @Override
             public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.unknownError(MainActivity.this, "Lỗi kết nối khi tải truyện :", throwable);
+                DialogUtils.errorUserSee(MainActivity.this, R.string.error_load_book);
+                appLogger.error(throwable);
             }
         });
     }
