@@ -26,7 +26,6 @@ import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.CommentAdapter;
 import huce.edu.vn.appdocsach.apiservices.CommentService;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
-import huce.edu.vn.appdocsach.callbacks.RetrofitCallback;
 import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.models.comment.FindCommentModel;
 import huce.edu.vn.appdocsach.models.comment.SimpleCommentModel;

@@ -24,7 +24,6 @@ import huce.edu.vn.appdocsach.callbacks.OnApiResult;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.configurations.FirstTimeSignInManager;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
-import huce.edu.vn.appdocsach.configurations.TokenStorageManager;
 import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
