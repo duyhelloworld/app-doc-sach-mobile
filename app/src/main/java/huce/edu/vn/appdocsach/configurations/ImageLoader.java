@@ -1,6 +1,5 @@
 package huce.edu.vn.appdocsach.configurations;
 
-import android.content.Context;
 import android.widget.ImageView;
 
 import com.squareup.picasso.MemoryPolicy;

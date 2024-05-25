@@ -16,6 +16,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="tiramisu">
         <activity
+            android:name=".activities.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.UserSettingActivity"
             android:exported="false" />
         <activity

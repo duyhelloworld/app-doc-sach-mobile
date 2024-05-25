@@ -71,28 +71,28 @@ public class UserSettingActivity extends AppCompatActivity {
         imageLoader.renderWithCache(avatar, ivUserSettingAvatar);
         tvUserSettingUsername.setText(fullname);
 
-        btnUserSettingSignOut.setOnClickListener(v -> {
-            authService.signOut().enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    if (!response.isSuccessful()) {
-                        DialogUtils.errorUserSee(UserSettingActivity.this, R.string.error_logout);
-                        return;
-                    }
-                    tokenStorageManager.clearAllTokens();
-                    Toast.makeText(UserSettingActivity.this, R.string.logout_success, Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(UserSettingActivity.this, MainActivity.class);
-                    startActivity(i);
+        btnUserSettingSignOut.setOnClickListener(v -> authService.signOut().enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    DialogUtils.errorUserSee(UserSettingActivity.this, R.string.error_logout);
+                    return;
                 }
+                tokenStorageManager.clearAllTokens();
+                Toast.makeText(UserSettingActivity.this, R.string.logout_success, Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(UserSettingActivity.this, MainActivity.class);
+                startActivity(i);
+            }
 
-                @Override
-                public void onFailure(Call<Void> call, Throwable throwable) {
-                }
-            });
-        });
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+            }
+        }));
 
         btnUserSettingChangePassword.setOnClickListener(v -> {
             DialogUtils.infoUserSee(this, R.string.feature_not_supported);
+            Intent i = new Intent(UserSettingActivity.this, ChangePasswordActivity.class);
+            startActivity(i);
         });
 
         btnUserSettingUpdateProfile.setOnClickListener(v -> {
