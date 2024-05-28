@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
+
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
@@ -39,7 +42,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements OnLoadMore {
     RecyclerView rvListBook, rvListCategory;
-    ImageView ivMainAvatar;
+
     BookAdapter bookAdapter;
     CategoryAdapter categoryAdapter;
     FindBookModel findBookModel = new FindBookModel(8);
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     BookService bookService = BookService.bookService;
     AuthService authService = AuthService.authService;
     ImageLoader imageLoader = ImageLoader.getInstance();
+    NavigationBarView bottomNavigationView;
     TokenStorageManager tokenStorageManager = new TokenStorageManager();
     ProgressBar pbMain;
     SearchView svMainBookSearchBox;
@@ -61,8 +65,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         rvListBook = findViewById(R.id.rvListBook);
         rvListCategory = findViewById(R.id.rvListCategory);
         pbMain = findViewById(R.id.pbMain);
-        ivMainAvatar = findViewById(R.id.ivMainAvatar);
+
         svMainBookSearchBox = findViewById(R.id.svMainBookSearchBox);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         svMainBookSearchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -92,37 +97,35 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             }
         });
 
-        authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
-            @Override
-            public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
-                AuthInfoModel model = response.body();
-                if (!response.isSuccessful() || model == null) {
-                    ivMainAvatar.setOnClickListener(l -> {
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+
+
+        bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            if(menuItem.getItemId() == R.id.navigation_user){
+                authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
+                    @Override
+                    public void onResponse(Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
+                        AuthInfoModel model = response.body();
+                        if(!response.isSuccessful()){
+                            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(loginIntent);
+                            return;
+                        }
+                        Intent intent = new Intent(MainActivity.this, UserSettingActivity.class);
+                        intent.putExtra(IntentKey.USER_AVATAR, model.getAvatar());
+                        intent.putExtra(IntentKey.USER_FULLNAME, model.getFullname());
                         startActivity(intent);
-                    });
-                    return;
-                }
-
-                if (tokenStorageManager.getIsFirstTime()) {
-                    Toast.makeText(MainActivity.this, getString(R.string.welcome_login, model.getFullname()),
-                            Toast.LENGTH_SHORT).show();
-                }
-                imageLoader.renderWithCache(model.getAvatar(), ivMainAvatar);
-                ivMainAvatar.setOnClickListener(l -> {
-                    Intent intent = new Intent(MainActivity.this, UserSettingActivity.class);
-                    intent.putExtra(IntentKey.USER_AVATAR, model.getAvatar());
-                    intent.putExtra(IntentKey.USER_FULLNAME, model.getFullname());
-                    startActivity(intent);
+                    }
+                    @Override
+                    public void onFailure(Call<AuthInfoModel> call, Throwable throwable) {
+                        DialogUtils.errorUserSee(MainActivity.this, R.string.error_login);
+                        appLogger.error(throwable);
+                    }
                 });
+                return true;
             }
-
-            @Override
-            public void onFailure(@NonNull Call<AuthInfoModel> call, @NonNull Throwable throwable) {
-                DialogUtils.errorUserSee(MainActivity.this, R.string.error_load_user_info);
-                appLogger.error(throwable);
-            }
+            return false;
         });
+
 
         new Handler().postDelayed(() -> {
             // load first page

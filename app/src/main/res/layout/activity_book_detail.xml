@@ -53,7 +53,7 @@
         android:id="@+id/tvBookDetailAuthorV"
         android:layout_width="161dp"
         android:layout_height="20dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
         android:text="@string/test_lorem_short"
         app:layout_constraintStart_toEndOf="@+id/tvBookDetailAuthorK"
@@ -61,14 +61,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBookDetailChapterList"
-        android:layout_width="379dp"
-        android:layout_height="312dp"
+        android:layout_width="347dp"
+        android:layout_height="276dp"
         android:layout_marginStart="19dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="28dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -105,9 +106,11 @@
         android:layout_height="22dp"
         android:layout_marginStart="18dp"
         android:layout_marginEnd="271dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/book_detail_chapter_list_key"
         app:layout_constraintBottom_toTopOf="@+id/rvBookDetailChapterList"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <RatingBar
@@ -115,7 +118,7 @@
         android:layout_width="237dp"
         android:layout_height="41dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="28dp"
         android:isIndicator="false"
         android:numStars="5"
         android:scaleX=".8"
@@ -151,15 +154,27 @@
 
     <TextView
         android:id="@+id/tvBookDetailCategories"
-        android:layout_width="221dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="15dp"
+        android:layout_width="161dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="22dp"
+        android:text="@string/test_lorem_long"
         app:layout_constraintBottom_toTopOf="@+id/rbBookDetailRating"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivBookDetailCover"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailAuthorK" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginStart="167dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="14dp"
+        android:text="@string/categories_key"
+        app:layout_constraintEnd_toStartOf="@+id/tvBookDetailCategories"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ivBookDetailCover"
         app:layout_constraintTop_toBottomOf="@+id/tvBookDetailAuthorK" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

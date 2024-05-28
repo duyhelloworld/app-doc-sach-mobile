@@ -1,155 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.LoginActivity">
-
-    <app.rive.runtime.kotlin.RiveAnimationView
-        android:id="@+id/riveLoginIcon"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="105dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="106dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvLoginAppName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:riveResource="@raw/bunny_login" />
-
-    <EditText
-        android:id="@+id/edtLoginUsername"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="69dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="45dp"
-        android:autofillHints="username"
-        android:hint="@string/login_username_title"
-        android:inputType="textAutoComplete"
-        app:layout_constraintBottom_toTopOf="@+id/edtLoginPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/edtLoginPassword"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="69dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="29dp"
-        android:autofillHints="password"
-        android:hint="@string/login_password_title"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/btnLoginSignIn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/ivLoginAppLogo"-->
-    <!--        android:layout_width="184dp"-->
-    <!--        android:layout_height="163dp"-->
-    <!--        android:layout_marginStart="114dp"-->
-    <!--        android:layout_marginTop="42dp"-->
-    <!--        android:layout_marginEnd="114dp"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent"-->
-    <!--        app:srcCompat="@mipmap/ic_launcher" />-->
-
-    <TextView
-        android:id="@+id/tvLoginAppName"
-        android:layout_width="184dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="114dp"
-        android:layout_marginEnd="113dp"
-        android:layout_marginBottom="34dp"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/edtLoginUsername"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnLoginSignIn"
-        android:layout_width="294dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="13dp"
-        android:text="@string/btn_signin"
-        app:layout_constraintBottom_toTopOf="@+id/tvLoginIntroduceOauth"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="289dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginEnd="47dp"
-        android:layout_marginBottom="26dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/tvLoginAggreement"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <ImageButton
-            android:id="@+id/btnLoginGuest"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:padding="3dp" />
+        <app.rive.runtime.kotlin.RiveAnimationView
+            android:id="@+id/riveLoginIcon"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            app:riveResource="@raw/bunny_login" />
 
-        <ImageButton
-            android:id="@+id/btnLoginGoogle"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:padding="3dp" />
+        <TextView
+            android:id="@+id/tvLoginAppName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="@string/app_name"
+            android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/btnLoginFacebook"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:padding="3dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilLoginUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtLoginUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="username"
+                android:hint="@string/login_username_title"
+                android:inputType="textAutoComplete" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/btnLoginGithub"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            android:padding="3dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilLoginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtLoginPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="password"
+                android:hint="@string/login_password_title"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/btnLoginSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_signin" />
+
+        <TextView
+            android:id="@+id/tvRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Chưa có tài khoản? Đăng ký"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_blue_light"
+            android:clickable="true" />
+
+        <TextView
+            android:id="@+id/tvLoginIntroduceOauth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="@string/txt_login_introduce_oauth2"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btnLoginGuest"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="3dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+            <ImageButton
+                android:id="@+id/btnLoginGoogle"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="3dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+            <ImageButton
+                android:id="@+id/btnLoginFacebook"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="3dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+            <ImageButton
+                android:id="@+id/btnLoginGithub"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:padding="3dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tvLoginIntroduceOauth"
-        android:layout_width="180dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="141dp"
-        android:layout_marginEnd="90dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/txt_login_introduce_oauth2"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:id="@+id/tvSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Bỏ qua"
+        android:textSize="16sp"
+        android:clickable="true"
+        android:textColor="@android:color/holo_blue_light" />
 
-    <TextView
-        android:id="@+id/tvLoginAggreement"
-        android:layout_width="355dp"
-        android:layout_height="95dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center"
-        android:text="@string/aggreement_license"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

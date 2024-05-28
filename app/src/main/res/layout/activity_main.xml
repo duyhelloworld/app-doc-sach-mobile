@@ -1,67 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
-    <ImageView
-        android:id="@+id/ivMainAvatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/circle"
-        android:contentDescription="@string/btn_signin"
-        android:src="@mipmap/ic_login_avatar"
-        app:layout_constraintBottom_toTopOf="@+id/rvListCategory"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvListBook"
-        android:layout_width="358dp"
-        android:layout_height="585dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginBottom="19dp"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:spanCount="2" />
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/svMainBookSearchBox"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:layout_margin="4dp"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/search_view_background" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListCategory"
-        android:layout_width="370dp"
+        android:layout_width="match_parent"
         android:layout_height="63dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginBottom="20dp"
+        android:layout_margin="20dp"
         android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/rvListBook"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListBook"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="27dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
 
     <ProgressBar
         android:id="@+id/pbMain"
-        android:layout_width="355dp"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_marginStart="3dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rvListBook"
-        app:layout_constraintStart_toStartOf="@+id/rvListBook" />
+        android:layout_margin="20dp" />
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/svMainBookSearchBox"
-        android:layout_width="300dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="28dp"
-        app:layout_constraintEnd_toStartOf="@+id/ivMainAvatar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_navigation_menu" />
+</LinearLayout>

@@ -11,12 +11,18 @@
     <string name="update_at_prefix">Cập nhật lúc :</string>
     <string name="author_key">Tác giả :</string>
     <string name="default_fullname">Chưa đăng nhập</string>
+    <string name="categories_key">Thể loại :</string>
 
     <string name="btn_signin">Đăng nhập</string>
-    <string name="aggreement_license">Bằng việc đăng nhập, bạn đã đồng ý với các điều khoản dịch vụ của chúng tôi!</string>
+    <string name="aggreement_license">Bằng việc đăng ký, bạn đã đồng ý với các điều khoản dịch vụ của chúng tôi!</string>
     <string name="txt_login_introduce_oauth2">hoặc đăng nhập bằng …</string>
+    <string name="missing_avatar_message_error">Hãy chọn avatar</string>
+    <string name="missing_fullname_message_error">Hãy nhập họ tên</string>
+    <string name="missing_email_message_error">Hãy nhập email</string>
     <string name="missing_username_message_error">Hãy nhập tên tài khoản</string>
     <string name="missing_password_message_error">Hãy nhập mật khẩu</string>
+    <string name="missing_current_password">Hãy nhập mật khẩu cũ</string>
+    <string name="missing_new_password">Hãy nhập mật khẩu mới</string>
     <string name="welcome_login">Xin chào %1$s trở lại!</string>
     <string name="loaded_final_book">Đã load tới truyện  cuối cùng</string>
 
@@ -51,7 +57,9 @@
     <string name="error_load_category">Lỗi khi tải danh sách thể loại</string>
     <string name="error_load_book">Lỗi kết nối khi tải truyện</string>
     <string name="error_load_chapter_image">Lỗi tải chương truyện</string>
+    <string name="error_register">Lỗi khi đăng ký</string>
     <string name="error_login">Lỗi khi đăng nhập</string>
     <string name="error_logout">Lỗi khi đăng xuất</string>
+    <string name="wrong_current_pass">Sai mật khẩu cũ</string>
 
 </resources>

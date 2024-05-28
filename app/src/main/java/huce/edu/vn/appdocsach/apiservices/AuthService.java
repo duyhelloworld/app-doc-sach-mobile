@@ -3,13 +3,17 @@ package huce.edu.vn.appdocsach.apiservices;
 import huce.edu.vn.appdocsach.configurations.RetrofitConfig;
 import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.models.auth.AuthResponseModel;
+import huce.edu.vn.appdocsach.models.auth.ChangePassRequestModel;
 import huce.edu.vn.appdocsach.models.auth.SignInRequestModel;
 import huce.edu.vn.appdocsach.models.auth.SignUpRequestModel;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 
 public interface AuthService {
@@ -18,15 +22,16 @@ public interface AuthService {
     @POST("signin")
     Call<AuthResponseModel> signIn(@Body SignInRequestModel signInRequestModel);
 
-    @POST("signup/default")
-    Call<AuthResponseModel> signUpWithoutAvatar(@Body SignUpRequestModel signUpRequestModel);
-
+    @Multipart
     @POST("signup")
-    Call<AuthResponseModel> signUpWithAvatar(@Part String jsonModel, @Part Multipart avatar);
+    Call<AuthResponseModel> signUpWithAvatar(@Part("jsonModel") RequestBody jsonModel, @Part MultipartBody.Part avatar);
 
     @GET("info")
     Call<AuthInfoModel> getInfo();
 
     @POST("signout")
     Call<Void> signOut();
+
+    @PUT("change-pass")
+    Call<Void> changePass(@Body ChangePassRequestModel changePassRequestModel);
 }

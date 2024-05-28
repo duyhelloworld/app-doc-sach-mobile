@@ -90,13 +90,12 @@ public class UserSettingActivity extends AppCompatActivity {
         }));
 
         btnUserSettingChangePassword.setOnClickListener(v -> {
-            DialogUtils.infoUserSee(this, R.string.feature_not_supported);
             Intent i = new Intent(UserSettingActivity.this, ChangePasswordActivity.class);
             startActivity(i);
         });
 
         btnUserSettingUpdateProfile.setOnClickListener(v -> {
-            DialogUtils.infoUserSee(this, R.string.feature_not_supported);
+
         });
     }
 }
