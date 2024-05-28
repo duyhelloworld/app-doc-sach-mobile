@@ -1,15 +1,15 @@
 package huce.edu.vn.appdocsach.activities;
 
-import android.app.AlertDialog;
+
 import android.content.Intent;
-import android.database.Cursor;
+
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import android.os.Handler;
-import android.provider.MediaStore;
+
 import android.text.Editable;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,7 +43,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 
