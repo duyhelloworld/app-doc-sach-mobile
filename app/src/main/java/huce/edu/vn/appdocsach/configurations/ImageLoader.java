@@ -2,6 +2,8 @@ package huce.edu.vn.appdocsach.configurations;
 
 import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
+
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -19,29 +21,25 @@ public class ImageLoader {
         return instance;
     }
 
-    public void renderWithCache(String url, ImageView imageView) {
-        picasso.load(url).into(imageView);
-    }
-
-    public void renderOnce(String url, ImageView imageView) {
+    public void showWithoutStore(String url, ImageView imageView) {
         picasso.load(url)
                 .networkPolicy(NetworkPolicy.NO_STORE)
                 .memoryPolicy(MemoryPolicy.NO_STORE)
                 .into(imageView);
     }
 
-    public void renderWithoutCache(String url, ImageView imageView) {
+    public void showWithoutCache(String url, ImageView imageView) {
         picasso.load(url)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
                 .into(imageView);
     }
 
-    public void renderChapter(String url, ImageView imageView) {
-        picasso.load(url)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .fit()
-                .into(imageView);
+    public void show(String url, ImageView imageView) {
+        picasso.load(url).fit().into(imageView);
+    }
+
+    public void cancelRequest(ImageView imageView) {
+        picasso.cancelRequest(imageView);
     }
 }

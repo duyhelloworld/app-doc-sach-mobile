@@ -12,15 +12,10 @@ import huce.edu.vn.appdocsach.constants.DefaultError;
 import huce.edu.vn.appdocsach.utils.serializers.LocalDateTimeAdapter;
 
 public class ErrorModel {
-    private Integer code;
-    private List<String> messages;
+    private Integer code = DefaultError.UNEXPECTED_ERROR.getCode();
+    private List<String> messages = Collections.singletonList(DefaultError.UNEXPECTED_ERROR.getMessage());
     @JsonAdapter(LocalDateTimeAdapter.class)
-    private LocalDateTime createdAt;
-
-    public ErrorModel() {
-        this.code = DefaultError.UNEXPECTED_ERROR.getCode();
-        this.messages = Collections.singletonList(DefaultError.UNEXPECTED_ERROR.getMessage());
-    }
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Override
     @NonNull

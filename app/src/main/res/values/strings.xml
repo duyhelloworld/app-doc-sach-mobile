@@ -8,6 +8,7 @@
     <string name="login_username_title">Tài khoản</string>
     <string name="login_password_title">Mật khẩu</string>
     <string name="book_cover_description">Ảnh truyện</string>
+    <string name="total_book">Số truyện</string>
     <string name="update_at_prefix">Cập nhật lúc :</string>
     <string name="author_key">Tác giả :</string>
     <string name="default_fullname">Chưa đăng nhập</string>
@@ -32,6 +33,10 @@
     <string name="comment_in">Nhập bình luận</string>
     <string name="comment_scroll_view">Bình luận</string>
     <string name="user_avatar">Ảnh đại diện</string>
+    <string name="comment_edit_selection">Chỉnh sửa</string>
+    <string name="comment_delete_selection">Xóa</string>
+    <string name="comment_report_selection">Yêu cầu gỡ bỏ</string>
+
     <string name="comment_at_prefix">Bình luận lúc :</string>
     <string name="btn_update_profile_message">Cập nhật hồ sơ</string>
     <string name="btn_logout_message">Đăng xuất</string>
@@ -40,7 +45,10 @@
     <string name="feature_not_supported">Xin lỗi, chức năng này chưa hỗ trợ</string>
     <string name="not_found_book">Không tìm thấy truyện nào thỏa mãn</string>
 
-    <string name="comment_success_message">Bình luận thành công</string>
+    <string name="comment_add_success_message">Bình luận thành công</string>
+    <string name="comment_delete_success_message">Xóa bình luận thành công</string>
+    <string name="comment_edit_success_message">Chỉnh sửa thành công</string>
+
     <string name="error_write_comment">Lỗi khi thêm comment!</string>
     <string name="error_load_comment">Tải bình luận lỗi!</string>
     <string name="missing_comment_content">Hãy điền nội dung bình luận trước đã!</string>
@@ -53,5 +61,6 @@
     <string name="error_load_chapter_image">Lỗi tải chương truyện</string>
     <string name="error_login">Lỗi khi đăng nhập</string>
     <string name="error_logout">Lỗi khi đăng xuất</string>
+    <string name="view_count">Lượt xem</string>
 
 </resources>

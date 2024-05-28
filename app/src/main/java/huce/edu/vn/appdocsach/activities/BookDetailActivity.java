@@ -1,5 +1,6 @@
 package huce.edu.vn.appdocsach.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 
 public class BookDetailActivity extends AppCompatActivity {
 
-    TextView tvBookDetailTitle, tvBookDetailAuthorV, tvBookDetailDescriptionV, tvBookDetailCategories;
+    TextView tvBookDetailTitle, tvBookDetailAuthorV, tvBookDetailDescriptionV, tvBookDetailCategories, tvBookDetailViewCountV;
     RecyclerView rvBookDetailChapterList;
     RatingBar rbBookDetailRating;
     ImageView ivBookDetailCover;
@@ -55,30 +56,31 @@ public class BookDetailActivity extends AppCompatActivity {
         ivBookDetailCover = findViewById(R.id.ivBookDetailCover);
         btnBookDetailReadFirst = findViewById(R.id.btnBookDetailReadFirst);
         btnBookDetailReadLast = findViewById(R.id.btnBookDetailReadLast);
+        tvBookDetailViewCountV = findViewById(R.id.tvBookDetailViewCountV);
 
         Intent intent = getIntent();
         int bookId = intent.getIntExtra(IntentKey.BOOK_ID, 0);
 
         bookService.getBookById(bookId).enqueue(new Callback<BookModel>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<BookModel> call, @NonNull Response<BookModel> response) {
                 BookModel model = response.body();
                 if (response.isSuccessful() && model != null) {
-                    imageLoader.renderWithCache(model.getCoverImage(), ivBookDetailCover);
+                    imageLoader.show(model.getCoverImage(), ivBookDetailCover);
                     tvBookDetailTitle.setText(model.getTitle());
                     tvBookDetailAuthorV.setText(model.getAuthor());
+                    tvBookDetailViewCountV.setText(model.getViewCount().toString());
                     tvBookDetailDescriptionV.setText(model.getDescription());
                     rbBookDetailRating.setRating(model.getAverageRate());
-                    tvBookDetailCategories.setText(model.getCategories().stream()
-                            .map(SimpleCategoryModel::getName)
-                            .collect(Collectors.joining(", ")));
-
+                    tvBookDetailCategories.setText(model.getCategories());
                     chapterAdapter = new ChapterAdapter(model.getChapters(), position -> readChapter(position, chapterAdapter.getOnlyNamModel()));
                     rvBookDetailChapterList.setAdapter(chapterAdapter);
 
-                    btnBookDetailReadFirst.setOnClickListener(v -> readChapter(chapterAdapter.getFirstItemIndex(), chapterAdapter.getOnlyNamModel()));
-
-                    btnBookDetailReadLast.setOnClickListener(v -> readChapter(chapterAdapter.getLastItemIndex(), chapterAdapter.getOnlyNamModel()));
+                    btnBookDetailReadFirst.setOnClickListener(v ->
+                            readChapter(chapterAdapter.getFirstItemIndex(), chapterAdapter.getOnlyNamModel()));
+                    btnBookDetailReadLast.setOnClickListener(v ->
+                            readChapter(chapterAdapter.getLastItemIndex(), chapterAdapter.getOnlyNamModel()));
                 }
             }
 

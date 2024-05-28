@@ -11,6 +11,13 @@ public class FindBookModel extends RetrofitRequest implements RetrofitModel {
 
     private String keyword = "";
 
+    private String sort = "id";
+
+    public FindBookModel(Integer pageSize, String sort) {
+        super(pageSize);
+        this.sort = sort;
+    }
+
     public FindBookModel(Integer pageSize) {
         super(pageSize);
     }
@@ -19,6 +26,7 @@ public class FindBookModel extends RetrofitRequest implements RetrofitModel {
         Map<String, Object> queryMap = super.getRetrofitQuery();
         queryMap.put("categoryId", categoryId);
         queryMap.put("keyword", keyword);
+        queryMap.put("sort", sort);
         return queryMap;
     }
 
@@ -36,5 +44,13 @@ public class FindBookModel extends RetrofitRequest implements RetrofitModel {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
     }
 }

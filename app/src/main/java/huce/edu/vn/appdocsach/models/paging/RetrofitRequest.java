@@ -12,8 +12,6 @@ public abstract class RetrofitRequest implements RetrofitModel {
 
     private Integer pageNumber = PaginationConstant.defaultPageNumber;
 
-    private String sortBy = PaginationConstant.defaultSortBy;
-
     public RetrofitRequest(Integer pageSize) {
         this.pageSize = pageSize;
     }
@@ -23,7 +21,6 @@ public abstract class RetrofitRequest implements RetrofitModel {
         Map<String, Object> queryMap = new HashMap<>();
         queryMap.put("pageSize", getPageSize());
         queryMap.put("pageNumber", getPageNumber());
-        queryMap.put("sortBy", getSortBy());
         return queryMap;
     }
 
@@ -47,11 +44,4 @@ public abstract class RetrofitRequest implements RetrofitModel {
         this.pageNumber = pageNumber;
     }
 
-    public String getSortBy() {
-        return sortBy;
-    }
-
-    public void setSortBy(String sortBy) {
-        this.sortBy = sortBy;
-    }
 }

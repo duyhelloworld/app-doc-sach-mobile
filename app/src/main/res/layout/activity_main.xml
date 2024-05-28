@@ -6,62 +6,92 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
+    <!--    Circle3 == ViewPager2 -->
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2ListBook"
+        android:layout_width="match_parent"
+        android:layout_height="168dp"
+        android:layout_marginTop="72dp"
+        android:orientation="horizontal"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/svMainBookSearchBox" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/ciListHotBook"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="169dp"
+        android:layout_marginEnd="197dp"
+        app:ci_drawable="@drawable/bg_book_indicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vp2ListBook" />
+
     <ImageView
         android:id="@+id/ivMainAvatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/circle"
         android:contentDescription="@string/btn_signin"
         android:src="@mipmap/ic_login_avatar"
-        app:layout_constraintBottom_toTopOf="@+id/rvListCategory"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/svMainBookSearchBox"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvListBook"
         android:layout_width="358dp"
-        android:layout_height="585dp"
+        android:layout_height="338dp"
         android:layout_marginStart="27dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="26dp"
-        android:layout_marginBottom="19dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainTotalBook"
         app:spanCount="2" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvListCategory"
-        android:layout_width="370dp"
-        android:layout_height="63dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/rvListBook"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/pbMain"
         android:layout_width="355dp"
-        android:layout_height="48dp"
+        android:layout_height="20dp"
         android:layout_marginStart="3dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="@+id/rvListBook"
-        app:layout_constraintStart_toStartOf="@+id/rvListBook" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/rvListBook"
+        app:layout_constraintTop_toBottomOf="@+id/rvListBook" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/svMainBookSearchBox"
         android:layout_width="300dp"
         android:layout_height="35dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="31dp"
         app:layout_constraintEnd_toStartOf="@+id/ivMainAvatar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvMainTotalBook"
+        android:layout_width="119dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="264dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vp2ListBook" />
 </androidx.constraintlayout.widget.ConstraintLayout>

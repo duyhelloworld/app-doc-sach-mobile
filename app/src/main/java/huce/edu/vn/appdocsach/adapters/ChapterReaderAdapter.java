@@ -13,6 +13,7 @@ import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.callbacks.OnHoldEvent;
+import huce.edu.vn.appdocsach.callbacks.RenderImageDiffUtilCallback;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 
 public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdapter.ChapterReaderViewHolder> {
@@ -26,28 +27,7 @@ public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdap
     }
 
     public void setData(List<String> newUrls) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
-            @Override
-            public int getOldListSize() {
-                return urls.size();
-            }
-
-            @Override
-            public int getNewListSize() {
-                return newUrls.size();
-            }
-
-            @Override
-            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                return urls.get(oldItemPosition).substring(48)
-                        .equals(newUrls.get(newItemPosition).substring(48));
-            }
-
-            @Override
-            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                return true;
-            }
-        });
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new RenderImageDiffUtilCallback(urls, newUrls));
         urls.clear();
         urls.addAll(newUrls);
         diffResult.dispatchUpdatesTo(this);
@@ -61,7 +41,7 @@ public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdap
 
     @Override
     public void onBindViewHolder(@NonNull ChapterReaderAdapter.ChapterReaderViewHolder holder, int position) {
-        imageLoader.renderChapter(urls.get(position), holder.ivChapterReaderImage);
+        imageLoader.show(urls.get(position), holder.ivChapterReaderImage);
     }
 
     @Override
@@ -80,5 +60,13 @@ public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdap
                 return true;
             });
         }
+    }
+
+    //    Chống crash ảnh
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull ChapterReaderViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        imageLoader.cancelRequest(holder.ivChapterReaderImage);
     }
 }

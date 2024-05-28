@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/shapeableImageView"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="136dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/flash_screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        app:strokeColor="@color/blue"
+        app:strokeWidth="1dp" />
+
+    <TextView
+        android:layout_width="163dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="127dp"
+        android:layout_marginBottom="166dp"
+        android:fontFamily="@font/be_vietnam_light"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shapeableImageView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

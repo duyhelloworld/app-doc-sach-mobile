@@ -64,6 +64,7 @@
             android:autofillHints=""
             android:hint="@string/comment_in"
             android:inputType="textNoSuggestions"
+            android:imeOptions="actionDone"
             app:layout_constraintBottom_toTopOf="@+id/rvBookDetailListComment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivCommentReaderAvatar"

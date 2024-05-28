@@ -26,7 +26,8 @@ public class BookModel extends BaseModel {
 
     private List<SimpleChapterModel> chapters;
 
-    private List<SimpleCategoryModel> categories;
+    private String categories;
+    private Long viewCount;
 
     @Override
     public boolean compareTo(Object o) {
@@ -34,16 +35,12 @@ public class BookModel extends BaseModel {
         return b.getId() == getId() && b.title.equals(title) && b.author.equals(author) && b.averageRate.equals(averageRate);
     }
 
-    public BookModel(Integer id, String title, LocalDateTime lastUpdatedAt, String coverImage, String author, String description, Float averageRate, List<SimpleChapterModel> chapters, List<SimpleCategoryModel> categories) {
-        this.setId(id);
-        this.title = title;
-        this.lastUpdatedAt = lastUpdatedAt;
-        this.coverImage = coverImage;
-        this.author = author;
-        this.description = description;
-        this.averageRate = averageRate;
-        this.chapters = chapters;
-        this.categories = categories;
+    public Long getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
     }
 
     public String getTitle() {
@@ -94,14 +91,6 @@ public class BookModel extends BaseModel {
         this.averageRate = averageRate;
     }
 
-    public List<SimpleCategoryModel> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<SimpleCategoryModel> categories) {
-        this.categories = categories;
-    }
-
     public List<SimpleChapterModel> getChapters() {
         return chapters;
     }
@@ -110,5 +99,11 @@ public class BookModel extends BaseModel {
         this.chapters = chapters;
     }
 
+    public String getCategories() {
+        return categories;
+    }
 
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
 }

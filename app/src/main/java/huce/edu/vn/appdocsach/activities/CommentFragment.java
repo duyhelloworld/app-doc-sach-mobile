@@ -13,9 +13,11 @@ import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,7 +28,10 @@ import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.CommentAdapter;
 import huce.edu.vn.appdocsach.apiservices.AuthService;
 import huce.edu.vn.appdocsach.apiservices.CommentService;
+import huce.edu.vn.appdocsach.callbacks.CallBack;
+import huce.edu.vn.appdocsach.callbacks.OnApiResult;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
+import huce.edu.vn.appdocsach.callbacks.OnTouchViewItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.constants.IntentKey;
 import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
@@ -42,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CommentFragment extends Fragment implements OnLoadMore {
+public class CommentFragment extends Fragment implements OnLoadMore, OnTouchViewItem {
     CommentService commentService = CommentService.commentService;
     AuthService authService = AuthService.authService;
     List<SimpleCommentModel> commentModels = new ArrayList<>();
@@ -56,6 +61,8 @@ public class CommentFragment extends Fragment implements OnLoadMore {
     RecyclerView rvBookDetailListComment;
     long totalPage = 0;
     Context context;
+    ImageLoader imageLoader = ImageLoader.getInstance();
+    InputMethodManager inputMethodManager;
 
     @Nullable
     @Override
@@ -68,9 +75,8 @@ public class CommentFragment extends Fragment implements OnLoadMore {
         edtCommentReaderContent = view.findViewById(R.id.edtCommentReaderContent);
         ivCommentReaderAvatar = view.findViewById(R.id.ivCommentReaderAvatar);
 
-        Bundle bundle = getArguments();
-        assert bundle != null;
-        findCommentModel = new FindCommentModel(bundle.getInt(IntentKey.CHAPTER_ID, 0), 4);
+        assert getActivity() != null;
+        inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
             @Override
@@ -81,7 +87,7 @@ public class CommentFragment extends Fragment implements OnLoadMore {
                     return;
                 }
                 ivCommentReaderAvatar.setContentDescription(model.getFullname());
-                ImageLoader.getInstance().renderWithCache(model.getAvatar(), ivCommentReaderAvatar);
+                imageLoader.showWithoutCache(model.getAvatar(), ivCommentReaderAvatar);
             }
 
             @Override
@@ -90,53 +96,63 @@ public class CommentFragment extends Fragment implements OnLoadMore {
                 AppLogger.getInstance().error(throwable);
             }
         });
-        callApiAndSaveCommentModel();
+
         new Handler().postDelayed(() -> {
             // Load first page comments
+            Bundle bundle = getArguments();
+            assert bundle != null;
+            findCommentModel = new FindCommentModel(bundle.getInt(IntentKey.CHAPTER_ID, 0), 4);
             pbComment.setVisibility(View.VISIBLE);
-            assert commentModels != null;
-            commentAdapter = new CommentAdapter(commentModels, rvBookDetailListComment, this, position -> {
+            fetchComment(() -> {
+                commentAdapter = new CommentAdapter(commentModels, rvBookDetailListComment, this, this);
+                rvBookDetailListComment.setAdapter(commentAdapter);
+                pbComment.setVisibility(View.GONE);
             });
-            rvBookDetailListComment.setAdapter(commentAdapter);
-            pbComment.setVisibility(View.GONE);
         }, 500);
 
-        assert getActivity() != null;
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        edtCommentReaderContent.setOnClickListener(v -> {
-            Editable commentContent = edtCommentReaderContent.getText();
-            if (StringUtils.isNullOrEmpty(commentContent)) {
-                DialogUtils.infoUserSee(context, R.string.missing_comment_content);
-                return;
+        edtCommentReaderContent.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                makeWriteCommentRequest(v);
+                return true;
             }
-            WriteCommentModel writeCommentModel = new WriteCommentModel(commentContent.toString(), findCommentModel.getChapterId());
-            commentService.writeComment(writeCommentModel).enqueue(new Callback<SimpleCommentModel>() {
-                @Override
-                public void onResponse(@NonNull Call<SimpleCommentModel> call, @NonNull Response<SimpleCommentModel> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        Toast.makeText(context, getString(R.string.comment_success_message), Toast.LENGTH_SHORT).show();
-                        commentAdapter.append(response.body());
-                        edtCommentReaderContent.setText(null);
-                        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                        edtCommentReaderContent.clearFocus();
-                        return;
-                    }
-                    DialogUtils.errorUserSee(context, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<SimpleCommentModel> call, @NonNull Throwable throwable) {
-                    DialogUtils.errorUserSee(context, R.string.error_write_comment);
-                    appLogger.error(throwable);
-                }
-            });
+            return false;
         });
+
         return view;
     }
 
-    private void callApiAndSaveCommentModel() {
+    private void makeWriteCommentRequest(View v) {
+        Editable commentContent = edtCommentReaderContent.getText();
+        if (StringUtils.isNullOrEmpty(commentContent)) {
+            DialogUtils.infoUserSee(context, R.string.missing_comment_content);
+            return;
+        }
+        WriteCommentModel writeCommentModel = new WriteCommentModel(commentContent.toString(), findCommentModel.getChapterId());
+        commentService.writeComment(writeCommentModel).enqueue(new Callback<SimpleCommentModel>() {
+            @Override
+            public void onResponse(@NonNull Call<SimpleCommentModel> call, @NonNull Response<SimpleCommentModel> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    Toast.makeText(context, getString(R.string.comment_add_success_message), Toast.LENGTH_SHORT).show();
+                    commentAdapter.append(response.body());
+                    edtCommentReaderContent.setText(null);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    edtCommentReaderContent.clearFocus();
+                    return;
+                }
+                DialogUtils.errorUserSee(context, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<SimpleCommentModel> call, @NonNull Throwable throwable) {
+                DialogUtils.errorUserSee(context, R.string.error_write_comment);
+                appLogger.error(throwable);
+            }
+        });
+    }
+
+    private void fetchComment(CallBack callBack) {
         commentService.getComments(findCommentModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleCommentModel>>() {
             @Override
             public void onResponse(@NonNull Call<PagingResponse<SimpleCommentModel>> call, @NonNull Response<PagingResponse<SimpleCommentModel>> response) {
@@ -144,6 +160,7 @@ public class CommentFragment extends Fragment implements OnLoadMore {
                 assert data != null;
                 commentModels = data.getValues();
                 totalPage = data.getTotalPage();
+                callBack.callBack();
             }
 
             @Override
@@ -158,16 +175,62 @@ public class CommentFragment extends Fragment implements OnLoadMore {
     public void loadMore() {
         // Chưa load hết dữ liệu
         if (findCommentModel.getPageNumber() <= totalPage) {
-            pbComment.setVisibility(View.VISIBLE);
             new Handler().postDelayed(() -> {
+                pbComment.setVisibility(View.VISIBLE);
                 findCommentModel.incrementPageNumber();
-                callApiAndSaveCommentModel();
-                commentAdapter.add(commentModels);
-                commentAdapter.setLoaded();
-                pbComment.setVisibility(View.GONE);
-            }, 2000);
-        } else {
-            Toast.makeText(context, getString(R.string.loaded_final_book), Toast.LENGTH_SHORT).show();
+                fetchComment(() -> {
+                    commentAdapter.append(commentModels);
+                    commentAdapter.setLoaded();
+                    pbComment.setVisibility(View.GONE);
+                });
+            }, 1000);
         }
+    }
+
+    @Override
+    public void onTouch(int position, View v) {
+        PopupMenu popupMenu = new PopupMenu(context, v);
+        popupMenu.getMenuInflater().inflate(R.menu.popup_menu_comment, popupMenu.getMenu());
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(item -> {
+
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.mnFragCommentEdit) {
+                SimpleCommentModel commentModel = commentAdapter.getComment(position);
+                edtCommentReaderContent.setText(commentModel.getContent());
+                edtCommentReaderContent.requestFocus();
+                edtCommentReaderContent.setOnEditorActionListener((v1, actionId, event) -> {
+
+                    return true;
+                });
+                return true;
+            }
+
+            if (itemId == R.id.mnFragCommentDelete) {
+                Integer commentId = commentAdapter.getCommentId(position);
+                commentService.deleteComment(commentId).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            commentModels.remove(position);
+                            commentAdapter.remove(position);
+                            Toast.makeText(context, R.string.comment_delete_success_message, Toast.LENGTH_SHORT).show();
+                        } else {
+                            DialogUtils.errorUserSee(context, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+                        appLogger.error(throwable);
+                    }
+                });
+                return true;
+            }
+
+            DialogUtils.infoUserSee(context, R.string.feature_not_supported);
+            return true;
+        });
     }
 }

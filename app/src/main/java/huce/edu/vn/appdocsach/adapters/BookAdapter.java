@@ -46,6 +46,11 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         });
     }
 
+    public BookAdapter(List<SimpleBookModel> books, OnTouchItem onTouchItem) {
+        this.books = books;
+        this.onTouchItem = onTouchItem;
+    }
+
     public void setLoaded() {
         this.isLoading = false;
     }
@@ -71,7 +76,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
         SimpleBookModel book = books.get(position);
         holder.tvMainBookItemNameV.setText(book.getTitle());
-        imageLoader.renderWithCache(book.getCoverImage(), holder.ivMainBookItemCoverImage);
+        imageLoader.show(book.getCoverImage(), holder.ivMainBookItemCoverImage);
     }
 
     @Override
@@ -79,8 +84,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return books == null ? 0 : books.size();
     }
 
-    class BookViewHolder extends RecyclerView.ViewHolder
-    {
+    class BookViewHolder extends RecyclerView.ViewHolder {
         TextView tvMainBookItemNameV;
         ImageView ivMainBookItemCoverImage;
 

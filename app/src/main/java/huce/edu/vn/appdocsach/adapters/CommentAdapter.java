@@ -17,18 +17,19 @@ import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.callbacks.GenericDiffUtilCallback;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
+import huce.edu.vn.appdocsach.callbacks.OnTouchViewItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.comment.SimpleCommentModel;
 import huce.edu.vn.appdocsach.utils.DatetimeUtils;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentHolder> {
-    private final OnTouchItem onTouchItem;
+    private final OnTouchViewItem onTouchViewItem;
     private final List<SimpleCommentModel> commentModels;
     private final ImageLoader imageLoader = ImageLoader.getInstance();
     private boolean isLoading = false;
 
-    public CommentAdapter(List<SimpleCommentModel> commentModels, RecyclerView recyclerView, OnLoadMore onLoadMore, OnTouchItem onTouchItem) {
-        this.onTouchItem = onTouchItem;
+    public CommentAdapter(List<SimpleCommentModel> commentModels, RecyclerView recyclerView, OnLoadMore onLoadMore, OnTouchViewItem onTouchViewItem) {
+        this.onTouchViewItem = onTouchViewItem;
         this.commentModels = commentModels;
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         assert layoutManager != null;
@@ -58,9 +59,28 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         diffResult.dispatchUpdatesTo(this);
     }
 
+    public void append(List<SimpleCommentModel> commentModels) {
+        int oldSize = commentModels.size();
+        this.commentModels.addAll(commentModels);
+        notifyItemRangeInserted(oldSize, getItemCount());
+    }
+
     public void append(SimpleCommentModel commentModel) {
         this.commentModels.add(commentModel);
-        notifyItemInserted(this.commentModels.size() - 1);
+        notifyItemInserted(getItemCount() - 1);
+    }
+
+    public Integer getCommentId(int pos) {
+        return commentModels.get(pos).getId();
+    }
+
+    public SimpleCommentModel getComment(int pos) {
+        return commentModels.get(pos);
+    }
+
+    public void remove(int pos) {
+        commentModels.remove(pos);
+        notifyItemRemoved(pos);
     }
 
     @NonNull
@@ -81,7 +101,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
             commentHolder.tvCommentItemIsEdited.setText(R.string.is_edited);
         }
         commentHolder.tvCommentItemContent.setText(comment.getContent());
-        imageLoader.renderWithCache(comment.getUserAvatar(), commentHolder.ivCommentItemAvatar);
+        imageLoader.showWithoutCache(comment.getUserAvatar(), commentHolder.ivCommentItemAvatar);
     }
 
     @Override
@@ -101,7 +121,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
             tvCommentItemLastUpdatedAtV = itemView.findViewById(R.id.tvCommentItemLastUpdatedAtV);
             ivCommentItemAvatar = itemView.findViewById(R.id.ivCommentItemAvatar);
 
-            tvCommentItemFullname.setOnClickListener(v -> onTouchItem.onClick(getAdapterPosition()));
+            itemView.setOnLongClickListener(v -> {
+                onTouchViewItem.onTouch(getAdapterPosition(), itemView);
+                return true;
+            });
         }
     }
 }

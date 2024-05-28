@@ -30,7 +30,6 @@ public class UserSettingActivity extends AppCompatActivity {
     AuthService authService = AuthService.authService;
     ImageLoader imageLoader = ImageLoader.getInstance();
     AppLogger appLogger = AppLogger.getInstance();
-    String avatar, fullname;
     TokenStorageManager tokenStorageManager = new TokenStorageManager();
 
     @Override
@@ -45,31 +44,8 @@ public class UserSettingActivity extends AppCompatActivity {
         tvUserSettingUsername = findViewById(R.id.tvUserSettingUsername);
 
         Intent intent = getIntent();
-        avatar = intent.getStringExtra(IntentKey.USER_AVATAR);
-        fullname = intent.getStringExtra(IntentKey.USER_FULLNAME);
-        if (StringUtils.isNullOrEmpty(avatar) || StringUtils.isNullOrEmpty(fullname)) {
-            authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
-                @Override
-                public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
-                    AuthInfoModel model = response.body();
-                    if (!response.isSuccessful() || model == null) {
-                        ivUserSettingAvatar.setImageResource(R.drawable.default_avatar);
-                        tvUserSettingUsername.setText(R.string.default_fullname);
-                        return;
-                    }
-                    avatar = model.getAvatar();
-                    fullname = model.getFullname();
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<AuthInfoModel> call, @NonNull Throwable throwable) {
-                    DialogUtils.errorUserSee(UserSettingActivity.this, R.string.error_load_user_info);
-                    appLogger.error(throwable);
-                }
-            });
-        }
-        imageLoader.renderWithCache(avatar, ivUserSettingAvatar);
-        tvUserSettingUsername.setText(fullname);
+        imageLoader.show(intent.getStringExtra(IntentKey.USER_AVATAR), ivUserSettingAvatar);
+        tvUserSettingUsername.setText(intent.getStringExtra(IntentKey.USER_FULLNAME));
 
         btnUserSettingSignOut.setOnClickListener(v -> authService.signOut().enqueue(new Callback<Void>() {
             @Override
@@ -86,6 +62,7 @@ public class UserSettingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+                appLogger.error(throwable);
             }
         }));
 

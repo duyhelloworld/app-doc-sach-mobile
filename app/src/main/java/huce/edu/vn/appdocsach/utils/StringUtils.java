@@ -10,6 +10,10 @@ public class StringUtils {
     }
 
     public static boolean isNullOrEmpty(String string) {
-        return TextUtils.isEmpty(string);
+        return string == null || string.length() == 0;
+    }
+
+    public static boolean hasText(String string) {
+        return string != null && !string.isEmpty();
     }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mnFragCommentEdit"
+        android:title="@string/comment_edit_selection" />
+    <item
+        android:id="@+id/mnFragCommentDelete"
+        android:title="@string/comment_delete_selection" />
+    <item
+        android:id="@+id/mnFragCommentReport"
+        android:title="@string/comment_report_selection" />
+</menu>

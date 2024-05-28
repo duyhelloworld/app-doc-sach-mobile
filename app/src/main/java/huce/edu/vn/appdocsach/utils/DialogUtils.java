@@ -22,11 +22,13 @@ public class DialogUtils {
             case INFO:
                 builder.setTitle("Thông báo")
                         .setIcon(R.drawable.info)
+                        .setPositiveButton("Ok", (dialog, which) -> dialog.cancel())
                         .create().show();
                 break;
             case ERROR:
                 builder.setTitle("Lỗi")
                         .setIcon(R.drawable.error)
+                        .setPositiveButton("Ok", (dialog, which) -> dialog.cancel())
                         .create().show();
                 break;
             case CONFIRM:

@@ -3,7 +3,20 @@
     <style name="Base.Theme.Appdocsach" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="Theme.Appdocsach" parent="Base.Theme.Appdocsach" />
+
+    <style name="circleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="circleProgressBar">
+        <item name="android:interpolator">@color/gray</item>
+        <item name="android:shape">oval</item>
+        <item name="cornerRadius"></item>
+    </style>
 </resources>
