@@ -7,8 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import app.rive.runtime.kotlin.RiveAnimationView;
 import app.rive.runtime.kotlin.core.ExperimentalAssetLoader;
@@ -27,9 +31,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText edtLoginUsername, edtLoginPassword;
+    TextInputEditText edtLoginUsername, edtLoginPassword;
     Button btnLoginSignIn;
     RiveAnimationView riveLoginIcon;
+    TextView tvRegister, tvSkip;
+
     TokenStorageManager tokenStorage = new TokenStorageManager();
     AuthService authService = AuthService.authService;
     AppLogger appLogger = AppLogger.getInstance();
@@ -46,20 +52,35 @@ public class LoginActivity extends AppCompatActivity {
         edtLoginPassword = findViewById(R.id.edtLoginPassword);
         btnLoginSignIn = findViewById(R.id.btnLoginSignIn);
 
+        TextInputLayout tilLoginUsername = findViewById(R.id.tilLoginUsername);
+        TextInputLayout tilLoginPassword = findViewById(R.id.tilLoginPassword);
+
         edtLoginUsername.setOnFocusChangeListener((v, hasFocus) -> riveLoginIcon.setBooleanState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.IS_FOCUS_STATE, hasFocus));
 
         edtLoginPassword.setOnFocusChangeListener((v, hasFocus) -> riveLoginIcon.setBooleanState(RiveConstants.RIVE_STATE_MACHINE, RiveConstants.IS_PASSWORD_STATE, hasFocus));
 
+        tvRegister = findViewById(R.id.tvRegister);
+        tvSkip = findViewById(R.id.tvSkip);
+
+        tvRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
         btnLoginSignIn.setOnClickListener(l -> {
             Editable user = edtLoginUsername.getText(), pass = edtLoginPassword.getText();
             if (StringUtils.isNullOrEmpty(user)) {
-                DialogUtils.errorUserSee(LoginActivity.this, R.string.missing_username_message_error);
+                tilLoginUsername.setError(getString(R.string.missing_username_message_error));
                 return;
+            } else {
+                tilLoginUsername.setError(null);
             }
 
             if (StringUtils.isNullOrEmpty(pass)) {
-                DialogUtils.errorUserSee(LoginActivity.this, R.string.missing_password_message_error);
+                tilLoginPassword.setError(getString(R.string.missing_password_message_error));
                 return;
+            } else {
+                tilLoginPassword.setError(null);
             }
 
             SignInRequestModel signInRequestModel = new SignInRequestModel(user.toString().trim(), pass.toString());
@@ -88,6 +109,11 @@ public class LoginActivity extends AppCompatActivity {
                     appLogger.error(throwable);
                 }
             });
+        });
+
+        tvSkip.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
         });
     }
 }
