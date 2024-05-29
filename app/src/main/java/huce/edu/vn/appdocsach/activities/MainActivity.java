@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             if(menuItem.getItemId() == R.id.navigation_user){
                 authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
                     @Override
-                    public void onResponse(Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
+                    public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
                         AuthInfoModel model = response.body();
-                        if(!response.isSuccessful()){
+                        if (!response.isSuccessful()) {
                             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(loginIntent);
                             return;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                     }
 
                     @Override
-                    public void onFailure(Call<AuthInfoModel> call, Throwable throwable) {
+                    public void onFailure(@NonNull Call<AuthInfoModel> call, @NonNull Throwable throwable) {
                         DialogUtils.errorUserSee(MainActivity.this, R.string.error_login);
                         appLogger.error(throwable);
                     }
