@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -34,6 +33,7 @@ import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
 import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
+import huce.edu.vn.appdocsach.utils.StringUtils;
 import me.relex.circleindicator.CircleIndicator3;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     AuthService authService = AuthService.authService;
     NavigationBarView bottomNavigationView;
     ProgressBar pbMain;
-    SearchView svMainBookSearchBox;
     AppLogger appLogger = AppLogger.getInstance();
     Handler changeHotBookHandler = new Handler(Looper.getMainLooper());
     Runnable changeBookRunnable = () -> {
@@ -73,11 +72,11 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         vp2ListHotBook = findViewById(R.id.vp2ListHotBook);
         pbMain = findViewById(R.id.pbMain);
         ciListHotBook = findViewById(R.id.ciListHotBook);
-        svMainBookSearchBox = findViewById(R.id.svMainBookSearchBox);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
-            if(menuItem.getItemId() == R.id.navigation_user){
+            int menuId = menuItem.getItemId();
+            if (menuId == R.id.navigation_user) {
                 authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
                     @Override
                     public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
@@ -101,6 +100,10 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                     }
                 });
                 return true;
+            }
+            if (menuId == R.id.navigation_search) {
+                Intent intent = new Intent(MainActivity.this, BookSearchActivity.class);
+                startActivity(intent);
             }
             return false;
         });
@@ -149,26 +152,18 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             pbMain.setVisibility(View.GONE);
         }, 500);
 
-        svMainBookSearchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                findBookModel.setKeyword(query);
-                fetchBook(responseData -> {
-                    if (responseData == null || responseData.size() == 0) {
-                        DialogUtils.infoUserSee(MainActivity.this, R.string.not_found_book);
-                        return;
-                    }
-                    bookModels = responseData;
-                    bookAdapter.setData(bookModels);
-                });
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+        String keyword = getIntent().getStringExtra(IntentKey.KEYWORD);
+        if (!StringUtils.isNullOrEmpty(keyword)) {
+            findBookModel.setKeyword(keyword);
+            fetchBook(responseData -> {
+                if (responseData == null || responseData.size() == 0) {
+                    DialogUtils.infoUserSee(MainActivity.this, R.string.not_found_book);
+                    return;
+                }
+                bookModels = responseData;
+                bookAdapter.setData(bookModels);
+            });
+        }
     }
 
     @Override
