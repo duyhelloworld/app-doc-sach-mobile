@@ -2,12 +2,6 @@ package huce.edu.vn.appdocsach.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -21,6 +15,11 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import huce.edu.vn.appdocsach.adapters.CommentAdapter;
 import huce.edu.vn.appdocsach.apiservices.AuthService;
 import huce.edu.vn.appdocsach.apiservices.CommentService;
 import huce.edu.vn.appdocsach.callbacks.CallBack;
-import huce.edu.vn.appdocsach.callbacks.OnApiResult;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.callbacks.OnTouchViewItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
@@ -195,17 +193,6 @@ public class CommentFragment extends Fragment implements OnLoadMore, OnTouchView
         popupMenu.setOnMenuItemClickListener(item -> {
 
             int itemId = item.getItemId();
-
-            if (itemId == R.id.mnFragCommentEdit) {
-                SimpleCommentModel commentModel = commentAdapter.getComment(position);
-                edtCommentReaderContent.setText(commentModel.getContent());
-                edtCommentReaderContent.requestFocus();
-                edtCommentReaderContent.setOnEditorActionListener((v1, actionId, event) -> {
-
-                    return true;
-                });
-                return true;
-            }
 
             if (itemId == R.id.mnFragCommentDelete) {
                 Integer commentId = commentAdapter.getCommentId(position);

@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/transparent"
     tools:context=".activities.CommentFragment">
 
     <!--    <View-->
@@ -30,6 +31,7 @@
         android:id="@+id/cvChapterReaderCommentView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -46,7 +48,7 @@
             android:id="@+id/rvBookDetailListComment"
             android:layout_width="match_parent"
             android:layout_height="330dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,10 +61,11 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="18dp"
+            android:layout_marginBottom="5dp"
             android:autofillHints=""
             android:hint="@string/comment_in"
-            android:inputType="textNoSuggestions"
             android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
             app:layout_constraintBottom_toTopOf="@+id/rvBookDetailListComment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivCommentReaderAvatar"
@@ -72,7 +75,8 @@
             android:id="@+id/ivCommentReaderAvatar"
             android:layout_width="49dp"
             android:layout_height="49dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="5dp"
             android:contentDescription="@string/user_avatar"
             android:src="@drawable/ic_launcher_foreground"
             app:layout_constraintBottom_toTopOf="@+id/rvBookDetailListComment"

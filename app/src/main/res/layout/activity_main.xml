@@ -29,13 +29,25 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvListCategory"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2ListHotBook"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.5"
+        android:clipChildren="false"
         android:layout_width="match_parent"
-        android:layout_height="63dp"
-        android:layout_margin="20dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/ciListHotBook"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:paddingTop="0dp"
+        app:ci_drawable="@drawable/bg_book_indicator" />
 
     <View
         android:layout_width="match_parent"

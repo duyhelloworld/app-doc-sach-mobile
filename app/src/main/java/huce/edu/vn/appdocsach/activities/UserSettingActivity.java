@@ -1,8 +1,5 @@
 package huce.edu.vn.appdocsach.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,15 +7,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.apiservices.AuthService;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.configurations.TokenStorageManager;
 import huce.edu.vn.appdocsach.constants.IntentKey;
-import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
-import huce.edu.vn.appdocsach.utils.StringUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,8 +42,10 @@ public class UserSettingActivity extends AppCompatActivity {
         tvUserSettingUsername = findViewById(R.id.tvUserSettingUsername);
 
         Intent intent = getIntent();
-        imageLoader.show(intent.getStringExtra(IntentKey.USER_AVATAR), ivUserSettingAvatar);
-        tvUserSettingUsername.setText(intent.getStringExtra(IntentKey.USER_FULLNAME));
+        String avatar = intent.getStringExtra(IntentKey.USER_AVATAR), fullname = intent.getStringExtra(IntentKey.USER_FULLNAME);
+
+        imageLoader.show(avatar, ivUserSettingAvatar);
+        tvUserSettingUsername.setText(fullname);
 
         btnUserSettingSignOut.setOnClickListener(v -> authService.signOut().enqueue(new Callback<Void>() {
             @Override

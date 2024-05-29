@@ -2,93 +2,76 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/tvCommentItemFullname"
         android:layout_width="100dp"
         android:layout_height="24dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="11dp"
         android:fontFamily="@font/open_sans"
         android:maxLines="1"
         android:text="@string/test_lorem_short"
         android:textAlignment="viewStart"
+        android:textColor="@color/blue"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvCommentItemContent"
-        app:layout_constraintStart_toEndOf="@+id/ivCommentItemAvatar" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/ivCommentItemAvatar"
-        android:layout_width="79dp"
-        android:layout_height="90dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="5dp"
         android:contentDescription="@string/user_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCommentItemFullname"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tvCommentItemContent"
-        android:layout_width="321dp"
+        android:layout_width="290dp"
         android:layout_height="65dp"
-        android:layout_marginStart="7dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/border"
         android:nestedScrollingEnabled="true"
         android:padding="4dp"
         android:text="@string/test_lorem_long"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ivCommentItemAvatar"
-        tools:layout_editor_absoluteY="62dp" />
-
-    <TextView
-        android:id="@+id/tvCommentItemIsEdited"
-        android:layout_width="100dp"
-        android:layout_height="19dp"
-        android:text="@string/is_edited"
-        android:textColor="@color/blue"
-        tools:layout_editor_absoluteX="231dp"
-        tools:layout_editor_absoluteY="30dp" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCommentItemLastUpdatedAtK" />
 
     <TextView
         android:id="@+id/tvCommentItemLastUpdatedAtK"
         android:layout_width="80dp"
         android:layout_height="15dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
         android:maxLines="1"
         android:text="@string/update_at_prefix"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvCommentItemFullname"
-        app:layout_constraintStart_toEndOf="@+id/ivCommentItemAvatar"
+        app:layout_constraintBottom_toTopOf="@+id/tvCommentItemContent"
+        app:layout_constraintEnd_toStartOf="@+id/tvCommentItemLastUpdatedAtV"
+        app:layout_constraintStart_toEndOf="@+id/tvCommentItemFullname"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvCommentItemLastUpdatedAtV"
-        android:layout_width="120dp"
+        android:layout_width="100dp"
         android:layout_height="15dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:maxLines="1"
         android:text="@string/test_lorem_short"
         android:textSize="12sp"
-        android:maxLines="1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvCommentItemContent"
         app:layout_constraintStart_toEndOf="@+id/tvCommentItemLastUpdatedAtK"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnCommentItemEditSave"
-        android:layout_width="57dp"
-        android:layout_height="19dp"
-        android:text="Button"
-        tools:layout_editor_absoluteX="261dp"
-        tools:layout_editor_absoluteY="130dp" />
-
-    <Button
-        android:id="@+id/btnCommentItemEditCancel"
-        android:layout_width="80dp"
-        android:layout_height="24dp"
-        android:text="Button"
-        tools:layout_editor_absoluteX="325dp"
-        tools:layout_editor_absoluteY="128dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

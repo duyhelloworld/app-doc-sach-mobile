@@ -21,13 +21,6 @@ public class ImageLoader {
         return instance;
     }
 
-    public void showWithoutStore(String url, ImageView imageView) {
-        picasso.load(url)
-                .networkPolicy(NetworkPolicy.NO_STORE)
-                .memoryPolicy(MemoryPolicy.NO_STORE)
-                .into(imageView);
-    }
-
     public void showWithoutCache(String url, ImageView imageView) {
         picasso.load(url)
                 .networkPolicy(NetworkPolicy.NO_CACHE)
@@ -37,6 +30,18 @@ public class ImageLoader {
 
     public void show(String url, ImageView imageView) {
         picasso.load(url).fit().into(imageView);
+    }
+
+    public void show(String url, ImageView imageView, @DrawableRes int placeHolderId, @DrawableRes int errorViewId) {
+        picasso.load(url).fit().error(errorViewId).placeholder(placeHolderId).into(imageView);
+    }
+
+    public void showNoCacheNoStore(String url, ImageView imageView, @DrawableRes int placeholderId) {
+        picasso.load(url)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .memoryPolicy(MemoryPolicy.NO_STORE)
+                .placeholder(placeholderId)
+                .into(imageView);
     }
 
     public void cancelRequest(ImageView imageView) {

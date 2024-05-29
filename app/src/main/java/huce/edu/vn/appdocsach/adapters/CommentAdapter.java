@@ -16,7 +16,6 @@ import java.util.List;
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.callbacks.GenericDiffUtilCallback;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
-import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.callbacks.OnTouchViewItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.comment.SimpleCommentModel;
@@ -95,13 +94,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
         commentHolder.tvCommentItemFullname.setText(comment.getUsername());
         commentHolder.tvCommentItemLastUpdatedAtV.setText(DatetimeUtils.countTimeCostedUpToNow(comment.getCommentAt()));
 
-        if (!comment.getEdited()) {
-            commentHolder.tvCommentItemIsEdited.setText("");
-        } else {
-            commentHolder.tvCommentItemIsEdited.setText(R.string.is_edited);
-        }
         commentHolder.tvCommentItemContent.setText(comment.getContent());
-        imageLoader.showWithoutCache(comment.getUserAvatar(), commentHolder.ivCommentItemAvatar);
+        imageLoader.show(comment.getUserAvatar(), commentHolder.ivCommentItemAvatar);
     }
 
     @Override
@@ -110,14 +104,15 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     }
 
     class CommentHolder extends RecyclerView.ViewHolder {
-        TextView tvCommentItemFullname, tvCommentItemContent, tvCommentItemIsEdited, tvCommentItemLastUpdatedAtV;
+        TextView tvCommentItemFullname, tvCommentItemContent, tvCommentItemLastUpdatedAtV;
         ImageView ivCommentItemAvatar;
+
         public CommentHolder(@NonNull View itemView) {
 
             super(itemView);
             tvCommentItemFullname = itemView.findViewById(R.id.tvCommentItemFullname);
             tvCommentItemContent = itemView.findViewById(R.id.tvCommentItemContent);
-            tvCommentItemIsEdited = itemView.findViewById(R.id.tvCommentItemIsEdited);
+
             tvCommentItemLastUpdatedAtV = itemView.findViewById(R.id.tvCommentItemLastUpdatedAtV);
             ivCommentItemAvatar = itemView.findViewById(R.id.ivCommentItemAvatar);
 

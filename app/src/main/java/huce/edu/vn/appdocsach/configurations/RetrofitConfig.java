@@ -1,5 +1,7 @@
 package huce.edu.vn.appdocsach.configurations;
 
+import java.util.concurrent.TimeUnit;
+
 import huce.edu.vn.appdocsach.utils.NetworkUtils;
 import huce.edu.vn.appdocsach.utils.serializers.JsonSerializer;
 import okhttp3.OkHttpClient;
@@ -10,6 +12,7 @@ public class RetrofitConfig {
     private static OkHttpClient getClient() {
         return new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
+                .connectTimeout(1000, TimeUnit.SECONDS)
                 .addInterceptor(new JwtInterceptor())
                 .build();
     }

@@ -41,7 +41,7 @@ public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdap
 
     @Override
     public void onBindViewHolder(@NonNull ChapterReaderAdapter.ChapterReaderViewHolder holder, int position) {
-        imageLoader.show(urls.get(position), holder.ivChapterReaderImage);
+        imageLoader.showNoCacheNoStore(urls.get(position), holder.ivChapterReaderImage, R.drawable.error);
     }
 
     @Override
@@ -63,7 +63,6 @@ public class ChapterReaderAdapter extends RecyclerView.Adapter<ChapterReaderAdap
     }
 
     //    Chống crash ảnh
-
     @Override
     public void onViewDetachedFromWindow(@NonNull ChapterReaderViewHolder holder) {
         super.onViewDetachedFromWindow(holder);

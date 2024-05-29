@@ -25,7 +25,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     private final OnTouchItem onTouchItem;
     private final ImageLoader imageLoader = ImageLoader.getInstance();
     private boolean isLoading = false;
-
     public BookAdapter(List<SimpleBookModel> books, RecyclerView recyclerView, OnTouchItem onTouchItem, OnLoadMore onLoadMore) {
         this.books = books;
         this.onTouchItem = onTouchItem;
@@ -35,7 +34,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && onLoadMore != null) {
                     int lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition();
                     int totalItemCount = layoutManager.getItemCount();
                     if (!isLoading && lastVisibleItemPosition == totalItemCount - 1) {
@@ -44,11 +43,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
                 }
             }
         });
-    }
-
-    public BookAdapter(List<SimpleBookModel> books, OnTouchItem onTouchItem) {
-        this.books = books;
-        this.onTouchItem = onTouchItem;
     }
 
     public void setLoaded() {
