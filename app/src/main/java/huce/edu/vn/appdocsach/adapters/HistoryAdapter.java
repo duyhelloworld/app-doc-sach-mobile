@@ -1,5 +1,6 @@
 package huce.edu.vn.appdocsach.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +23,27 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         this.historySet = historySet;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void setData(List<String> historySet) {
+        this.historySet.clear();
+        this.historySet.addAll(historySet);
+        notifyDataSetChanged();
+    }
+
+    public void append(String query) {
+        this.historySet.add(query);
+        notifyItemInserted(historySet.size() - 1);
+    }
+
     public String getHistory(int pos) {
         return historySet.get(pos);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void clear() {
         int count = getItemCount();
         historySet.clear();
-        notifyItemRangeRemoved(0, count - 1);
+        notifyDataSetChanged();
     }
 
     @NonNull

@@ -25,7 +25,7 @@ public interface CommentService {
     @POST("add")
     Call<SimpleCommentModel> writeComment(@Body WriteCommentModel writeCommentModel);
 
-    @DELETE("delete")
+    @DELETE("{id}")
     Call<Void> deleteComment(@Path("id") int id);
 
     @PUT("edit")

@@ -107,44 +107,40 @@ public class CommentFragment extends Fragment implements OnLoadMore, OnTouchView
 
         edtCommentReaderContent.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                makeWriteCommentRequest(v);
+                Editable commentContent = edtCommentReaderContent.getText();
+                if (StringUtils.isNullOrEmpty(commentContent)) {
+                    DialogUtils.infoUserSee(context, R.string.missing_comment_content);
+                    return false;
+                }
+                WriteCommentModel writeCommentModel = new WriteCommentModel(commentContent.toString(), findCommentModel.getChapterId());
+                commentService.writeComment(writeCommentModel).enqueue(new Callback<SimpleCommentModel>() {
+                    @Override
+                    public void onResponse(@NonNull Call<SimpleCommentModel> call, @NonNull Response<SimpleCommentModel> response) {
+                        if (response.isSuccessful()) {
+                            assert response.body() != null;
+                            Toast.makeText(context, getString(R.string.comment_add_success_message), Toast.LENGTH_SHORT).show();
+                            commentAdapter.append(response.body());
+                            edtCommentReaderContent.setText(null);
+                            assert getActivity() != null;
+                            getActivity().getSystemService(InputMethodManager.class).hideSoftInputFromWindow(v.getWindowToken(), 0);
+                            edtCommentReaderContent.clearFocus();
+                        } else {
+                            DialogUtils.errorUserSee(context, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<SimpleCommentModel> call, @NonNull Throwable throwable) {
+                        DialogUtils.errorUserSee(context, R.string.error_write_comment);
+                        appLogger.error(throwable);
+                    }
+                });
                 return true;
             }
             return false;
         });
 
         return view;
-    }
-
-    private void makeWriteCommentRequest(View v) {
-        Editable commentContent = edtCommentReaderContent.getText();
-        if (StringUtils.isNullOrEmpty(commentContent)) {
-            DialogUtils.infoUserSee(context, R.string.missing_comment_content);
-            return;
-        }
-        WriteCommentModel writeCommentModel = new WriteCommentModel(commentContent.toString(), findCommentModel.getChapterId());
-        commentService.writeComment(writeCommentModel).enqueue(new Callback<SimpleCommentModel>() {
-            @Override
-            public void onResponse(@NonNull Call<SimpleCommentModel> call, @NonNull Response<SimpleCommentModel> response) {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    Toast.makeText(context, getString(R.string.comment_add_success_message), Toast.LENGTH_SHORT).show();
-                    commentAdapter.append(response.body());
-                    edtCommentReaderContent.setText(null);
-                    assert getActivity() != null;
-                    getActivity().getSystemService(InputMethodManager.class).hideSoftInputFromWindow(v.getWindowToken(), 0);
-                    edtCommentReaderContent.clearFocus();
-                    return;
-                }
-                DialogUtils.errorUserSee(context, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<SimpleCommentModel> call, @NonNull Throwable throwable) {
-                DialogUtils.errorUserSee(context, R.string.error_write_comment);
-                appLogger.error(throwable);
-            }
-        });
     }
 
     private void fetchComment(CallBack callBack) {
@@ -174,7 +170,7 @@ public class CommentFragment extends Fragment implements OnLoadMore, OnTouchView
                 pbComment.setVisibility(View.VISIBLE);
                 findCommentModel.incrementPageNumber();
                 fetchComment(() -> {
-                    commentAdapter.append(commentModels);
+                    commentAdapter.add(commentModels);
                     commentAdapter.setLoaded();
                     pbComment.setVisibility(View.GONE);
                 });
@@ -188,28 +184,28 @@ public class CommentFragment extends Fragment implements OnLoadMore, OnTouchView
         popupMenu.getMenuInflater().inflate(R.menu.popup_menu_comment, popupMenu.getMenu());
         popupMenu.show();
         popupMenu.setOnMenuItemClickListener(item -> {
-
             int itemId = item.getItemId();
-
             if (itemId == R.id.mnFragCommentDelete) {
                 Integer commentId = commentAdapter.getCommentId(position);
-                commentService.deleteComment(commentId).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            commentModels.remove(position);
-                            commentAdapter.remove(position);
-                            Toast.makeText(context, R.string.comment_delete_success_message, Toast.LENGTH_SHORT).show();
-                        } else {
-                            DialogUtils.errorUserSee(context, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
+                new Handler().postDelayed(() -> {
+                    commentService.deleteComment(commentId).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                commentModels.remove(position);
+                                commentAdapter.remove(position);
+                                Toast.makeText(context, R.string.comment_delete_success_message, Toast.LENGTH_SHORT).show();
+                            } else {
+                                DialogUtils.errorUserSee(context, HttpErrorSerializer.extractErrorMessage(response.errorBody()));
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
-                        appLogger.error(throwable);
-                    }
-                });
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable throwable) {
+                            appLogger.error(throwable);
+                        }
+                    });
+                }, 1000);
                 return true;
             }
 

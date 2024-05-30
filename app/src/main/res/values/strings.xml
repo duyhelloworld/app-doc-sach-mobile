@@ -54,6 +54,7 @@
 
     <string name="comment_add_success_message">Bình luận thành công</string>
     <string name="comment_delete_success_message">Xóa bình luận thành công</string>
+    <string name="clear_search_history">Xóa lịch sử tìm kiếm thành công</string>
     <string name="comment_edit_success_message">Chỉnh sửa thành công</string>
 
     <string name="error_write_comment">Lỗi khi thêm comment!</string>
@@ -73,5 +74,6 @@
     <string name="view_count">Lượt xem</string>
     <string name="nothing_searched">Không có lịch sử nào ở đây</string>
     <string name="btn_delete_all_search_history">Xóa hết tất cả lịch sử</string>
+    <string name="author_name"><![CDATA[<Tên tác giả>]]></string>
 
 </resources>

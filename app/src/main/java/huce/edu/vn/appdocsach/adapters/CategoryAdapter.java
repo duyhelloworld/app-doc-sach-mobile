@@ -1,5 +1,7 @@
 package huce.edu.vn.appdocsach.adapters;
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import android.graphics.Color;
 
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CategoryViewHolder) {
@@ -91,15 +93,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-
-
-
     @Override
     public int getItemCount() {
         if (isExpanded) {
             return data.size();
         } else {
-            return Math.min(data.size(), VISIBLE_THRESHOLD + 1); // Show VISIBLE_THRESHOLD items + 1 for expand button
+            // Show VISIBLE_THRESHOLD items + 1 for expand button
+            return Math.min(data.size(), VISIBLE_THRESHOLD + 1);
         }
     }
 

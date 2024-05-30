@@ -15,6 +15,7 @@ import huce.edu.vn.appdocsach.constants.SearchHistoryConstant;
 public class SearchHistoryManager {
     private static SearchHistoryManager manager;
     private final SharedPreferences preferences = AppContext.getContext().getSharedPreferences(SearchHistoryConstant.shareName, Context.MODE_PRIVATE);
+
     private SearchHistoryManager() {
     }
 
@@ -26,18 +27,15 @@ public class SearchHistoryManager {
     }
 
     public void addSearchTerm(String term) {
-        Set<String> historySet = getHistorySet();
-        historySet.remove(term);
+        Set<String> historySet = new HashSet<>(getHistorySet());
         historySet.add(term);
 
         if (historySet.size() > SearchHistoryConstant.maxHistorySize) {
             Iterator<String> iterator = historySet.iterator();
-            // Skip the first item (newest)
             iterator.next();
             iterator.remove();
         }
 
-        // Save the updated history set
         preferences.edit()
                 .putStringSet(SearchHistoryConstant.keyName, historySet)
                 .apply();

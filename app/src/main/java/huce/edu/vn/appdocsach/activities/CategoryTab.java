@@ -116,6 +116,7 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
                 Toast.makeText(CategoryTab.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }
         });
+
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             if(menuItem.getItemId() == R.id.navigation_home){
                 Intent HomeIntent = new Intent(CategoryTab.this, MainActivity.class);
@@ -129,7 +130,6 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
                 Intent HomeIntent = new Intent(CategoryTab.this, BookSearchActivity.class);
                 startActivity(HomeIntent);
             }
-
 
             if(menuItem.getItemId() == R.id.navigation_user){
                 authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
@@ -170,10 +170,5 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
     @Override
     public void loadMore() {
 
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
     }
 }

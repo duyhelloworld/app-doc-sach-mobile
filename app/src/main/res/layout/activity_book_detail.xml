@@ -8,65 +8,65 @@
 
     <TextView
         android:id="@+id/tvBookDetailTitle"
-        android:layout_width="301dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
+        android:layout_width="@dimen/book_width"
+        android:layout_height="60dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:maxLines="2"
-
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/btnBookDetailReadFirst"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ivBookDetailCover" />
 
     <ImageView
         android:id="@+id/ivBookDetailCover"
         android:layout_width="@dimen/book_width"
         android:layout_height="@dimen/book_height"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginBottom="5dp"
         android:contentDescription="@string/app_name"
-        app:layout_constraintBottom_toTopOf="@+id/tvBookDetailDescriptionK"
+        app:layout_constraintBottom_toTopOf="@+id/tvBookDetailTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailTitle"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/dialog_frame" />
 
     <TextView
         android:id="@+id/tvBookDetailAuthorK"
         android:layout_width="wrap_content"
         android:layout_height="22dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="6dp"
         android:text="@string/author_key"
-        app:layout_constraintEnd_toStartOf="@+id/tvBookDetailAuthorV"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvBookDetailViewCountK"
         app:layout_constraintStart_toEndOf="@+id/ivBookDetailCover"
-        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailTitle" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvBookDetailAuthorV"
         android:layout_width="160dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="4dp"
-        android:text="@string/test_lorem_short"
+        android:text="@string/author_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailTitle" />
+        app:layout_constraintStart_toEndOf="@+id/tvBookDetailAuthorK"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvBookDetailViewCountK"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="22dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="5dp"
         android:text="@string/view_count"
         app:layout_constraintBottom_toTopOf="@+id/tvBookDetailCategories"
         app:layout_constraintStart_toEndOf="@+id/ivBookDetailCover"
@@ -74,23 +74,27 @@
 
     <TextView
         android:id="@+id/tvBookDetailViewCountV"
-        android:layout_width="160dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="7dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_width="100dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="17dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvBookDetailCategories"
         app:layout_constraintStart_toEndOf="@+id/tvBookDetailViewCountK"
         app:layout_constraintTop_toBottomOf="@+id/tvBookDetailAuthorV" />
 
     <TextView
         android:id="@+id/tvBookDetailCategories"
-        android:layout_width="221dp"
-        android:layout_height="41dp"
+        android:layout_width="200dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/gray_white"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
+        android:padding="5dp"
         android:layout_marginEnd="15dp"
+        android:textColor="@color/blue_dark"
+        app:layout_constraintBottom_toTopOf="@+id/rbBookDetailRating"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ivBookDetailCover"
@@ -100,48 +104,57 @@
         android:id="@+id/rbBookDetailRating"
         android:layout_width="233dp"
         android:layout_height="39dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="4dp"
-        android:layout_marginBottom="92dp"
+        android:soundEffectsEnabled="true"
         android:isIndicator="false"
         android:numStars="5"
         android:scaleX=".8"
         android:scaleY=".9"
+        android:theme="@style/ratingBarGolden"
         android:transformPivotX="20dp"
         android:transformPivotY="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvBookDetailDescriptionV"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivBookDetailCover"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailCategories" />
 
     <Button
         android:id="@+id/btnBookDetailReadFirst"
         android:layout_width="120dp"
         android:layout_height="52dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/btn_read_first"
+        app:layout_constraintBottom_toTopOf="@+id/tvBookDetailDescriptionV"
         app:layout_constraintEnd_toStartOf="@+id/btnBookDetailReadLast"
-        app:layout_constraintStart_toEndOf="@+id/ivBookDetailCover"
         app:layout_constraintTop_toBottomOf="@+id/rbBookDetailRating" />
 
     <Button
         android:id="@+id/btnBookDetailReadLast"
         android:layout_width="120dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="24dp"
         android:text="@string/btn_read_last"
         app:layout_constraintBottom_toTopOf="@+id/tvBookDetailDescriptionV"
-        app:layout_constraintStart_toEndOf="@+id/btnBookDetailReadFirst" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rbBookDetailRating" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvBookDetailChapterList"
         android:layout_width="379dp"
-        android:layout_height="312dp"
+        android:layout_height="0dp"
         android:layout_marginStart="19dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginBottom="2dp"
+        android:background="@color/gray_white"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailChapterListK" />
 
 
     <TextView
@@ -150,42 +163,38 @@
         android:layout_height="59dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="18dp"
         android:maxLines="4"
         android:text="@string/test_lorem_long"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvBookDetailChapterListK"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailDescriptionK" />
 
     <TextView
         android:id="@+id/tvBookDetailDescriptionK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="19dp"
-        android:layout_marginEnd="72dp"
+        android:layout_marginTop="15dp"
         android:text="@string/book_detail_book_description_key"
+        android:textColor="@color/yellow_dark"
         app:layout_constraintBottom_toTopOf="@+id/tvBookDetailDescriptionV"
-        app:layout_constraintEnd_toStartOf="@+id/rbBookDetailRating"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailTitle" />
 
 
     <TextView
         android:id="@+id/tvBookDetailChapterListK"
         android:layout_width="124dp"
         android:layout_height="22dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="271dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginBottom="20dp"
         android:text="@string/book_detail_chapter_list_key"
         app:layout_constraintBottom_toTopOf="@+id/rvBookDetailChapterList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBookDetailDescriptionV" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
