@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,13 +19,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-import huce.edu.vn.appdocsach.AppContext;
 import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.adapters.BookAdapter;
 import huce.edu.vn.appdocsach.adapters.HistoryAdapter;
 import huce.edu.vn.appdocsach.apiservices.AuthService;
 import huce.edu.vn.appdocsach.apiservices.BookService;
-import huce.edu.vn.appdocsach.callbacks.CallBack;
 import huce.edu.vn.appdocsach.callbacks.OnApiResult;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.configurations.SearchHistoryManager;
@@ -36,7 +35,6 @@ import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
 import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
-import huce.edu.vn.appdocsach.utils.serializers.HttpErrorSerializer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,6 +49,7 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
     BottomNavigationView bottom_navigation;
     AuthService authService = AuthService.authService;
     SearchHistoryManager historyManager = SearchHistoryManager.getInstance();
+    BookService bookService = BookService.bookService;
     RecyclerView rvBookSearchList;
     BookAdapter bookAdapter;
     long totalPage = 0;
@@ -75,19 +74,8 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
         svMainBookSearchBox.setOnClickListener(v -> {
             svMainBookSearchBox.setIconified(false);
         });
-        List<String> history = historyManager.getHistory();
-        if (history.isEmpty()) {
-            tvEmptySearchHistory.setVisibility(View.VISIBLE);
-        } else {
-            tvEmptySearchHistory.setVisibility(View.GONE);
-            historyAdapter = new HistoryAdapter(historyManager.getHistory(), position -> {
-                svMainBookSearchBox.setQuery(historyAdapter.getHistory(position), false);
-                svMainBookSearchBox.clearFocus();
-                svMainBookSearchBox.requestFocus();
-                getSystemService(InputMethodManager.class).hideSoftInputFromWindow(svMainBookSearchBox.getWindowToken(), 0);
-            });
-            rvBookSearchHistory.setAdapter(historyAdapter);
-        }
+
+        showHistory();
 
         fetchBook(responseData -> {
             bookAdapter = new BookAdapter(responseData, rvBookSearchList, pos -> {
@@ -101,15 +89,17 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
         svMainBookSearchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                historyManager.addSearchTerm(query);
+
                 findBookModel.setKeyword(query);
-                BookService.bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
+                bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
                     @Override
                     public void onResponse(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Response<PagingResponse<SimpleBookModel>> response) {
                         PagingResponse<SimpleBookModel> data = response.body();
                         assert data != null;
                         totalPage = data.getTotalPage();
                         bookAdapter.setData(data.getValues());
+                        historyManager.addSearchTerm(query);
+                        showHistory();
                     }
 
                     @Override
@@ -129,8 +119,11 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
 
         btnClearHistory.setOnClickListener(v -> {
             historyManager.clearHistory();
-            historyAdapter.clear();
+            if (historyAdapter != null) {
+                historyAdapter.clear();
+            }
             tvEmptySearchHistory.setVisibility(View.VISIBLE);
+            Toast.makeText(this, R.string.clear_search_history, Toast.LENGTH_SHORT).show();
         });
 
         bottom_navigation.setSelectedItemId(R.id.navigation_search);
@@ -183,6 +176,27 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
                     bookAdapter.setLoaded();
                 });
             }, 1500);
+        }
+    }
+
+    private void showHistory() {
+        List<String> histories = historyManager.getHistory();
+        if (histories.isEmpty()) {
+            tvEmptySearchHistory.setVisibility(View.VISIBLE);
+            rvBookSearchHistory.setVisibility(View.GONE);
+        } else {
+            tvEmptySearchHistory.setVisibility(View.GONE);
+            rvBookSearchHistory.setVisibility(View.VISIBLE);
+            if (historyAdapter == null) {
+                historyAdapter = new HistoryAdapter(histories, position -> {
+                    svMainBookSearchBox.setQuery(historyAdapter.getHistory(position), false);
+                    svMainBookSearchBox.requestFocus();
+                    getSystemService(InputMethodManager.class).showSoftInput(svMainBookSearchBox, 0);
+                });
+                rvBookSearchHistory.setAdapter(historyAdapter);
+            } else {
+                historyAdapter.setData(histories);
+            }
         }
     }
 

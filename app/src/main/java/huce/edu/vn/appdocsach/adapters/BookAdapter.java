@@ -1,5 +1,6 @@
 package huce.edu.vn.appdocsach.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,14 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import huce.edu.vn.appdocsach.R;
-import huce.edu.vn.appdocsach.callbacks.GenericDiffUtilCallback;
 import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
@@ -53,6 +52,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         return (books.isEmpty()) ? null : books.get(pos);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(List<SimpleBookModel> newData) {
         books.clear();
         books.addAll(newData);
