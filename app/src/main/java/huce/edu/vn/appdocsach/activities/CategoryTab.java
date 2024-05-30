@@ -67,7 +67,6 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
                             gotoBookDetail(bookAdapter.getBookByPosition(pos).getId());
                         }, () -> {});
                 rcvBook.setAdapter(bookAdapter);
-
             }
 
             @Override
@@ -77,8 +76,23 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
         });
 
         categoryAdapter = new CategoryAdapter(new ArrayList<>(), position -> {
-            // Handle item click
-            Toast.makeText(CategoryTab.this, "Clicked on: " + categoryAdapter.getData(position).getName(), Toast.LENGTH_SHORT).show();
+            findBookModel.setCategoryId(categoryAdapter.getData(position).getId());
+            bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
+                @Override
+                public void onResponse(Call<PagingResponse<SimpleBookModel>> call, Response<PagingResponse<SimpleBookModel>> response) {
+                    bookModels = response.body().getValues();
+                    bookAdapter = new BookAdapter(bookModels, rcvBook,
+                            pos -> {
+                                gotoBookDetail(bookAdapter.getBookByPosition(pos).getId());
+                            }, () -> {});
+                    rcvBook.setAdapter(bookAdapter);
+                }
+
+                @Override
+                public void onFailure(Call<PagingResponse<SimpleBookModel>> call, Throwable throwable) {
+
+                }
+            });
         });
 
         recyclerViewCategories.setAdapter(categoryAdapter);
@@ -111,6 +125,11 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
                 Intent CateIntent = new Intent(CategoryTab.this, CategoryTab.class);
                 startActivity(CateIntent);
             }
+            if(menuItem.getItemId() == R.id.navigation_search) {
+                Intent HomeIntent = new Intent(CategoryTab.this, BookSearchActivity.class);
+                startActivity(HomeIntent);
+            }
+
 
             if(menuItem.getItemId() == R.id.navigation_user){
                 authService.getInfo().enqueue(new Callback<AuthInfoModel>() {

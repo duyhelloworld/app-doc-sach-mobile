@@ -61,6 +61,9 @@ public class SimpleBookModel extends BaseModel {
     @Override
     public boolean compareTo(Object o) {
         SimpleBookModel s = (SimpleBookModel) o;
+        if (o == null || s.getTitle() == null) {
+            return false;
+        }
         return s.getId() == getId() && s.title.equals(title) && s.author.equals(author);
     }
 }

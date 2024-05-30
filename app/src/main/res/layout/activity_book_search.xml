@@ -41,8 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:orientation="vertical"
-            app:fastScrollEnabled="true"
-            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
+            app:spanCount="4"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
         <TextView
             android:id="@+id/tvBookSearchResultCount"

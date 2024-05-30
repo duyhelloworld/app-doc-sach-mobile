@@ -27,11 +27,20 @@ public class GenericDiffUtilCallback<T extends BaseModel> extends DiffUtil.Callb
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+        if (oldData.get(oldItemPosition) == null || newData.get(newItemPosition) == null) {
+            return false;
+        }
         return oldData.get(oldItemPosition).getId() == newData.get(newItemPosition).getId();
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+        if (oldData.size() == 0 || newData.size() == 0) {
+            return false;
+        }
+        if (oldData.get(oldItemPosition) == null || newData.get(newItemPosition) == null) {
+            return false;
+        }
         return oldData.get(oldItemPosition).compareTo(newData.get(newItemPosition));
     }
 }
