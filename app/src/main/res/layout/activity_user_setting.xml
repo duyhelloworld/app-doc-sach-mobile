@@ -39,34 +39,72 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="260dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:layout_marginBottom="164dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/btnUserSettingChangePassword"
-            android:layout_width="260dp"
-            android:layout_height="60dp"
-            android:text="@string/btn_change_password_message" />
+        <!-- CardView for Change Password -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvUserSettingChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/light_gray">
 
-        <Button
-            android:id="@+id/btnUserSettingUpdateProfile"
-            android:layout_width="260dp"
-            android:layout_height="60dp"
-            android:text="@string/btn_update_profile_message" />
+            <TextView
+                android:id="@+id/txtUserSettingChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/btn_change_password_message"
+                android:textSize="16sp" />
+        </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btnUserSettingSignOut"
-            android:layout_width="260dp"
-            android:layout_height="60dp"
-            android:text="@string/btn_logout_message" />
+        <!-- CardView for Update Profile -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvUserSettingUpdateProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/light_gray">
+
+            <TextView
+                android:id="@+id/txtUserSettingUpdateProfile"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/btn_update_profile_message"
+                android:textSize="16sp" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- CardView for Sign Out -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvUserSettingSignOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="@color/light_gray">
+
+            <TextView
+                android:id="@+id/txtUserSettingSignOut"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="@string/btn_logout_message"
+                android:textSize="16sp" />
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 

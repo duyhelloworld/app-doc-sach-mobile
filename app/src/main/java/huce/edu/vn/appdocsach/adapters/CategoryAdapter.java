@@ -4,10 +4,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import android.graphics.Color;
 
 import java.util.List;
 
@@ -16,12 +18,17 @@ import huce.edu.vn.appdocsach.callbacks.GenericDiffUtilCallback;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.models.category.SimpleCategoryModel;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
+public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<SimpleCategoryModel> data;
-    private final OnTouchItem onTouchItem;
+    private static OnTouchItem onTouchItem = null;
+    private boolean isExpanded = false;
+    private int selectedPosition = -1;
 
-    public CategoryAdapter(List<SimpleCategoryModel> data, OnTouchItem onTouchItem)
-    {
+    private static final int VIEW_TYPE_ITEM = 0;
+    public static final int VIEW_TYPE_EXPAND_BUTTON = 1;
+    private static final int VISIBLE_THRESHOLD = 3; // Number of items to display before showing the expand button
+
+    public CategoryAdapter(List<SimpleCategoryModel> data, OnTouchItem onTouchItem) {
         this.data = data;
         this.onTouchItem = onTouchItem;
     }
@@ -37,30 +44,82 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         data.addAll(newData);
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (!isExpanded && position == VISIBLE_THRESHOLD) {
+            return VIEW_TYPE_EXPAND_BUTTON;
+        }
+        return VIEW_TYPE_ITEM;
+    }
+
     @NonNull
     @Override
-    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_book_detail_category_item, parent, false));
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_ITEM) {
+            return new CategoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false));
+        } else {
+            return new ExpandButtonViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expand_button, parent, false));
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        SimpleCategoryModel category = data.get(position);
-        holder.btnCategoryItem.setText(category.getName());
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof CategoryViewHolder) {
+            SimpleCategoryModel category = data.get(position);
+            CategoryViewHolder categoryViewHolder = (CategoryViewHolder) holder;
+            categoryViewHolder.txtCateItem.setText(category.getName());
+
+            // Đặt màu nền và màu chữ tùy thuộc vào việc item có được chọn hay không
+            int backgroundColor = (selectedPosition == holder.getAdapterPosition()) ? Color.parseColor("#A020F0") : Color.WHITE;
+            int textColor = (selectedPosition == holder.getAdapterPosition()) ? Color.WHITE : Color.BLACK;
+            categoryViewHolder.itemView.setBackgroundColor(backgroundColor);
+            categoryViewHolder.txtCateItem.setTextColor(textColor);
+
+            categoryViewHolder.itemView.setOnClickListener(v -> {
+                if (selectedPosition == holder.getAdapterPosition()) {
+                    selectedPosition = -1; // Bỏ chọn nếu đã được chọn trước đó
+                } else {
+                    selectedPosition = holder.getAdapterPosition(); // Chọn item mới
+                }
+                notifyItemChanged(selectedPosition); // Cập nhật chỉ item được chọn
+            });
+        } else if (holder instanceof ExpandButtonViewHolder) {
+            ((ExpandButtonViewHolder) holder).btnExpand.setOnClickListener(v -> {
+                isExpanded = true;
+                notifyDataSetChanged();
+            });
+        }
     }
+
+
+
 
     @Override
     public int getItemCount() {
-        return data.size();
+        if (isExpanded) {
+            return data.size();
+        } else {
+            return Math.min(data.size(), VISIBLE_THRESHOLD + 1); // Show VISIBLE_THRESHOLD items + 1 for expand button
+        }
     }
 
-    class CategoryViewHolder extends RecyclerView.ViewHolder {
-        Button btnCategoryItem;
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        TextView txtCateItem;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            btnCategoryItem = itemView.findViewById(R.id.btnCategoryItem);
-            btnCategoryItem.setOnClickListener(l -> onTouchItem.onClick(getAdapterPosition()));
+            txtCateItem = itemView.findViewById(R.id.txtCateItem);
+            txtCateItem.setOnClickListener(l -> onTouchItem.onClick(getAdapterPosition()));
+        }
+
+    }
+
+    static class ExpandButtonViewHolder extends RecyclerView.ViewHolder {
+        Button btnExpand;
+
+        public ExpandButtonViewHolder(@NonNull View itemView) {
+            super(itemView);
+            btnExpand = itemView.findViewById(R.id.btnExpand);
         }
     }
 }

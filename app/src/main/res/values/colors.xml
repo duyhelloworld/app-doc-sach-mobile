@@ -17,4 +17,6 @@
     <color name="text_color">#212121</color>
     <color name="background_color">#FFFFFF</color>
     <color name="blue_dark">#064F65</color>
+    <color name="purple_500">#6200EE</color> <!-- Example purple color -->
+    <color name="purple4">#7D26CD</color>
 </resources>

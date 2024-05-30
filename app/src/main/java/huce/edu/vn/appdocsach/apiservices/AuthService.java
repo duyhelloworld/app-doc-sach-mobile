@@ -5,7 +5,6 @@ import huce.edu.vn.appdocsach.models.auth.AuthInfoModel;
 import huce.edu.vn.appdocsach.models.auth.AuthResponseModel;
 import huce.edu.vn.appdocsach.models.auth.ChangePassRequestModel;
 import huce.edu.vn.appdocsach.models.auth.SignInRequestModel;
-import huce.edu.vn.appdocsach.models.auth.SignUpRequestModel;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -34,4 +33,8 @@ public interface AuthService {
 
     @PUT("change-pass")
     Call<Void> changePass(@Body ChangePassRequestModel changePassRequestModel);
+    @Multipart
+    @PUT("profile")
+    Call<Void> changeProfile(@Part("jsonDto") AuthInfoModel jsonModel, @Part MultipartBody.Part avatar);
+
 }

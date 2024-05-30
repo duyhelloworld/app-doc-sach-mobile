@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     Handler changeHotBookHandler = new Handler(Looper.getMainLooper());
     Runnable changeBookRunnable = () -> {
         int cur = vp2ListHotBook.getCurrentItem();
-        if (cur == hotBookModels.size() - 1) {
+        if (hotBookModels != null && cur == hotBookModels.size() - 1) {
             vp2ListHotBook.setCurrentItem(0);
         } else {
             vp2ListHotBook.setCurrentItem(cur + 1);
@@ -76,7 +79,12 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         svMainBookSearchBox = findViewById(R.id.svMainBookSearchBox);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
+
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
+            if(menuItem.getItemId() == R.id.navigation_categories){
+                Intent CateIntent = new Intent(MainActivity.this, CategoryTab.class);
+                startActivity(CateIntent);
+            }
             if(menuItem.getItemId() == R.id.navigation_user){
                 authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
                     @Override
@@ -104,6 +112,10 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             }
             return false;
         });
+
+
+
+
 
 
         new Handler().postDelayed(() -> {
@@ -154,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             public boolean onQueryTextSubmit(String query) {
                 findBookModel.setKeyword(query);
                 fetchBook(responseData -> {
-                    if (responseData == null || responseData.size() == 0) {
+                    if (responseData == null || responseData.isEmpty()) {
                         DialogUtils.infoUserSee(MainActivity.this, R.string.not_found_book);
                         return;
                     }
@@ -175,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     protected void onResume() {
         super.onResume();
         changeHotBookHandler.postDelayed(changeBookRunnable, 1000);
+
     }
 
     @Override
@@ -223,4 +236,5 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         intent.putExtra(IntentKey.BOOK_ID, id);
         startActivity(intent);
     }
+
 }
