@@ -33,7 +33,6 @@ import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
 import huce.edu.vn.appdocsach.models.paging.PagingResponse;
 import huce.edu.vn.appdocsach.utils.AppLogger;
 import huce.edu.vn.appdocsach.utils.DialogUtils;
-import huce.edu.vn.appdocsach.utils.StringUtils;
 import me.relex.circleindicator.CircleIndicator3;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     Handler changeHotBookHandler = new Handler(Looper.getMainLooper());
     Runnable changeBookRunnable = () -> {
         int cur = vp2ListHotBook.getCurrentItem();
+        if (hotBookModels == null) {
+            return;
+        }
         if (cur == hotBookModels.size() - 1) {
             vp2ListHotBook.setCurrentItem(0);
         } else {
@@ -112,8 +114,12 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         new Handler().postDelayed(() -> {
             // load first page
             pbMain.setVisibility(View.VISIBLE);
+
             if (bookModels == null || bookAdapter == null) {
                 fetchBook(responseData -> {
+                    if (responseData == null || responseData.size() == 0) {
+                        DialogUtils.infoUserSee(MainActivity.this, R.string.no_book_in_database);
+                    }
                     bookModels = responseData;
                     bookAdapter = new BookAdapter(bookModels, rvListBook,
                             pos -> gotoBookDetail(bookAdapter.getBookByPosition(pos).getId()), this);
@@ -151,19 +157,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             }
             pbMain.setVisibility(View.GONE);
         }, 500);
-
-        String keyword = getIntent().getStringExtra(IntentKey.KEYWORD);
-        if (!StringUtils.isNullOrEmpty(keyword)) {
-            findBookModel.setKeyword(keyword);
-            fetchBook(responseData -> {
-                if (responseData == null || responseData.size() == 0) {
-                    DialogUtils.infoUserSee(MainActivity.this, R.string.not_found_book);
-                    return;
-                }
-                bookModels = responseData;
-                bookAdapter.setData(bookModels);
-            });
-        }
     }
 
     @Override
@@ -209,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                     bookAdapter.setLoaded();
                     pbMain.setVisibility(View.GONE);
                 });
-            }, 2000);
+            }, 1500);
         }
     }
 

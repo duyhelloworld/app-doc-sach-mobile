@@ -5,6 +5,7 @@
     <string name="test_lorem_long">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</string>
     <string name="test_lorem_short">AAAAAAAAAAAAAAAAA</string>
     <string name="main_app_title" translatable="true">App đọc sách</string>
+    <string name="no_book_in_database">Không có sách nào trong database</string>
     <string name="login_username_title">Tài khoản</string>
     <string name="login_password_title">Mật khẩu</string>
     <string name="book_cover_description">Ảnh truyện</string>

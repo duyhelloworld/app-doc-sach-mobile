@@ -30,20 +30,27 @@
         android:text="@string/btn_delete_all_search_history"
         android:textColor="@color/white" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="0dp"
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBookSearchHistory"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/dark_gray"
-            android:orientation="horizontal"
-            android:padding="20dp"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-            app:spanCount="2" />
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            app:fastScrollEnabled="true"
+            app:layoutManager="com.google.android.flexbox.FlexboxLayoutManager" />
+
+        <TextView
+            android:id="@+id/tvBookSearchResultCount"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/green"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/tvEmptySearchHistory"
@@ -52,11 +59,18 @@
             android:layout_margin="20dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/nothing_searched"
-            android:textColor="@color/white"
+            android:textColor="@color/green"
             android:textSize="20sp"
             android:visibility="gone" />
 
-    </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBookSearchList"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:padding="2dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2" />
+    </LinearLayout>
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

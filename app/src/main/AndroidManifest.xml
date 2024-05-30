@@ -36,7 +36,10 @@
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
+        <activity
+            android:name=".activities.BookSearchActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.FlashScreenActivity"
             android:exported="true">

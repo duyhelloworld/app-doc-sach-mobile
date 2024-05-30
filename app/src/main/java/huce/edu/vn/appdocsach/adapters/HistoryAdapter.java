@@ -14,11 +14,11 @@ import huce.edu.vn.appdocsach.R;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
-    private final OnTouchItem onTouchItem;
+    private final OnTouchItem onTouchQuery;
     private final List<String> historySet;
 
-    public HistoryAdapter(List<String> historySet, OnTouchItem onTouchItem) {
-        this.onTouchItem = onTouchItem;
+    public HistoryAdapter(List<String> historySet, OnTouchItem onTouchQuery) {
+        this.onTouchQuery = onTouchQuery;
         this.historySet = historySet;
     }
 
@@ -55,7 +55,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         public HistoryViewHolder(@NonNull View itemView) {
             super(itemView);
             tvBookSearchQuery = itemView.findViewById(R.id.tvBookSearchQuery);
-            tvBookSearchQuery.setOnClickListener(v -> onTouchItem.onClick(getAdapterPosition()));
+            tvBookSearchQuery.setOnClickListener(v -> onTouchQuery.onClick(getAdapterPosition()));
         }
     }
 }

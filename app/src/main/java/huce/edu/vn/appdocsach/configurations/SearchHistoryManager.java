@@ -61,6 +61,7 @@ public class SearchHistoryManager {
         Set<String> history = getHistorySet();
         history.remove(query);
         preferences.edit()
+                .remove(SearchHistoryConstant.keyName)
                 .putStringSet(SearchHistoryConstant.keyName, history)
                 .apply();
     }

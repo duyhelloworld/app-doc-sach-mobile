@@ -60,8 +60,6 @@ public class CommentFragment extends Fragment implements OnLoadMore, OnTouchView
     long totalPage = 0;
     Context context;
     ImageLoader imageLoader = ImageLoader.getInstance();
-    InputMethodManager inputMethodManager;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -74,8 +72,6 @@ public class CommentFragment extends Fragment implements OnLoadMore, OnTouchView
         ivCommentReaderAvatar = view.findViewById(R.id.ivCommentReaderAvatar);
 
         assert getActivity() != null;
-        inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
         authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
             @Override
             public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
@@ -135,7 +131,8 @@ public class CommentFragment extends Fragment implements OnLoadMore, OnTouchView
                     Toast.makeText(context, getString(R.string.comment_add_success_message), Toast.LENGTH_SHORT).show();
                     commentAdapter.append(response.body());
                     edtCommentReaderContent.setText(null);
-                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    assert getActivity() != null;
+                    getActivity().getSystemService(InputMethodManager.class).hideSoftInputFromWindow(v.getWindowToken(), 0);
                     edtCommentReaderContent.clearFocus();
                     return;
                 }
