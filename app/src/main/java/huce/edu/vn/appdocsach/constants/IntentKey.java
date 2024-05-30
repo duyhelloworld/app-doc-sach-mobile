@@ -9,4 +9,5 @@ public class IntentKey {
     public static final String USER_AVATAR = "userAvatar";
     public static final String USER_FULLNAME = "fullname";
 
+    public static final String KEYWORD = "keyword";
 }

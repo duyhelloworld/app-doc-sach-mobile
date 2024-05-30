@@ -5,6 +5,7 @@
     <string name="test_lorem_long">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</string>
     <string name="test_lorem_short">AAAAAAAAAAAAAAAAA</string>
     <string name="main_app_title" translatable="true">App đọc sách</string>
+    <string name="no_book_in_database">Không có sách nào trong database</string>
     <string name="login_username_title">Tài khoản</string>
     <string name="login_password_title">Mật khẩu</string>
     <string name="book_cover_description">Ảnh truyện</string>
@@ -70,5 +71,7 @@
     <string name="error_logout">Lỗi khi đăng xuất</string>
     <string name="wrong_current_pass">Sai mật khẩu cũ</string>
     <string name="view_count">Lượt xem</string>
+    <string name="nothing_searched">Không có lịch sử nào ở đây</string>
+    <string name="btn_delete_all_search_history">Xóa hết tất cả lịch sử</string>
 
 </resources>

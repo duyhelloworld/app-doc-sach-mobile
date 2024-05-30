@@ -32,10 +32,6 @@ public class ImageLoader {
         picasso.load(url).fit().into(imageView);
     }
 
-    public void show(String url, ImageView imageView, @DrawableRes int placeHolderId, @DrawableRes int errorViewId) {
-        picasso.load(url).fit().error(errorViewId).placeholder(placeHolderId).into(imageView);
-    }
-
     public void showNoCacheNoStore(String url, ImageView imageView, @DrawableRes int placeholderId) {
         picasso.load(url)
                 .networkPolicy(NetworkPolicy.NO_CACHE)

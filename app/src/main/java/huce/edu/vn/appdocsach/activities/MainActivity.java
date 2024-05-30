@@ -4,15 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -54,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     AuthService authService = AuthService.authService;
     NavigationBarView bottomNavigationView;
     ProgressBar pbMain;
-    SearchView svMainBookSearchBox;
     AppLogger appLogger = AppLogger.getInstance();
     Handler changeHotBookHandler = new Handler(Looper.getMainLooper());
     Runnable changeBookRunnable = () -> {
@@ -76,16 +71,15 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         vp2ListHotBook = findViewById(R.id.vp2ListHotBook);
         pbMain = findViewById(R.id.pbMain);
         ciListHotBook = findViewById(R.id.ciListHotBook);
-        svMainBookSearchBox = findViewById(R.id.svMainBookSearchBox);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
-            if(menuItem.getItemId() == R.id.navigation_categories){
+            int menuId = menuItem.getItemId();
+            if(menuId == R.id.navigation_categories){
                 Intent CateIntent = new Intent(MainActivity.this, CategoryTab.class);
                 startActivity(CateIntent);
             }
-            if(menuItem.getItemId() == R.id.navigation_user){
+            if(menuId == R.id.navigation_user){
                 authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
                     @Override
                     public void onResponse(@NonNull Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
@@ -110,19 +104,23 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                 });
                 return true;
             }
+            if (menuId == R.id.navigation_search) {
+                Intent intent = new Intent(MainActivity.this, BookSearchActivity.class);
+                startActivity(intent);
+            }
             return false;
         });
-
-
-
-
 
 
         new Handler().postDelayed(() -> {
             // load first page
             pbMain.setVisibility(View.VISIBLE);
+
             if (bookModels == null || bookAdapter == null) {
                 fetchBook(responseData -> {
+                    if (responseData == null || responseData.size() == 0) {
+                        DialogUtils.infoUserSee(MainActivity.this, R.string.no_book_in_database);
+                    }
                     bookModels = responseData;
                     bookAdapter = new BookAdapter(bookModels, rvListBook,
                             pos -> gotoBookDetail(bookAdapter.getBookByPosition(pos).getId()), this);
@@ -160,34 +158,12 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             }
             pbMain.setVisibility(View.GONE);
         }, 500);
-
-        svMainBookSearchBox.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                findBookModel.setKeyword(query);
-                fetchBook(responseData -> {
-                    if (responseData == null || responseData.isEmpty()) {
-                        DialogUtils.infoUserSee(MainActivity.this, R.string.not_found_book);
-                        return;
-                    }
-                    bookModels = responseData;
-                    bookAdapter.setData(bookModels);
-                });
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         changeHotBookHandler.postDelayed(changeBookRunnable, 1000);
-
     }
 
     @Override
@@ -227,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                     bookAdapter.setLoaded();
                     pbMain.setVisibility(View.GONE);
                 });
-            }, 2000);
+            }, 1500);
         }
     }
 
@@ -236,5 +212,4 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         intent.putExtra(IntentKey.BOOK_ID, id);
         startActivity(intent);
     }
-
 }
