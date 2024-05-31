@@ -18,6 +18,8 @@ import huce.edu.vn.appdocsach.callbacks.OnLoadMore;
 import huce.edu.vn.appdocsach.callbacks.OnTouchItem;
 import huce.edu.vn.appdocsach.configurations.ImageLoader;
 import huce.edu.vn.appdocsach.models.book.SimpleBookModel;
+import huce.edu.vn.appdocsach.models.comment.SimpleCommentModel;
+import huce.edu.vn.appdocsach.utils.DialogUtils;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
     private final List<SimpleBookModel> books;
@@ -43,6 +45,12 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             }
         });
     }
+    public void append(List<SimpleBookModel> books) {
+        int oldSize = this.books.size();
+        this.books.addAll(books); // Thêm sách mới vào danh sách
+        notifyItemRangeInserted(oldSize+1, this.books.size()); // Thông báo rằng các mục mới đã được thêm
+    }
+
 
     public void setLoaded() {
         this.isLoading = false;
@@ -87,5 +95,6 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             ivMainBookItemCoverImage = itemView.findViewById(R.id.ivMainBookItemCoverImage);
             itemView.setOnClickListener(v -> onTouchItem.onClick(getAdapterPosition()));
         }
+
     }
 }

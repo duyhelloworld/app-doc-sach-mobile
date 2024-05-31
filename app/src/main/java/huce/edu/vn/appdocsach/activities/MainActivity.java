@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
     BookAdapter bookAdapter;
     HotBookAdapter hotBookAdapter;
     List<SimpleBookModel> bookModels, hotBookModels;
-    FindBookModel findBookModel = new FindBookModel(UIConstants.NUMBER_BOOK_PER_REQUEST);
+    FindBookModel findBookModel;
     BookService bookService = BookService.bookService;
     AuthService authService = AuthService.authService;
     NavigationBarView bottomNavigationView;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
         pbMain = findViewById(R.id.pbMain);
         ciListHotBook = findViewById(R.id.ciListHotBook);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+        findBookModel = new FindBookModel(UIConstants.NUMBER_BOOK_PER_REQUEST);
 
         bottomNavigationView.setOnItemSelectedListener(menuItem -> {
             int menuId = menuItem.getItemId();
@@ -120,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                 fetchBook(responseData -> {
                     if (responseData == null || responseData.size() == 0) {
                         DialogUtils.infoUserSee(MainActivity.this, R.string.no_book_in_database);
+                        return;
                     }
                     bookModels = responseData;
                     bookAdapter = new BookAdapter(bookModels, rvListBook,
@@ -152,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
                         }
                     });
                     ciListHotBook.setViewPager(vp2ListHotBook);
+                    findBookModel.setPageSize(UIConstants.NUMBER_BOOK_PER_REQUEST);
                 });
             } else {
                 hotBookAdapter.setData(hotBookModels);
@@ -184,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
 
             @Override
             public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                //                DialogUtils.errorUserSee(MainActivity.this, R.string.error_load_book);
+
                 DialogUtils.errorDevSee(MainActivity.this, "bug", throwable);
                 appLogger.error(throwable);
             }
@@ -198,14 +202,16 @@ public class MainActivity extends AppCompatActivity implements OnLoadMore {
             new Handler().postDelayed(() -> {
                 findBookModel.incrementPageNumber();
                 fetchBook(responseData -> {
-                    bookModels = responseData;
-                    bookAdapter.setData(bookModels);
+
+
+                    bookAdapter.append(responseData);
                     bookAdapter.setLoaded();
                     pbMain.setVisibility(View.GONE);
                 });
             }, 1500);
         }
     }
+
 
     private void gotoBookDetail(int id) {
         Intent intent = new Intent(MainActivity.this, BookDetailActivity.class);

@@ -2,6 +2,7 @@ package huce.edu.vn.appdocsach.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -45,6 +46,7 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
     private CategoryAdapter categoryAdapter;
     AuthService authService = AuthService.authService;
     AppLogger appLogger = AppLogger.getInstance();
+    TextView tvCategory;
 
 
     @Override
@@ -55,6 +57,7 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
         recyclerViewCategories = findViewById(R.id.recyclerViewCategories);
         bottomNavigationView =findViewById(R.id.bottom_navigation);
         rcvBook = findViewById(R.id.rcvBook);
+        tvCategory = findViewById(R.id.tvCategory);
 
         bottomNavigationView.setSelectedItemId(R.id.navigation_categories);
 
@@ -77,6 +80,7 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
 
         categoryAdapter = new CategoryAdapter(new ArrayList<>(), position -> {
             findBookModel.setCategoryId(categoryAdapter.getData(position).getId());
+            String selectedCategoryName = categoryAdapter.getData(position).getName();
             bookService.getAllBook(findBookModel.getRetrofitQuery()).enqueue(new Callback<PagingResponse<SimpleBookModel>>() {
                 @Override
                 public void onResponse(Call<PagingResponse<SimpleBookModel>> call, Response<PagingResponse<SimpleBookModel>> response) {
@@ -86,6 +90,7 @@ public class CategoryTab extends AppCompatActivity implements OnLoadMore {
                                 gotoBookDetail(bookAdapter.getBookByPosition(pos).getId());
                             }, () -> {});
                     rcvBook.setAdapter(bookAdapter);
+                    tvCategory.setText(selectedCategoryName);
                 }
 
                 @Override
