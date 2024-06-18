@@ -3,7 +3,9 @@ package huce.edu.vn.appdocsach.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -39,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookSearchActivity extends AppCompatActivity implements OnLoadMore {
+public class BookSearchFragment extends Fragment implements OnLoadMore {
 
     SearchView svMainBookSearchBox;
     TextView tvEmptySearchHistory, tvBookSearchResultCount;
@@ -56,18 +59,18 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
     AppLogger appLogger;
     FindBookModel findBookModel = new FindBookModel(UIConstants.NUMBER_BOOK_PER_REQUEST);
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_search);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_book_search, container, false);
 
-        svMainBookSearchBox = findViewById(R.id.svMainBookSearchBox);
-        rvBookSearchHistory = findViewById(R.id.rvBookSearchHistory);
-        tvEmptySearchHistory = findViewById(R.id.tvEmptySearchHistory);
-        tvBookSearchResultCount = findViewById(R.id.tvBookSearchResultCount);
-        btnClearHistory = findViewById(R.id.btnClearHistory);
-        bottom_navigation = findViewById(R.id.bottom_navigation);
-        rvBookSearchList = findViewById(R.id.rvBookSearchList);
+        svMainBookSearchBox = view.findViewById(R.id.svMainBookSearchBox);
+        rvBookSearchHistory = view.findViewById(R.id.rvBookSearchHistory);
+        tvEmptySearchHistory = view.findViewById(R.id.tvEmptySearchHistory);
+        tvBookSearchResultCount = view.findViewById(R.id.tvBookSearchResultCount);
+        btnClearHistory = view.findViewById(R.id.btnClearHistory);
+        bottom_navigation = view.findViewById(R.id.bottom_navigation);
+        rvBookSearchList = view.findViewById(R.id.rvBookSearchList);
 
         findBookModel.setKeyword("");
         tvEmptySearchHistory.setVisibility(View.GONE);
@@ -79,10 +82,10 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
 
         fetchBook(responseData -> {
             bookAdapter = new BookAdapter(responseData, rvBookSearchList, pos -> {
-                Intent intent = new Intent(BookSearchActivity.this, BookDetailActivity.class);
+                Intent intent = new Intent(getContext(), BookDetailActivity.class);
                 intent.putExtra(IntentKey.BOOK_ID, bookAdapter.getBookByPosition(pos).getId());
                 startActivity(intent);
-            }, BookSearchActivity.this);
+            }, () -> {});
             rvBookSearchList.setAdapter(bookAdapter);
         });
 
@@ -104,7 +107,7 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
 
                     @Override
                     public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                        DialogUtils.errorUserSee(BookSearchActivity.this, R.string.error_load_book);
+                        DialogUtils.errorUserSee(getContext(), R.string.error_load_book);
                         AppLogger.getInstance().error(throwable);
                     }
                 });
@@ -123,47 +126,9 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
                 historyAdapter.clear();
             }
             tvEmptySearchHistory.setVisibility(View.VISIBLE);
-            Toast.makeText(this, R.string.clear_search_history, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.clear_search_history, Toast.LENGTH_SHORT).show();
         });
-
-        bottom_navigation.setSelectedItemId(R.id.navigation_search);
-        bottom_navigation.setOnItemSelectedListener(menuItem -> {
-            if(menuItem.getItemId() == R.id.navigation_home){
-                Intent HomeIntent = new Intent(BookSearchActivity.this, MainActivity.class);
-                startActivity(HomeIntent);
-            }
-            if(menuItem.getItemId() == R.id.navigation_categories){
-                Intent CateIntent = new Intent(BookSearchActivity.this, CategoryTab.class);
-                startActivity(CateIntent);
-            }
-
-            if(menuItem.getItemId() == R.id.navigation_user){
-                authService.getInfo().enqueue(new Callback<AuthInfoModel>() {
-                    @Override
-                    public void onResponse(Call<AuthInfoModel> call, @NonNull Response<AuthInfoModel> response) {
-                        AuthInfoModel model = response.body();
-                        if(!response.isSuccessful()){
-                            Intent loginIntent = new Intent(BookSearchActivity.this, LoginActivity.class);
-                            startActivity(loginIntent);
-                            return;
-                        }
-                        Intent intent = new Intent(BookSearchActivity.this, UserSettingActivity.class);
-                        intent.putExtra(IntentKey.USER_AVATAR, model.getAvatar());
-                        intent.putExtra(IntentKey.USER_FULLNAME, model.getFullname());
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public void onFailure(Call<AuthInfoModel> call, Throwable throwable) {
-                        DialogUtils.errorUserSee(BookSearchActivity.this, R.string.error_login);
-                        appLogger.error(throwable);
-                    }
-                });
-                return true;
-            }
-            return false;
-        });
-
+        return view;
     }
 
     @Override
@@ -191,7 +156,8 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
                 historyAdapter = new HistoryAdapter(histories, position -> {
                     svMainBookSearchBox.setQuery(historyAdapter.getHistory(position), false);
                     svMainBookSearchBox.requestFocus();
-                    getSystemService(InputMethodManager.class).showSoftInput(svMainBookSearchBox, 0);
+                    assert getContext() != null;
+                    getContext().getSystemService(InputMethodManager.class).showSoftInput(svMainBookSearchBox, 0);
                 });
                 rvBookSearchHistory.setAdapter(historyAdapter);
             } else {
@@ -212,7 +178,7 @@ public class BookSearchActivity extends AppCompatActivity implements OnLoadMore 
 
             @Override
             public void onFailure(@NonNull Call<PagingResponse<SimpleBookModel>> call, @NonNull Throwable throwable) {
-                DialogUtils.errorUserSee(BookSearchActivity.this, R.string.error_load_book);
+                DialogUtils.errorUserSee(getContext(), R.string.error_load_book);
                 AppLogger.getInstance().error(throwable);
             }
         });

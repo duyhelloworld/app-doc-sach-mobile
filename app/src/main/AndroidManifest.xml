@@ -23,7 +23,7 @@
             android:name=".activities.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.UserSettingActivity"
+            android:name=".activities.UserSettingFragment"
             android:exported="false" />
         <activity
             android:name=".activities.ChapterReaderActivity"
@@ -38,9 +38,9 @@
             android:name=".activities.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.BookSearchActivity"
+            android:name=".activities.BookSearchFragment"
             android:exported="false" />
-        <activity android:name=".activities.CategoryTab"
+        <activity android:name=".activities.CategoryFragment"
             android:exported="false"/>
         <activity android:name=".activities.ChangeProfile"
             android:exported="false"/>

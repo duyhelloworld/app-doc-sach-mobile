@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@android:color/darker_gray" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2ListHotBook"
+        android:layout_height="180dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center_horizontal"
+        android:clipChildren="false"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/ciListHotBook"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="200dp"
+        android:layout_gravity="center_horizontal"
+        app:ci_drawable="@drawable/bg_book_indicator" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListBook"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="260dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <ProgressBar
+        android:id="@+id/pbMain"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="600dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+</LinearLayout>
